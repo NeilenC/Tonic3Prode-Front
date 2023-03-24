@@ -1,13 +1,21 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { FormattedMessage } from "react-intl";
 
-const home = () => {
-
-    const user = useSelector((state) => state.user)
+const Home = () => {
+  const user = useSelector((state) => state.user);
 
   return (
-    <div>home {user.name}</div>
-  )
-}
+    <>
+      <h1>
+      
 
-export default home
+      </h1>
+      <div > <FormattedMessage
+          id="welcome"
+        /> {user.name}</div>
+    </>
+  );
+};
+
+export default Home;
