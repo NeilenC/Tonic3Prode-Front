@@ -8,12 +8,8 @@ const Home = () => {
   return (
     <>
       <h1>
-      
-
+        <FormattedMessage id="welcome" /> {user.name}
       </h1>
-      <div > <FormattedMessage
-          id="welcome"
-        /> {user.name}</div>
     </>
   );
 };
