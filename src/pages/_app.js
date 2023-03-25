@@ -5,17 +5,15 @@ import Spanish from "../languages/es.json";
 import English from "../languages/en.json";
 import Portugues from "../languages/br.json";
 import store from "../../redux/store";
-
+import { getGeoLocation } from "../geolocation";
 
 export default function App({ Component, pageProps }) {
-
-  const locale = typeof window !== 'undefined' ? navigator.language : 'es';
+  const locale = typeof window !== "undefined" ? navigator.language : "es";
   let lang;
-  
+
   if (locale === "en") {
     lang = English;
   } else {
-
     if (locale === "br") {
       lang = Portugues;
     } else {
@@ -23,9 +21,12 @@ export default function App({ Component, pageProps }) {
     }
   }
 
+  if (typeof window !== "undefined") {
+    getGeoLocation();
+  }
 
   return (
-    <IntlProvider locale={locale} messages={lang} >
+    <IntlProvider locale={locale} messages={lang}>
       <Provider store={store}>
         <Component {...pageProps} />
       </Provider>
