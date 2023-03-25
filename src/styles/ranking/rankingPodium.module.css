@@ -1,0 +1,68 @@
+.podiumBox {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 15px
+
+}
+
+.firstCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 230px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.6);
+  background-color: #ABCFFF;
+}
+
+.secondCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 200px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  background-color: #9AB9DB;
+}
+
+.thirdCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 180px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  background-color: #C3D4DE;
+}
+
+.firstAvatar {
+  width: 90px;
+  height: 90px;
+  margin: 10px;
+  box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.5);
+}
+.secondAvatar {
+  width: 70px;
+  height: 70px;
+  margin: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+.thirdAvatar {
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+
