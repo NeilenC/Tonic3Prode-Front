@@ -1,6 +1,6 @@
 const rankingPodium = {
   firstPlace: {
-    name: "Natalia García",
+    name: "Natalia",
     avatar:
       "https://img.freepik.com/foto-gratis/retrato-hermosa-modelo-rubia-sonriente-vestida-ropa-hipster-verano_158538-5482.jpg",
     position: 17,
@@ -8,7 +8,7 @@ const rankingPodium = {
     variant: "h5"
   },
   secondPlace: {
-    name: "Natalia García",
+    name: "Natalia",
     avatar:
       "https://img.freepik.com/foto-gratis/retrato-hermosa-modelo-rubia-sonriente-vestida-ropa-hipster-verano_158538-5482.jpg",
     position: 17,
@@ -16,7 +16,7 @@ const rankingPodium = {
     variant: "subtitle1"
   },
   thirdPlace: {
-    name: "Natalia García",
+    name: "Natalia",
     avatar:
       "https://img.freepik.com/foto-gratis/retrato-hermosa-modelo-rubia-sonriente-vestida-ropa-hipster-verano_158538-5482.jpg",
     position: 17,

@@ -1,14 +1,15 @@
 
 import { Box } from "@mui/system";
 import React from "react";
-import RankingPodium from "./RankingPodium";
-import RankingSearch from "./RankingSearch";
+import RankingPodium from "./Podium";
+import RankingSearch from "./Search";
 
 const index = () => {
   return (
     <div>
       <RankingPodium />
-      <Box>
+      <Box sx={{display: "flex", justifyContent: "center",
+  alignItems: "center"}}>
         <RankingSearch />
       </Box>
     </div>

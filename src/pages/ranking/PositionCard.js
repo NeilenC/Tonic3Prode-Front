@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "../../styles/ranking/rankingCard.module.css";
+import styles from "../../styles/ranking/positionCard.module.css";
 import { Card } from "@mui/material";
 
 const user = {name: "Natalia García", avatar: "https://img.freepik.com/foto-gratis/retrato-hermosa-modelo-rubia-sonriente-vestida-ropa-hipster-verano_158538-5482.jpg",
 position: 17, points: 185}
 
-const RankingCard = ({ avatar, position, points }) => {
+const PositionCard = ({ avatar, position, points }) => {
   return (
     <Card className={styles.card}>
       <div className={styles.avatar}>
@@ -19,4 +19,4 @@ const RankingCard = ({ avatar, position, points }) => {
   );
 };
 
-export default RankingCard;
+export default PositionCard;

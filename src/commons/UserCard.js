@@ -1,30 +1,40 @@
-import React from 'react';
-import { Card, CardContent } from '@mui/material';
-import { ArrowUpward, ArrowDownward, MoreHoriz } from '@mui/icons-material';
-import Avatar from '@mui/material/Avatar';
-import styles from '@/styles/commons/userCard.module.css';
+import React from "react";
+import { Card, CardContent } from "@mui/material";
+import { ArrowUpward, ArrowDownward, Remove } from "@mui/icons-material";
+import Avatar from "@mui/material/Avatar";
+import styles from "@/styles/commons/userCard.module.css";
 
 const UserCard = ({ user }) => {
-  const statusIcon = user.status === 'advance' ? (
-    <ArrowUpward style={{ color: 'green' }} />
-  ) : user.status === 'retrograde' ? (
-    <ArrowDownward style={{ color: 'red' }} />
-  ) : (
-    <MoreHoriz style={{ color: 'gray' }} />
-  );
+  const statusIcon =
+    user.status === "advance" ? (
+      <ArrowUpward style={{ color: "green" }} />
+    ) : user.status === "retrograde" ? (
+      <ArrowDownward style={{ color: "red" }} />
+    ) : (
+      <Remove style={{ color: "gray" }} />
+    );
 
   return (
     <Card className={styles.card}>
       <CardContent className={styles.content}>
-        <div>
+        <div className={styles.cardColumn}>
           {statusIcon}
+        </div>
+        <div className={styles.cardColumn}>
           <p>{user.rank}</p>
         </div>
-        <div>
-          <Avatar alt={user.userName} src={user.avatarUrl} className={styles.avatar} />
+        <div className={styles.cardColumn}>
+          <Avatar
+            alt={user.userName}
+            src={user.avatarUrl}
+            className={styles.avatar}
+          />
         </div>
-        <div>
+        <div className={styles.cardColumn}>
           <p>{user.userName}</p>
+        </div>
+        <div className={styles.cardColumn}>
+          <p>{user.points}</p>
         </div>
       </CardContent>
     </Card>

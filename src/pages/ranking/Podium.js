@@ -1,9 +1,9 @@
 import React from "react";
 import { Avatar, Typography, Box, Card } from "@mui/material";
-import styles from "../../styles/ranking/rankingPodium.module.css";
+import styles from "../../styles/ranking/podium.module.css";
 import rankingPodium from "@/fakeData/rankingPodium";
 
-const RankingPodium = () => {
+const Podium = () => {
   return (
     <Box className={styles.podiumBox}>
       <Card className={styles.thirdCard}>
@@ -21,7 +21,7 @@ const RankingPodium = () => {
           {rankingPodium.thirdPlace.name}
         </Typography>
         <Typography variant="subtitle1">
-          {rankingPodium.thirdPlace.points} puntos
+          {rankingPodium.thirdPlace.points}
         </Typography>
       </Card>
       <Card className={styles.firstCard} >
@@ -39,7 +39,7 @@ const RankingPodium = () => {
           {rankingPodium.firstPlace.name}
         </Typography>
         <Typography variant="h6" >
-          {rankingPodium.firstPlace.points} puntos
+          {rankingPodium.firstPlace.points}
         </Typography>
       </Card>
       <Card className={styles.secondCard} >
@@ -57,11 +57,11 @@ const RankingPodium = () => {
           {rankingPodium.secondPlace.name}
         </Typography>
         <Typography variant="subtitle1" >
-          {rankingPodium.secondPlace.points} puntos
+          {rankingPodium.secondPlace.points}
         </Typography>
       </Card>
     </Box>
   );
 };
 
-export default RankingPodium;
+export default Podium;
