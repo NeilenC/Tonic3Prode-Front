@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Stepper, Step, StepLabel, Button } from "@mui/material";
+import { Stepper, Step, StepLabel, Button, StepContent } from "@mui/material";
 import Teams from "./Teams";
 import Matches from "./Matches";
 import GeneralInfo from "./GeneralInfo";
@@ -26,39 +26,53 @@ function LinearStepper() {
         alignItems: "flex-start",
         justifyContent: "center",
         marginTop: "20px",
+        
       }}
     >
-      <Box sx={{ margin: isMobile ? "15px 0px" : "30px 70px" }}>
+      <Box sx={{ margin: isMobile ? "15px 0px 30px 0px" : "30px 70px", }}>
         <Stepper
           activeStep={activeStep}
           orientation={isMobile ? "horizontal" : "vertical"}
+          sx={{width: isMobile ? "100%" : "300px"}}
         >
-          <Step>
-            <StepLabel>Informacion General</StepLabel>
+          <Step >
+            <StepLabel >General Info</StepLabel>
+            <StepContent>
+              {(!isMobile)? "In this step you must enter the relevant data of the tournament" : ""}
+            </StepContent>
           </Step>
           <Step>
-            <StepLabel>Carga equipos</StepLabel>
+            <StepLabel>Teams Entry</StepLabel>
+            <StepContent>
+              {(!isMobile)? "In this step you have to select the teams that will participate in the tournament" : ""}
+            </StepContent>
           </Step>
           <Step>
-            <StepLabel>Carga cruces</StepLabel>
+            <StepLabel>Matches entry</StepLabel>
+            <StepContent>
+              {(!isMobile)? "You have to enter the details of the matches of the first stage of the tournament" : ""}
+            </StepContent>
           </Step>
           <Step>
-            <StepLabel>Revision</StepLabel>
+            <StepLabel>Rewiev</StepLabel>
+            <StepContent>
+              {(!isMobile)? "Review the data before creating the tournament" : ""}
+            </StepContent>
           </Step>
         </Stepper>
         <Box sx={{textAlign: "center", margin: isMobile ? "40px 10px 10px 0px" : "25px 0px"}}>
           <Button
             onClick={handleBack}
-            sx={{ marginRight: "20px" }}
+            sx={{ marginRight: "20px", display: activeStep == 0 ? "none" : "inline-block"}}
           >
-            Atrás
+            Back
           </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={handleNext}
           >
-            Siguiente
+            {(activeStep == 3)? "Finish" : "Continue"}
           </Button>
         </Box>
       </Box>
@@ -82,19 +96,12 @@ function LinearStepper() {
         )}
         {activeStep === 2 && (
           <div>
-            <p>Aquí van los campos para cargar los cruces.</p>
-            <Button variant="contained" color="primary" onClick={handleNext}>
-              Siguiente
-            </Button>
             <Matches />
-            <Button variant="contained" color="primary" onClick={handleNext}>
-              Siguiente
-            </Button>
           </div>
         )}
         {activeStep === 3 && (
           <div>
-            <p>Aquí va la revisión de los datos cargados.</p>
+            <p>¡¡ Poner una vista previa de los datos cargados !!</p>
           </div>
         )}
       </Box>

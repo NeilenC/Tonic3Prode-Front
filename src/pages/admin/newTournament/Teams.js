@@ -7,9 +7,9 @@ import {
   TableHead,
   TableRow,
   Checkbox,
+  useMediaQuery
 } from "@mui/material";
 import rows from "../../../fakeData/teams";
-
 function Teams() {
   const [selected, setSelected] = useState(
     JSON.parse(localStorage.getItem("selected")) || []
@@ -23,6 +23,8 @@ function Teams() {
       selected: selected.some((sel) => sel.id === row.id),
     }))
   );
+  const isMobile = useMediaQuery("(max-width:600px)");
+
 
   useEffect(() => {
     localStorage.setItem("selected", JSON.stringify(selected));
@@ -90,11 +92,11 @@ function Teams() {
     });
 
   return (
-    <div style={{ width: "100%", margin: "0 auto"}}>
-      <p  style={{ textAlign: "center" }}> Seleccionados: {selected.length}</p>
+    <div style={{width: "100%", minWidth: isMobile ? "400px" : "1000px", margin: "0 auto" }}>
+      <p  style={{ textAlign: "center" }}> Selected Teams: {selected.length}</p>
       <input
         type="text"
-        placeholder="Buscar equipo / pais"
+        placeholder="Search Team / Country"
         value={searchValue}
         onChange={(event) => setSearchValue(event.target.value)}
         style={{
@@ -128,19 +130,24 @@ function Teams() {
                 sortDirection={orderBy === "nombre" ? order : false}
                 onClick={() => handleSortRequest("nombre")}
               >
-                Nombre
+                Team
+              </TableCell>
+              <TableCell
+              >
+                Team Logo
               </TableCell>
               <TableCell
                 sortDirection={orderBy === "division" ? order : false}
                 onClick={() => handleSortRequest("division")}
               >
-                División
+                Division
               </TableCell>
               <TableCell
                 sortDirection={orderBy === "origen" ? order : false}
                 onClick={() => handleSortRequest("origen")}
+                sx={{display: isMobile? "none":"static"}}
               >
-                Origen
+                Origin
               </TableCell>
             </TableRow>
           </TableHead>
@@ -161,8 +168,9 @@ function Teams() {
                     <Checkbox checked={isItemSelected} />
                   </TableCell>
                   <TableCell>{row.nombre}</TableCell>
+                  <TableCell ><img src={row.logo_url} alt="Team Logo" style={{width: '45px', height: '45px'}}/></TableCell>
                   <TableCell>{row.division}</TableCell>
-                  <TableCell>{row.origen}</TableCell>
+                  <TableCell sx={{display: isMobile? "none":"static"}}>{row.origen}</TableCell>
                 </TableRow>
               );
             })}

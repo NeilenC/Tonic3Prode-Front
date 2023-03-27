@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import styles from "../../../styles/admin/newTournament/generalInfo.module.css";
+import { useMediaQuery } from "@mui/material";
 
 const GeneralInfo = () => {
   const [name, setName] = useState("");
@@ -14,6 +15,7 @@ const GeneralInfo = () => {
   const [numMatches, setNumMatches] = useState(32);
   const [beginning, setBeginning] = useState("");
   const [finishing, setFinishing] = useState("");
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
@@ -101,7 +103,7 @@ const GeneralInfo = () => {
   };
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} style={{width: "100%", minWidth: isMobile ? "400px" : "1000px"}}>
       <TextField
         label="Name"
         value={name}

@@ -17,17 +17,27 @@ import { format } from "date-fns";
 import AddMatchCard from "@/commons/AddMatchCard";
 import availableTeams from "@/fakeData/teams";
 import availableStadiums from "@/fakeData/stadiums";
+import { Box, width } from "@mui/system";
+import { useMediaQuery } from "@mui/material";
 
 const Matches = () => {
   const [open, setOpen] = useState(false);
   const [teams, setTeams] = useState(availableTeams);
   const [stadiums, setStadiums] = useState(availableStadiums);
   const [matches, setMatches] = useState([]);
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const handleAddMatch = (newMatch) => {
     setMatches([...matches, newMatch]);
-    setTeams(teams.filter((team) => team.id !== newMatch.homeTeam.id && team.id !== newMatch.awayTeam.id));
-    setStadiums(stadiums.filter((stadium) => stadium.id !== newMatch.stadium.id));
+    setTeams(
+      teams.filter(
+        (team) =>
+          team.id !== newMatch.homeTeam.id && team.id !== newMatch.awayTeam.id
+      )
+    );
+    setStadiums(
+      stadiums.filter((stadium) => stadium.id !== newMatch.stadium.id)
+    );
   };
 
   const handleEditMatch = (match) => {
@@ -74,7 +84,7 @@ const Matches = () => {
       date = getRandomDate();
     }
     setMatches([...matches, ...newMatches]);
-    setTeams([])
+    setTeams([]);
   };
 
   const getRandomTeam = (availableTeams) => {
@@ -96,15 +106,125 @@ const Matches = () => {
   };
 
   return (
-    <>
-      <Button variant="contained" onClick={() => setOpen(true)}>
-        Crear Partido
-      </Button>
-      <Button variant="contained" onClick={() => handleRandomMatches(32)}>
-        Crear Partidos Aleatorios
-      </Button>
+    <Box sx={{ width: "100%", minWidth: isMobile ? "400px" : "1000px"}}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => setOpen(true)}
+          sx={{ width: "145px", marginBottom: "10px" }}
+        >
+          Create Match
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleRandomMatches(32)}
+          sx={{
+            width: "240px",
+            margin: isMobile ? "0 10px 0 0" : "0 0 10px 10px",
+          }}
+        >
+          Create Random Matches
+        </Button>
+      </Box>
+      <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ textAlign: "center" }}>Order</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>Date</TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "center",
+                  display: isMobile ? "none" : "static",
+                }}
+              >
+                Hour
+              </TableCell>
+              <TableCell sx={{ textAlign: "center" }}>Home Team</TableCell>
+              <TableCell sx={{ textAlign: "center" }}>Away Team</TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "center",
+                  display: isMobile ? "none" : "static",
+                }}
+              >
+                Stadium
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "center",
+                  display: isMobile ? "none" : "static",
+                }}
+              >
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {matches.map((match, i) => (
+              <TableRow key={i + 1}>
+                <TableCell sx={{ textAlign: "center" }}>{i + 1}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {format(new Date(match.date), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    display: isMobile ? "none" : "static",
+                  }}
+                >
+                  {match.time}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {isMobile ? match.homeTeam.shortName : match.homeTeam.nombre}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {isMobile ? match.awayTeam.shortName : match.awayTeam.nombre}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    display: isMobile ? "none" : "static",
+                  }}
+                >
+                  {match.stadium.nombre}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "center",
+                    display: isMobile ? "none" : "static",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={() => handleEditMatch(match)}
+                    sx={{ marginRight: "10px" }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleDeleteMatch(match)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Crear Partido</DialogTitle>
+        <DialogTitle>Create Match</DialogTitle>
         <DialogContent>
           <AddMatchCard
             onAddMatch={handleAddMatch}
@@ -113,51 +233,7 @@ const Matches = () => {
           />
         </DialogContent>
       </Dialog>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Orden</TableCell>
-              <TableCell>Fecha</TableCell>
-              <TableCell>Hora</TableCell>
-              <TableCell>Local</TableCell>
-              <TableCell>Visitante</TableCell>
-              <TableCell>Estadio</TableCell>
-              <TableCell>Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {matches.map((match, i) => (
-              <TableRow key={i + 1}>
-                <TableCell>{i + 1}</TableCell>
-                <TableCell>
-                  {format(new Date(match.date), "dd/MM/yyyy")}
-                </TableCell>
-                <TableCell>{match.time}</TableCell>
-                <TableCell>{match.homeTeam.nombre}</TableCell>
-                <TableCell>{match.awayTeam.nombre}</TableCell>
-                <TableCell>{match.stadium.nombre}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEditMatch(match)}
-                  >
-                    Modificar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleDeleteMatch(match)}
-                  >
-                    Eliminar
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+    </Box>
   );
 };
 
