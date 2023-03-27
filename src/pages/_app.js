@@ -1,13 +1,38 @@
 import "@/styles/globals.css";
+import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
+import Spanish from "../languages/es.json";
+import English from "../languages/en.json";
+import Portugues from "../languages/br.json";
+import store from "../../redux/store";
+import { getGeoLocation } from "../geolocation";
 import store from "../../redux/store";
 import Navbar from "./home/Navbar";
 
 export default function App({ Component, pageProps }) {
+  const locale = typeof window !== "undefined" ? navigator.language : "es";
+  let lang;
+
+  if (locale === "en") {
+    lang = English;
+  } else {
+    if (locale === "br") {
+      lang = Portugues;
+    } else {
+      lang = Spanish;
+    }
+  }
+
+  if (typeof window !== "undefined") {
+    getGeoLocation();
+  }
+
   return (
-    <Provider store={store}>
-      <Navbar />
-      <Component {...pageProps} />
-    </Provider>
+    <IntlProvider locale={locale} messages={lang}>
+      <Provider store={store}>
+        <Navbar />
+        <Component {...pageProps} />
+      </Provider>
+    </IntlProvider>
   );
 }
