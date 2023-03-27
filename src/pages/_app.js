@@ -6,7 +6,6 @@ import English from "../languages/en.json";
 import Portugues from "../languages/br.json";
 import store from "../../redux/store";
 import { getGeoLocation } from "../geolocation";
-import store from "../../redux/store";
 import Navbar from "./home/Navbar";
 
 export default function App({ Component, pageProps }) {
