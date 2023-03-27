@@ -1,3 +1,14 @@
 {
-    "welcome": "Bienvenidos"
+    "welcome": "Bienvenidos",
+    "matches": "Futuros partidos",
+    "predictions": "Mis predicciones",
+    "ranking" : "Ranking de puntos",
+    "fixture" : "Fixtures",
+    "torneo": "Torneos",
+    "panel": "Panel Administrador",
+
+    "profile": "Perfil",
+    "config": "Configuración",
+    "logout": "Cerrar sesión"
+
 }

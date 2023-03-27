@@ -1,3 +1,14 @@
 {
-    "welcome": "Benvindo"
+    "welcome": "Bem-vindo",
+    "matches": "Partidas futuras",
+    "predictions": "Minhas previsõess",
+    "ranking" : "Classificação de pontos",
+    "fixture" : "Fixtures",
+    "torneo": "Torneio",
+    "panel": "Painel de administração",
+
+    "profile": "Perfil",
+    "config": "Contexto",
+    "logout": "Sair"
+
 }
