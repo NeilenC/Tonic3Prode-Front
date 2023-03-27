@@ -1,0 +1,52 @@
+.title {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.title-date {
+  text-align: center;
+  position: relative;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+}
+
+.grid-box {
+  display: grid;
+  grid-template-rows: repeat(auto);
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 1px;
+  border-radius: 8px;
+}
+
+.global {
+  margin: 1rem;
+  background-color: black;
+  color: white;
+  border-radius: 8px;
+}
+
+.dateContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dateBox {
+  background-color: #1E1E2F;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+}

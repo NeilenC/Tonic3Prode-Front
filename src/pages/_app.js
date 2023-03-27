@@ -6,6 +6,8 @@ import English from "../languages/en.json";
 import Portugues from "../languages/br.json";
 import store from "../../redux/store";
 import { getGeoLocation } from "../geolocation";
+import store from "../../redux/store";
+import Navbar from "./home/Navbar";
 
 export default function App({ Component, pageProps }) {
   const locale = typeof window !== "undefined" ? navigator.language : "es";
@@ -28,6 +30,7 @@ export default function App({ Component, pageProps }) {
   return (
     <IntlProvider locale={locale} messages={lang}>
       <Provider store={store}>
+        <Navbar />
         <Component {...pageProps} />
       </Provider>
     </IntlProvider>
