@@ -1,3 +1,13 @@
 {
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "matches": "Future matches",
+    "predictions": "My predictions",
+    "ranking" : "Ranking",
+    "fixture" : "Fixtures",
+    "torneo": "Tournaments",
+    "panel": "Admin panel",
+
+    "profile": "Profile",
+    "config": "Configuration",
+    "logout": "Logout"
 }
