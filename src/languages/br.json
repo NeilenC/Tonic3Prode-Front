@@ -1,6 +1,8 @@
 {
     "welcome": "Bem-vindo",
     "matches": "Partidas futuras",
+
+
     "predictions": "Minhas previsõess",
     "ranking" : "Classificação de pontos",
     "fixture" : "Fixtures",
@@ -9,6 +11,20 @@
 
     "profile": "Perfil",
     "config": "Contexto",
-    "logout": "Sair"
+    "logout": "Sair",
+
+    "state": "Estado",
+    "finish": "Finalizado",
+    "inactive": "Parado",
+    "active": "Ativo",
+
+    "type": "Tipo",
+    "winner": "Ganhador",
+    "points": "Pontos",
+    "points2": "Pontos na fase de grupos",
+    "members": "Membros",
+    "teams": "Equipes",
+    "countries": "País"
+
 
 }
