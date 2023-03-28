@@ -9,7 +9,7 @@ import { useMediaQuery } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 const GeneralInfo = () => {
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [status, setStatus] = useState("active");
   const [type, setType] = useState("winner-remains-on-court");
   const [members, setMembers] = useState("teams");
@@ -21,28 +21,29 @@ const GeneralInfo = () => {
   useEffect(() => {
     const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
     if (generalInfo) {
-      setName(generalInfo.name);
+      setTitle(generalInfo.title);
       setStatus(generalInfo.status);
       setType(generalInfo.type);
       setMembers(generalInfo.members);
-      setNumMatches(generalInfo.numMatches);
       setBeginning(generalInfo.beginning);
       setFinishing(generalInfo.finishing);
     }
   }, []);
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
+
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
     localStorage.setItem(
       "generalInfo",
-      JSON.stringify({ ...getGeneralInfo(), name: event.target.value })
+      JSON.stringify({ ...getGeneralInfo(), title: event.target.value })
     );
   };
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
     localStorage.setItem(
-      "generalInfo",
+      "generalInfo",    
       JSON.stringify({ ...getGeneralInfo(), status: event.target.value })
     );
   };
@@ -63,15 +64,8 @@ const GeneralInfo = () => {
     );
   };
 
-  const handleNumMatchesChange = (event) => {
-    setNumMatches(event.target.value);
-    localStorage.setItem(
-      "generalInfo",
-      JSON.stringify({ ...getGeneralInfo(), numMatches: event.target.value })
-    );
-  };
-
   const handleBeginningChange = (event) => {
+    if(event.target.value === "") return;
     const [year, month, day] = event.target.value.split("-");
     let newDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     setBeginning(newDate);
@@ -82,8 +76,13 @@ const GeneralInfo = () => {
   };
 
   const handleFinishingChange = (event) => {
+    if(event.target.value === "") return;
     const [year, month, day] = event.target.value.split("-");
     let newDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    if (newDate < beginning) {
+      alert("La fecha de finalización no puede ser menor a la de inicio");
+      return;
+    }
     setFinishing(newDate);
     localStorage.setItem(
       "generalInfo",
@@ -93,7 +92,7 @@ const GeneralInfo = () => {
 
   const getGeneralInfo = () => {
     return {
-      name,
+      title,
       status,
       type,
       members,
@@ -104,94 +103,106 @@ const GeneralInfo = () => {
   };
 
   return (
-    <form className={styles.form} style={{width: "100%", minWidth: isMobile ? "400px" : "1000px"}}>
-      <TextField
-        label="Name"
-        value={name}
-        onChange={handleNameChange}
-        fullWidth
-        className={styles.input}
-        required
-      />
-      <FormControl fullWidth>
-        <InputLabel id="status-select-label"><FormattedMessage id="state" /></InputLabel>
-        <Select
-          labelId="status-select-label"
-          id="status-select"
-          value={status}
-          label="Status"
-          onChange={handleStatusChange}
+      <form
+        suppressHydrationWarning={true}
+        className={styles.form}
+        style={{ width: "100%", minWidth: isMobile ? "auto" : "auto" }}
+      >
+        <TextField
+          label="Title"
+          value={title}
+          onChange={handleTitleChange}
+          fullWidth
           className={styles.input}
-        >
-          <MenuItem value="active"><FormattedMessage id="active" /></MenuItem>
-          <MenuItem value="finish"><FormattedMessage id="finish" /></MenuItem>
-          <MenuItem value="inactive"><FormattedMessage id="inactive" /></MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl fullWidth>
-        <InputLabel id="type-select-label"><FormattedMessage id="type" /></InputLabel>
-        <Select
-          labelId="type-select-label"
-          id="type-select"
-          value={type}
-          label="Type"
-          onChange={handleTypeChange}
+          required
+        />
+        <FormControl fullWidth>
+          <InputLabel id="status-select-label">
+            <FormattedMessage id="state" />
+          </InputLabel>
+          <Select
+            labelId="status-select-label"
+            id="status-select"
+            value={status}
+            label="Status"
+            onChange={handleStatusChange}
+            className={styles.input}
+          >
+            <MenuItem value="active">
+              <FormattedMessage id="active" />
+            </MenuItem>
+            <MenuItem value="finish">
+              <FormattedMessage id="finish" />
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="type-select-label">
+            <FormattedMessage id="type" />
+          </InputLabel>
+          <Select
+            labelId="type-select-label"
+            id="type-select"
+            value={type}
+            label="Type"
+            onChange={handleTypeChange}
+            className={styles.input}
+          >
+            <MenuItem value="winner-remains-on-court">
+              <FormattedMessage id="Winner remains on court" />
+            </MenuItem>
+            <MenuItem value="points-tournament">
+              <FormattedMessage id="Points tournament" />
+            </MenuItem>
+            <MenuItem value="points-tournament-with-group-face">
+              <FormattedMessage id="Points tournament with group face" />
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="members-select-label">
+            <FormattedMessage id="members" />
+          </InputLabel>
+          <Select
+            labelId="members-select-label"
+            id="members-select"
+            value={members}
+            label="Members"
+            onChange={handleMembersChange}
+            className={styles.input}
+          >
+            <MenuItem value="teams">
+              <FormattedMessage id="teams" />
+            </MenuItem>
+            <MenuItem value="countrys">
+              <FormattedMessage id="countries" />
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Beginning"
+          type="date"
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={beginning}
+          onChange={handleBeginningChange}
           className={styles.input}
-        >
-          <MenuItem value="winner-remains-on-court">
-          <FormattedMessage id="winner" />
-          </MenuItem>
-          <MenuItem value="points-tournament"><FormattedMessage id="points" /></MenuItem>
-          <MenuItem value="points-tournament-with-group-face">
-          <FormattedMessage id="points2" />
-          </MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl fullWidth>
-        <InputLabel id="members-select-label"><FormattedMessage id="members" /></InputLabel>
-        <Select
-          labelId="members-select-label"
-          id="members-select"
-          value={members}
-          label="Members"
-          onChange={handleMembersChange}
+        />
+        <TextField
+          label="Finishing"
+          type="date"
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={finishing}
+          onChange={handleFinishingChange}
           className={styles.input}
-        >
-          <MenuItem value="teams"><FormattedMessage id="teams" /></MenuItem>
-          <MenuItem value="countrys"><FormattedMessage id="countries" /></MenuItem>
-        </Select>
-      </FormControl>
-      <TextField
-        label="Number of matches"
-        type="number"
-        value={numMatches}
-        onChange={handleNumMatchesChange}
-        fullWidth
-        className={styles.input}
-      />
-      <TextField
-        label="Beginning"
-        type="date"
-        fullWidth
-        InputLabelProps={{
-          shrink: true,
-        }}
-        value={beginning}
-        onChange={handleBeginningChange}
-        className={styles.input}
-      />
-      <TextField
-        label="Finishing"
-        type="date"
-        fullWidth
-        InputLabelProps={{
-          shrink: true,
-        }}
-        value={finishing}
-        onChange={handleFinishingChange}
-        className={styles.input}
-      />
-    </form>
+          disabled={beginning === "" ? "true" : ""}
+        />
+      </form>
   );
 };
 

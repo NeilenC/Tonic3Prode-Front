@@ -1,49 +1,53 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
+  Checkbox,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Checkbox,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
-import rows from "../../../fakeData/teams";
-function Teams() {
-  const [selected, setSelected] = useState(
-    JSON.parse(localStorage.getItem("selected")) || []
-  );
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("nombre");
+
+const Teams = () => {
+  const [rows, setRows] = useState([]);
+  const [rowsWithSelection, setRowsWithSelection] = useState([]);
+
   const [searchValue, setSearchValue] = useState("");
-  const [rowsWithSelection, setRowsWithSelection] = useState(
-    rows.map((row) => ({
-      ...row,
-      selected: selected.some((sel) => sel.id === row.id),
-    }))
-  );
+
   const isMobile = useMediaQuery("(max-width:600px)");
 
+  const [selected, setSelected] = useState(
+    JSON.parse(localStorage.getItem("teams")) || []
+  );
 
   useEffect(() => {
-    localStorage.setItem("selected", JSON.stringify(selected));
+    localStorage.setItem("teams", JSON.stringify(selected));
   }, [selected]);
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      setSelected(rows);
-      setRowsWithSelection(rowsWithSelection.map((row) => ({ ...row, selected: true })));
-    } else {
-      setSelected([]);
-      setRowsWithSelection(rowsWithSelection.map((row) => ({ ...row, selected: false })));
+  useEffect(() => {
+    async function getTeams() {
+      const response = await axios.get("http://localhost:3001/api/teams");
+      const teams = response.data.map((team) => ({
+        ...team,
+        selected: selected.some((sel) => sel._id === team._id),
+      }));
+      setRows(teams);
+      setRowsWithSelection(teams);
     }
+    getTeams();
+  }, []);
+
+  const handleSortRequest = (property) => {
+    // Define the sort function here
   };
 
   const handleClick = (event, row) => {
-    const selectedIndex = selected.findIndex(sel => sel.id === row.id);
+    const selectedIndex = selected.findIndex((sel) => sel._id === row._id);
     let newSelected = [];
-  
+
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, row);
     } else if (selectedIndex === 0) {
@@ -56,44 +60,51 @@ function Teams() {
         selected.slice(selectedIndex + 1)
       );
     }
-  
-    setSelected(newSelected);
     setRowsWithSelection(
       rowsWithSelection.map((r) =>
-        r.id === row.id ? { ...r, selected: !r.selected } : r
+        r._id === row._id ? { ...r, selected: !r.selected } : r
       )
     );
+    setSelected(newSelected);
+    
   };
 
-  const isSelected = (row) => selected.some((sel) => sel.id === row.id);
-
-  const handleSortRequest = (property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+  const handleSelectAllClick = (event) => {
+    let newSelected = [];
+    if (event.target.checked) {
+      setRowsWithSelection(
+        rowsWithSelection.map((row) => ({ ...row, selected: true }))
+      );
+      newSelected = rowsWithSelection.map((row) => ({ ...row, selected: true }));
+    } else {
+      setRowsWithSelection(
+        rowsWithSelection.map((row) => ({ ...row, selected: false }))
+      );
+    }
+    setSelected(newSelected);
+    
   };
 
-  const sortedRows = rowsWithSelection
-    .filter(
-      (row) =>
-        row.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.division.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.origen.toLowerCase().includes(searchValue.toLowerCase())
-    )
-    .sort((a, b) => {
-      const isAsc = order === "asc";
-      if (a[orderBy] < b[orderBy]) {
-        return isAsc ? -1 : 1;
-      }
-      if (a[orderBy] > b[orderBy]) {
-        return isAsc ? 1 : -1;
-      }
-      return 0;
-    });
+  const filteredRows = rowsWithSelection.filter((row) => {
+    return Object.values(row).some((value) =>
+      value.toString().toLowerCase().includes(searchValue.toLowerCase())
+    );
+  });
+
+  const isSelected = (row) => selected.some((sel) => sel._id === row._id);
 
   return (
-    <div style={{width: "100%", minWidth: isMobile ? "400px" : "1000px", margin: "0 auto" }}>
-      <p  style={{ textAlign: "center" }}> Selected Teams: {selected.length}</p>
+    <div
+      style={{
+        width: "100%",
+        minWidth: isMobile ? "auto" : "auto",
+        margin: "0 auto",
+      }}
+    >
+      <p style={{ textAlign: "center" }}>
+        {" "}
+        Selected Teams: {rowsWithSelection.filter((row) => row.selected).length}
+      </p>
       <input
         type="text"
         placeholder="Search Team / Country"
@@ -119,58 +130,58 @@ function Teams() {
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
-                  indeterminate={
-                    selected.length > 0 && selected.length < rowsWithSelection.length
+                  checked={
+                    rowsWithSelection.length > 0 &&
+                    rowsWithSelection.every((row) => row.selected)
                   }
-                  checked={selected.length === rowsWithSelection.length}
                   onChange={handleSelectAllClick}
                 />
               </TableCell>
-              <TableCell
-                sortDirection={orderBy === "nombre" ? order : false}
-                onClick={() => handleSortRequest("nombre")}
-              >
+              <TableCell onClick={() => handleSortRequest("name")}>
                 Team
               </TableCell>
-              <TableCell
-              >
-                Team Logo
+              <TableCell>Team Logo</TableCell>
+              <TableCell onClick={() => handleSortRequest("shortName")}>
+                Short Name
               </TableCell>
               <TableCell
-                sortDirection={orderBy === "division" ? order : false}
-                onClick={() => handleSortRequest("division")}
-              >
-                Division
-              </TableCell>
-              <TableCell
-                sortDirection={orderBy === "origen" ? order : false}
-                onClick={() => handleSortRequest("origen")}
-                sx={{display: isMobile? "none":"static"}}
+                onClick={() => handleSortRequest("origin")}
+                sx={{ display: isMobile ? "none" : "static" }}
               >
                 Origin
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedRows.map((row) => {
-              const isItemSelected = isSelected(row);
+            {filteredRows.map((row) => {
+              const isItemSelected = isSelected(row)
               return (
                 <TableRow
-                  key={row.nombre}
+                  key={row._id}
                   hover
                   onClick={(event) => handleClick(event, row)}
                   role="checkbox"
-                  aria-checked={isItemSelected}
                   tabIndex={-1}
                   selected={isItemSelected}
                 >
                   <TableCell padding="checkbox">
-                    <Checkbox checked={isItemSelected} />
+                    <Checkbox
+                      checked={row.selected}
+                      onChange={(event) => handleClick(event, row)}
+                    />
                   </TableCell>
-                  <TableCell>{row.nombre}</TableCell>
-                  <TableCell ><img src={row.logo_url} alt="Team Logo" style={{width: '45px', height: '45px'}}/></TableCell>
-                  <TableCell>{row.division}</TableCell>
-                  <TableCell sx={{display: isMobile? "none":"static"}}>{row.origen}</TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>
+                    <img
+                      src={row.logo_url}
+                      alt="Team Logo"
+                      style={{ width: "45px", height: "45px" }}
+                    />
+                  </TableCell>
+                  <TableCell>{row.shortName}</TableCell>
+                  <TableCell sx={{ display: isMobile ? "none" : "static" }}>
+                    {row.origin}
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -179,6 +190,5 @@ function Teams() {
       </TableContainer>
     </div>
   );
-}
-
+};
 export default Teams;
