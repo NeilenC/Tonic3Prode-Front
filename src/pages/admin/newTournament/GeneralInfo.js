@@ -6,6 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import styles from "../../../styles/admin/newTournament/generalInfo.module.css";
 import { useMediaQuery } from "@mui/material";
+import { FormattedMessage } from "react-intl";
 
 const GeneralInfo = () => {
   const [name, setName] = useState("");
@@ -113,7 +114,7 @@ const GeneralInfo = () => {
         required
       />
       <FormControl fullWidth>
-        <InputLabel id="status-select-label">Status</InputLabel>
+        <InputLabel id="status-select-label"><FormattedMessage id="state" /></InputLabel>
         <Select
           labelId="status-select-label"
           id="status-select"
@@ -122,13 +123,13 @@ const GeneralInfo = () => {
           onChange={handleStatusChange}
           className={styles.input}
         >
-          <MenuItem value="active">Active</MenuItem>
-          <MenuItem value="finish">Finish</MenuItem>
-          <MenuItem value="inactive">Inactive</MenuItem>
+          <MenuItem value="active"><FormattedMessage id="active" /></MenuItem>
+          <MenuItem value="finish"><FormattedMessage id="finish" /></MenuItem>
+          <MenuItem value="inactive"><FormattedMessage id="inactive" /></MenuItem>
         </Select>
       </FormControl>
       <FormControl fullWidth>
-        <InputLabel id="type-select-label">Type</InputLabel>
+        <InputLabel id="type-select-label"><FormattedMessage id="type" /></InputLabel>
         <Select
           labelId="type-select-label"
           id="type-select"
@@ -138,16 +139,16 @@ const GeneralInfo = () => {
           className={styles.input}
         >
           <MenuItem value="winner-remains-on-court">
-            Winner remains on court
+          <FormattedMessage id="winner" />
           </MenuItem>
-          <MenuItem value="points-tournament">Points tournament</MenuItem>
+          <MenuItem value="points-tournament"><FormattedMessage id="points" /></MenuItem>
           <MenuItem value="points-tournament-with-group-face">
-            Points tournament with group face
+          <FormattedMessage id="points2" />
           </MenuItem>
         </Select>
       </FormControl>
       <FormControl fullWidth>
-        <InputLabel id="members-select-label">Members</InputLabel>
+        <InputLabel id="members-select-label"><FormattedMessage id="members" /></InputLabel>
         <Select
           labelId="members-select-label"
           id="members-select"
@@ -156,8 +157,8 @@ const GeneralInfo = () => {
           onChange={handleMembersChange}
           className={styles.input}
         >
-          <MenuItem value="teams">Teams</MenuItem>
-          <MenuItem value="countrys">Countrys</MenuItem>
+          <MenuItem value="teams"><FormattedMessage id="teams" /></MenuItem>
+          <MenuItem value="countrys"><FormattedMessage id="countries" /></MenuItem>
         </Select>
       </FormControl>
       <TextField
