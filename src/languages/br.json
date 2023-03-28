@@ -1,31 +1,29 @@
 {
-    "welcome": "Bem-vindo",
-    "matches": "Partidas futuras",
+  "welcome": "Bem-vindo",
+  "matches": "Partidas futuras",
 
+  "predictions": "Minhas previsõess",
+  "ranking": "Classificação de pontos",
+  "fixture": "Fixtures",
+  "torneo": "Torneio",
+  "panel": "Painel de administração",
 
-    "predictions": "Minhas previsõess",
-    "ranking" : "Classificação de pontos",
-    "fixture" : "Fixtures",
-    "torneo": "Torneio",
-    "panel": "Painel de administração",
+  "profile": "Perfil",
+  "config": "Contexto",
+  "logout": "Sair",
 
-    "profile": "Perfil",
-    "config": "Contexto",
-    "logout": "Sair",
+  "state": "Estado",
+  "finish": "Finalizado",
+  "inactive": "Parado",
+  "active": "Ativo",
 
-    "state": "Estado",
-    "finish": "Finalizado",
-    "inactive": "Parado",
-    "active": "Ativo",
+  "type": "Tipo",
+  "winner": "Ganhador",
+  "points": "Pontos",
+  "points2": "Pontos na fase de grupos",
+  "members": "Membros",
+  "teams": "Equipes",
+  "countries": "País",
 
-    "type": "Tipo",
-    "winner": "Ganhador",
-    "points": "Pontos",
-    "points2": "Pontos na fase de grupos",
-    "members": "Membros",
-    "teams": "Equipes",
-    "countries": "País",
-
-    "info": "Informações gerais"
-
+  "info": "Informações gerais"
 }
