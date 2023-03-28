@@ -1,6 +1,6 @@
 import teams from './teams'
 
-const matches = [{
+export const matches = [{
     date: '2022-04-01',
     time: '18:00',
     homeTeam: teams[0],
@@ -42,5 +42,3 @@ const matches = [{
     homeTeam: teams[4],
     awayTeam: teams[5],
   }]
-
-module.exports = matches

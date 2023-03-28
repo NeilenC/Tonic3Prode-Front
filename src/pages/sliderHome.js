@@ -7,7 +7,7 @@ import styles from "../styles/matches/Grid.module.css";
 import { matches } from "../fakeData/matches";
 import weekDays from "../fakeData/weekDays";
 
-export default function Example() {
+export default function Slider() {
   const carouselProps = {
     animation: "slide",
     timeout: 10000, // ajustamos el tiempo de espera entre cada slide

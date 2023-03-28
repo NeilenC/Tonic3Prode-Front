@@ -9,7 +9,7 @@ import { getGeoLocation } from "../geolocation";
 import Navbar from "./home/Navbar";
 
 export default function App({ Component, pageProps }) {
-  const locale = typeof window !== "undefined" ? navigator.language : "es";
+  const locale = typeof window !== "undefined" ? navigator.language : "es-MX";
   let lang;
 
   if (locale === "en") {
