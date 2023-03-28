@@ -5,6 +5,7 @@ import Matches from "./Matches";
 import GeneralInfo from "./GeneralInfo";
 import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
+import { FormattedMessage } from "react-intl";
 
 function LinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
@@ -26,53 +27,66 @@ function LinearStepper() {
         alignItems: "flex-start",
         justifyContent: "center",
         marginTop: "20px",
-        
       }}
     >
-      <Box sx={{ margin: isMobile ? "15px 0px 30px 0px" : "30px 70px", }}>
+      <Box sx={{ margin: isMobile ? "15px 0px 30px 0px" : "30px 70px" }}>
         <Stepper
           activeStep={activeStep}
           orientation={isMobile ? "horizontal" : "vertical"}
-          sx={{width: isMobile ? "100%" : "300px"}}
+          sx={{ width: isMobile ? "100%" : "300px" }}
         >
-          <Step >
-            <StepLabel >General Info</StepLabel>
+          <Step>
+            <StepLabel>
+              <FormattedMessage id="info" />
+            </StepLabel>
             <StepContent>
-              {(!isMobile)? "In this step you must enter the relevant data of the tournament" : ""}
+              {!isMobile
+                ? "In this step you must enter the relevant data of the tournament"
+                : ""}
             </StepContent>
           </Step>
           <Step>
             <StepLabel>Teams Entry</StepLabel>
             <StepContent>
-              {(!isMobile)? "In this step you have to select the teams that will participate in the tournament" : ""}
+              {!isMobile
+                ? "In this step you have to select the teams that will participate in the tournament"
+                : ""}
             </StepContent>
           </Step>
           <Step>
             <StepLabel>Matches entry</StepLabel>
             <StepContent>
-              {(!isMobile)? "You have to enter the details of the matches of the first stage of the tournament" : ""}
+              {!isMobile
+                ? "You have to enter the details of the matches of the first stage of the tournament"
+                : ""}
             </StepContent>
           </Step>
           <Step>
             <StepLabel>Rewiev</StepLabel>
             <StepContent>
-              {(!isMobile)? "Review the data before creating the tournament" : ""}
+              {!isMobile
+                ? "Review the data before creating the tournament"
+                : ""}
             </StepContent>
           </Step>
         </Stepper>
-        <Box sx={{textAlign: "center", margin: isMobile ? "40px 10px 10px 0px" : "25px 0px"}}>
+        <Box
+          sx={{
+            textAlign: "center",
+            margin: isMobile ? "40px 10px 10px 0px" : "25px 0px",
+          }}
+        >
           <Button
             onClick={handleBack}
-            sx={{ marginRight: "20px", display: activeStep == 0 ? "none" : "inline-block"}}
+            sx={{
+              marginRight: "20px",
+              display: activeStep == 0 ? "none" : "inline-block",
+            }}
           >
             Back
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNext}
-          >
-            {(activeStep == 3)? "Finish" : "Continue"}
+          <Button variant="contained" color="primary" onClick={handleNext}>
+            {activeStep == 3 ? "Finish" : "Continue"}
           </Button>
         </Box>
       </Box>

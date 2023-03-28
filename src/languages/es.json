@@ -1,6 +1,7 @@
 {
     "welcome": "Bienvenidos",
     "matches": "Futuros partidos",
+    
     "predictions": "Mis predicciones",
     "ranking" : "Ranking de puntos",
     "fixture" : "Fixtures",
@@ -9,6 +10,21 @@
 
     "profile": "Perfil",
     "config": "Configuración",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+
+    "state": "Estado",
+    "finish": "Finalizado",
+    "inactive": "Inactivo",
+    "active": "Activo",
+
+    "type": "Tipo",
+    "winner": "Ganador",
+    "points": "Puntos",
+    "points2": "Puntos en la fase de grupos",
+    "members": "Miembros",
+    "teams": "Equipos",
+    "countries": "País"
+  
+
 
 }
