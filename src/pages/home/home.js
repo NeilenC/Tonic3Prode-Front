@@ -1,14 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import Example from "../sliderHome";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
 
   return (
     <>
-      <Example />
+      <h1>
+        <FormattedMessage id="welcome" /> {user.name}
+      </h1>
     </>
   );
 };
