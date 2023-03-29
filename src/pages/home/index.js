@@ -7,7 +7,6 @@ import RankingCard from "../ranking/PositionCard";
 
 const home = () => {
   const user = useSelector((state) => state.user);
-
   return (
     <>
     <Link href={"/ranking"}>

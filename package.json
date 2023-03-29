@@ -20,6 +20,8 @@
     "date-fns": "^2.29.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "firebase": "^9.18.0",
+    "firebaseui": "^6.0.2",
     "next": "13.2.4",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
@@ -30,6 +32,7 @@
     "react-multi-carousel": "^2.8.2",
     "react-redux": "^8.0.5",
     "react-slick": "^0.29.0",
+    "react-toastify": "^9.1.2",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
     "slick-carousel": "^1.8.1"

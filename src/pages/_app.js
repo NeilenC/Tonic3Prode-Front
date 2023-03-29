@@ -6,6 +6,7 @@ import English from "../languages/en.json";
 import Portugues from "../languages/br.json";
 import store from "../../redux/store";
 import { getGeoLocation } from "../geolocation";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./home/Navbar";
 
 export default function App({ Component, pageProps }) {
@@ -27,11 +28,16 @@ export default function App({ Component, pageProps }) {
   }
 
   return (
-    <IntlProvider locale={locale} messages={lang}>
-      <Provider store={store}>
-        <Navbar />
-        <Component {...pageProps} />
-      </Provider>
-    </IntlProvider>
+    <>
+      <div>
+        <Toaster />
+      </div>
+      <IntlProvider locale={locale} messages={lang}>
+        <Provider store={store}>
+          <Navbar />
+          <Component {...pageProps} />
+        </Provider>
+      </IntlProvider>
+    </>
   );
 }
