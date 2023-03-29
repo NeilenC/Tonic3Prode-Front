@@ -15,18 +15,18 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import AddMatchCard from "@/commons/AddMatchCard";
-import availableTeams from "@/fakeData/teams";
 import availableStadiums from "@/fakeData/stadiums";
 import { Box, width } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 
 const Matches = () => {
   const [open, setOpen] = useState(false);
-  const [teams, setTeams] = useState(availableTeams);
+  const [teams, setTeams] = useState(JSON.parse(localStorage.getItem("teams")) || []);
   const [stadiums, setStadiums] = useState(availableStadiums);
   const [matches, setMatches] = useState(JSON.parse(localStorage.getItem("matches")) || []);
   const isMobile = useMediaQuery("(max-width:600px)");
 
+  console.log(teams)
   const handleAddMatch = (newMatch) => {
     setMatches([...matches, newMatch]);
     setTeams(
