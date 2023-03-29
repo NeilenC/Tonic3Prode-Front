@@ -4,10 +4,17 @@ import logger from "redux-logger";
 import { userReducer } from "./reducers/users";
 
 
+import firstLoginReducer from "./reducers/firstLogin";
+import uidReducer from "./reducers/uid";
+import userInfo from "./reducers/userInfo";
+
 const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   reducer: {
-   user: userReducer, // estoy asignando una key user en el estado
+    user: userReducer,
+    firstLogin: firstLoginReducer,
+    uid: uidReducer,
+    userInfo: userInfo,
   },
 });
 

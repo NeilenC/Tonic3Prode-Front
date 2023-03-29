@@ -5,7 +5,7 @@ const initialState = {
   name: "USUARIO",
 };
 
-export const userReducer = createReducer(initialState, {
+const userReducer = createReducer(initialState, {
   [userAction]: (state, payload) => {
     state = action.payload;
   },

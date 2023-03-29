@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,12 +11,18 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { FormattedMessage } from "react-intl";
+import { auth } from "../utils/firebaseConfig";
+import { logOut } from "../utils/functions";
+import { useSelector, useDispatch } from "react-redux";
+import { setUid } from "../../../redux/reducers/uid";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
 }));
 
 const Navbar = () => {
+  const uid = useSelector((state) => state.uid);
+  const dispatch = useDispatch()
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -24,7 +31,15 @@ const Navbar = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+
   };
+
+  const handleLogOut = () => {
+    dispatch(setUid(""));
+    logOut(auth);
+  };
+
+  useEffect(() => { }, [uid]);
 
   return (
     <>
@@ -67,9 +82,21 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}><FormattedMessage id="perfil" /></MenuItem>
-              <MenuItem onClick={handleClose}><FormattedMessage id="config" /></MenuItem>
-              <MenuItem onClick={handleClose}><FormattedMessage id="logout" /></MenuItem>
+              {uid ? (<MenuItem onClick={handleClose}>
+                <FormattedMessage id="perfil" />
+              </MenuItem>) : ("")}
+              {uid ? (<MenuItem onClick={handleClose}>
+                <FormattedMessage id="config" />
+              </MenuItem>) : ("")}
+              {uid ? (
+                <MenuItem onClick={() =>{
+                  handleClose()
+                  handleLogOut()}} >
+                  <FormattedMessage id="logout" />
+                </MenuItem>
+              ) : (
+                ""
+              )}
             </Menu>
           </div>
         </StyledToolbar>
@@ -93,8 +120,7 @@ const Navbar = () => {
             <FormattedMessage id="torneos" />
           </MenuItem>
           <MenuItem onClick={() => setDrawerOpen(false)}>
-          <FormattedMessage id="panel"/>
-
+            <FormattedMessage id="panel" />
           </MenuItem>
         </div>
       </Drawer>
