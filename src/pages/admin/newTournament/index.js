@@ -12,6 +12,32 @@ function LinearStepper() {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const handleNext = () => {
+    const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
+    const teams = JSON.parse(localStorage.getItem("teams"));
+    const matches = JSON.parse(localStorage.getItem("matches"));
+
+    if (!generalInfo) {
+      alert("You must complete all the fields of this page to continue");
+      return;
+    } else if (
+      !generalInfo.title ||
+      !generalInfo.status ||
+      !generalInfo.type ||
+      !generalInfo.members ||
+      !generalInfo.numMatches ||
+      !generalInfo.beginning ||
+      !generalInfo.finishing
+    ) {
+      alert("You must complete all the fields of this page to continue");
+      return;
+    } else if ((!teams || teams.length < 2 ) && activeStep === 1) {
+      alert("You must enter at least two teams");
+      return;
+    } else if (!matches && activeStep === 2) {
+      alert("You must enter the matches of the first stage");
+      return;
+    }
+
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -19,8 +45,33 @@ function LinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleFinish = () => {
+    const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
+    const teams = JSON.parse(localStorage.getItem("teams"));
+    console.log(generalInfo);
+    /*  async function createTournament() {
+      const response = await axios.post(
+        "http://localhost:3001/api/tournaments/create",
+        {
+          active: true,
+          beginning: "",
+          ending,
+          stage,
+          title,
+          details,
+          type,
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    }
+    createTournament(); */
+    console.log("proceso terminado");
+  };
+
   return (
     <Box
+      suppressHydrationWarning={true}
       style={{
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
@@ -39,41 +90,51 @@ function LinearStepper() {
             <StepLabel>
               <FormattedMessage id="info" />
             </StepLabel>
-            <StepContent>
-              {!isMobile
-                ? "In this step you must enter the relevant data of the tournament"
-                : ""}
-            </StepContent>
+            {!isMobile ? (
+              <StepContent>
+                In this step you must enter the relevant data of the tournament
+              </StepContent>
+            ) : (
+              ""
+            )}
           </Step>
           <Step>
             <StepLabel>Teams Entry</StepLabel>
-            <StepContent>
-              {!isMobile
-                ? "In this step you have to select the teams that will participate in the tournament"
-                : ""}
-            </StepContent>
+            {!isMobile ? (
+              <StepContent>
+                In this step you have to select the teams that will participate
+                in the tournament
+              </StepContent>
+            ) : (
+              ""
+            )}
           </Step>
           <Step>
             <StepLabel>Matches entry</StepLabel>
-            <StepContent>
-              {!isMobile
-                ? "You have to enter the details of the matches of the first stage of the tournament"
-                : ""}
-            </StepContent>
+            {!isMobile ? (
+              <StepContent>
+                You have to enter the details of the matches of the first stage
+                of the tournament
+              </StepContent>
+            ) : (
+              ""
+            )}
           </Step>
           <Step>
-            <StepLabel>Rewiev</StepLabel>
-            <StepContent>
-              {!isMobile
-                ? "Review the data before creating the tournament"
-                : ""}
-            </StepContent>
+            <StepLabel>Review</StepLabel>
+            {!isMobile ? (
+              <StepContent>
+                Review the data before creating the tournament
+              </StepContent>
+            ) : (
+              ""
+            )}
           </Step>
         </Stepper>
         <Box
           sx={{
             textAlign: "center",
-            margin: isMobile ? "40px 10px 10px 0px" : "25px 0px",
+            margin: !isMobile ? "40px 10px 10px 0px" : "25px 0px",
           }}
         >
           <Button
@@ -85,9 +146,15 @@ function LinearStepper() {
           >
             Back
           </Button>
-          <Button variant="contained" color="primary" onClick={handleNext}>
-            {activeStep == 3 ? "Finish" : "Continue"}
-          </Button>
+          {activeStep !== 3 ? (
+            <Button variant="contained" color="primary" onClick={handleNext}>
+              Continue
+            </Button>
+          ) : (
+            <Button variant="contained" color="primary" onClick={handleFinish}>
+              Finish
+            </Button>
+          )}
         </Box>
       </Box>
       <Box>

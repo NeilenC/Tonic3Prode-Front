@@ -15,18 +15,18 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import AddMatchCard from "@/commons/AddMatchCard";
-import availableTeams from "@/fakeData/teams";
 import availableStadiums from "@/fakeData/stadiums";
 import { Box, width } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 
 const Matches = () => {
   const [open, setOpen] = useState(false);
-  const [teams, setTeams] = useState(availableTeams);
+  const [teams, setTeams] = useState(JSON.parse(localStorage.getItem("teams")) || []);
   const [stadiums, setStadiums] = useState(availableStadiums);
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState(JSON.parse(localStorage.getItem("matches")) || []);
   const isMobile = useMediaQuery("(max-width:600px)");
 
+  console.log(teams)
   const handleAddMatch = (newMatch) => {
     setMatches([...matches, newMatch]);
     setTeams(
@@ -38,6 +38,10 @@ const Matches = () => {
     setStadiums(
       stadiums.filter((stadium) => stadium.id !== newMatch.stadium.id)
     );
+    localStorage.setItem(
+      "matches",
+      JSON.stringify([...matches, newMatch])
+    );
   };
 
   const handleEditMatch = (match) => {
@@ -47,14 +51,26 @@ const Matches = () => {
   const handleDeleteMatch = (match) => {
     const newMatches = matches.filter((m) => m !== match);
     setMatches(newMatches);
-    setTeams([...teams, match.homeTeam, match.awayTeam]);
-    setStadiums([...stadiums, match.stadium]);
+    const existingHomeTeam = teams.find((team) => team.id === match.homeTeam.id);
+    const existingAwayTeam = teams.find((team) => team.id === match.awayTeam.id);
+    const existingStadium = stadiums.find((stadium) => stadium.id === match.stadium.id);
+    const newTeams = existingHomeTeam && existingAwayTeam
+      ? teams // Si ambos equipos ya estaban en la matriz, no se hace nada
+      : [...teams, match.homeTeam, match.awayTeam];
+    const newStadiums = existingStadium
+      ? stadiums // Si el estadio ya estaba en la matriz, no se hace nada
+      : [...stadiums, match.stadium];
+    setTeams(newTeams);
+    setStadiums(newStadiums);
+    localStorage.setItem("matches", JSON.stringify(newMatches));
   };
 
   const handleRandomMatches = (cantidad = 32) => {
+
     let newMatches = [];
     let date = getRandomDate();
     let matchesPerDate = Math.floor(cantidad / 4);
+    
     for (let i = 0; i < matchesPerDate; i++) {
       const usedTeamsIds = newMatches
         .map((match) => match.homeTeam.id)
@@ -83,8 +99,8 @@ const Matches = () => {
       }
       date = getRandomDate();
     }
-    setMatches([...matches, ...newMatches]);
-    setTeams([]);
+    setMatches(newMatches);
+    localStorage.setItem("matches", JSON.stringify(newMatches));
   };
 
   const getRandomTeam = (availableTeams) => {
@@ -106,7 +122,8 @@ const Matches = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", minWidth: isMobile ? "400px" : "1000px"}}>
+    <Box sx={{ width: "100%", minWidth: isMobile ? "400px" : "auto"}}>
+      <p  style={{ textAlign: "center" }}> First stage matches : {matches.length}</p>
       <Box
         sx={{
           display: "flex",
