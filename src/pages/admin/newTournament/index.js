@@ -7,6 +7,7 @@ import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import axios from "axios";
+import { createDateStrForInputFromSections } from "@mui/x-date-pickers/internals";
 
 function LinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
@@ -54,7 +55,7 @@ function LinearStepper() {
   }, [numMatches]); */
 
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
     const teams = JSON.parse(localStorage.getItem("teams"));
     const matches = JSON.parse(localStorage.getItem("matches"));
@@ -80,9 +81,38 @@ function LinearStepper() {
       console.log(response.data);
       return response.data;
     }
-    createTournament();
-    console.log("proceso terminado");
-  };
+
+    const idTournament = await createTournament();
+
+    async function createTeams() {
+      const response = await axios.put(
+        `http://localhost:3001/api/tournaments/admin/${idTournament}/createTeams`,
+        {
+          uid: 0,
+          teams: teams,
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    }
+
+    await createTeams();
+
+    async function createMatches() {
+      const response = await axios.post(
+        `http://localhost:3001/api/games/admin/${idTournament}`,
+        {
+          uid: 0,
+          matches: matches,
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    }
+
+    await createMatches();
+
+};
 
   return (
     <Box
