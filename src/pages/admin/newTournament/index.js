@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stepper, Step, StepLabel, Button, StepContent } from "@mui/material";
 import Teams from "./Teams";
 import Matches from "./Matches";
@@ -6,9 +6,11 @@ import GeneralInfo from "./GeneralInfo";
 import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 import { FormattedMessage } from "react-intl";
+import axios from "axios";
 
 function LinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
+  const [isFinishDisabled, setIsFinishDisabled] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const handleNext = () => {
@@ -30,7 +32,7 @@ function LinearStepper() {
     ) {
       alert("You must complete all the fields of this page to continue");
       return;
-    } else if ((!teams || teams.length < 2 ) && activeStep === 1) {
+    } else if ((!teams || teams.length < 2) && activeStep === 1) {
       alert("You must enter at least two teams");
       return;
     } else if (!matches && activeStep === 2) {
@@ -45,27 +47,40 @@ function LinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+/*   useEffect(() => {
+    if (JSON.parse(localStorage.getItem("matches").length) > 1) {
+      setIsFinishDisabled(false);
+    }
+  }, [numMatches]); */
+
+
   const handleFinish = () => {
     const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
     const teams = JSON.parse(localStorage.getItem("teams"));
-    console.log(generalInfo);
-    /*  async function createTournament() {
+    const matches = JSON.parse(localStorage.getItem("matches"));
+    
+    const active = generalInfo.status === "active"? true : false
+    const stage = "32" // el front todavia no lo envia
+    const details = "this is the details of the tournament"
+
+    async function createTournament() {
       const response = await axios.post(
-        "http://localhost:3001/api/tournaments/create",
+        "http://localhost:3001/api/tournaments/admin/createTournament",
         {
-          active: true,
-          beginning: "",
-          ending,
-          stage,
-          title,
-          details,
-          type,
+          uid: 0,
+          active: active,
+          beginning: generalInfo.beginning,
+          ending: generalInfo.finishing,
+          stage: stage,
+          title: generalInfo.title,
+          details: details,
+          type: generalInfo.type,
         }
       );
       console.log(response.data);
       return response.data;
     }
-    createTournament(); */
+    createTournament();
     console.log("proceso terminado");
   };
 
@@ -120,16 +135,6 @@ function LinearStepper() {
               ""
             )}
           </Step>
-          <Step>
-            <StepLabel>Review</StepLabel>
-            {!isMobile ? (
-              <StepContent>
-                Review the data before creating the tournament
-              </StepContent>
-            ) : (
-              ""
-            )}
-          </Step>
         </Stepper>
         <Box
           sx={{
@@ -146,12 +151,17 @@ function LinearStepper() {
           >
             Back
           </Button>
-          {activeStep !== 3 ? (
+          {activeStep !== 2 ? (
             <Button variant="contained" color="primary" onClick={handleNext}>
               Continue
             </Button>
           ) : (
-            <Button variant="contained" color="primary" onClick={handleFinish}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleFinish}
+              disabled={isFinishDisabled}
+            >
               Finish
             </Button>
           )}
@@ -178,11 +188,6 @@ function LinearStepper() {
         {activeStep === 2 && (
           <div>
             <Matches />
-          </div>
-        )}
-        {activeStep === 3 && (
-          <div>
-            <p>¡¡ Poner una vista previa de los datos cargados !!</p>
           </div>
         )}
       </Box>
