@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }) {
   if (locale === "en") {
     lang = English;
   } else {
-    if (locale === "br") {
+    if (locale === "pt") {
       lang = Portugues;
     } else {
       lang = Spanish;
