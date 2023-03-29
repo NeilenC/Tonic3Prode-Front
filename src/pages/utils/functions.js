@@ -14,7 +14,7 @@ export const signUpGoogle = async (auth, dispatch) => {
     });
     console.log("USERF", userFirebase);
     const users = await axios.get("http://localhost:3001/api/users");
-
+    dispatch(setUid(userFirebase.uid));
     dispatch(setUserInfo({
       email: userFirebase.email,
       fullName: userFirebase.displayName,
@@ -23,7 +23,6 @@ export const signUpGoogle = async (auth, dispatch) => {
       (user) => user.uid === userFirebase.uid
     );
     if (userMongoDB.length > 0) {
-      dispatch(setUid(userFirebase.uid));
       dispatch(setFirstLogin(false));
       toast.success("Successfully Logged In !");
       //window.location.href = "http://localhost:3000/home";

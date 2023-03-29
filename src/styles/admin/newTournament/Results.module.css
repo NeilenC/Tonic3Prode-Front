@@ -1,0 +1,23 @@
+.grid-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 1px;
+}
+
+.global {
+  margin: 1rem;
+  border-radius: 20px;
+  background-color: #1E1E2F;
+  color: #FFFFFF;
+}
+
+.title {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  text-align: center; /* agregar esta propiedad */
+}
