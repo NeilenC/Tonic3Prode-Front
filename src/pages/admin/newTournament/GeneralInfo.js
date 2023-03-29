@@ -148,13 +148,13 @@ const GeneralInfo = () => {
             onChange={handleTypeChange}
             className={styles.input}
           >
-            <MenuItem value="winner-remains-on-court">
+            <MenuItem value="winner remains on court">
               <FormattedMessage id="Winner remains on court" />
             </MenuItem>
-            <MenuItem value="points-tournament">
+            <MenuItem value="points tournament">
               <FormattedMessage id="Points tournament" />
             </MenuItem>
-            <MenuItem value="points-tournament-with-group-face">
+            <MenuItem value="points tournament with group face">
               <FormattedMessage id="Points tournament with group face" />
             </MenuItem>
           </Select>
