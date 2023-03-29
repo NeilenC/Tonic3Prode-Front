@@ -1,11 +1,9 @@
-import HomeButton from "@/commons/homeButton";
-import { HourglassBottomTwoTone } from "@mui/icons-material";
+import HomeButton from "@/commons/HomeButton";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import FutureMatches from "../matches/FutureMatches";
+import { useSelector } from "react-redux";
 // import slidePrototype from "../slideProtorype"
-import RankingCard from "../ranking/PositionCard";
 import Link from "next/link";
+
 
 const home = () => {
   const user = useSelector((state) => state.user);

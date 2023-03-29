@@ -3,8 +3,9 @@ import React, { useEffect } from "react";
 import { signUpGoogle }  from "../utils/functions";
 import { auth } from "../utils/firebaseConfig";
 import GoogleIcon from "@mui/icons-material/Google";
-import { LoginForm } from "./Loginform";
+import { LoginForm } from "./LoginForm";
 import { useSelector, useDispatch } from "react-redux";
+
 
 
 

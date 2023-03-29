@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { setFirstLogin } from "../../../redux/reducers/firstLogin";
 import { setUid } from "../../../redux/reducers/uid";
-import { setUserInfo } from "../../../redux/reducers/userinfo";
+import { setUserInfo } from "../../../redux/reducers/userInfo";
 
 export const signUpGoogle = async (auth, dispatch) => {
   try {
