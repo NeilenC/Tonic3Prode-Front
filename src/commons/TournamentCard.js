@@ -41,10 +41,7 @@ const TournamentCard = ({ tournament }) => {
       }}
     >
       <StyledImgContainer>
-        <StyledImg
-          src="https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blte9c9176021b28a67/635982a86c3afa0bf5601819/FgBCe58WAAADilF.jpg"
-          alt="Tournament"
-        />
+        <StyledImg src={tournament.image_url} alt="Tournament" />
       </StyledImgContainer>
       <StyledCardContent>
         <Typography variant="h5" component="h2" gutterBottom>

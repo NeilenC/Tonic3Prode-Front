@@ -1,9 +1,8 @@
-import HomeButton from "@/commons/HomeButton";
+import HomeButton from "./HomeButton";
 import React from "react";
 import { useSelector } from "react-redux";
 // import slidePrototype from "../slideProtorype"
 import Link from "next/link";
-
 
 const home = () => {
   const user = useSelector((state) => state.user);
@@ -17,7 +16,7 @@ const home = () => {
         <Link href={"/predictions"}>
           <HomeButton title={`Predicciones`} />
         </Link>
-        <Link href={"/"}> 
+        <Link href={"/"}>
           <HomeButton title={`Resultados`} />
         </Link>
         <Link href={"/ranking"}>
