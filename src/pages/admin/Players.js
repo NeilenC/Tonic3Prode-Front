@@ -3,3 +3,13 @@
 // ■ Registro de participantes por etapas del fixture
 // ■ Permanencia en el sistema,
 // ■ Recordatorios enviados.
+
+import React from 'react'
+
+const Players = () => {
+  return (
+    <div>Players</div>
+  )
+}
+
+export default Players

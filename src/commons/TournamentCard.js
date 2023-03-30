@@ -47,7 +47,9 @@ const TournamentCard = ({ tournament }) => {
         <Typography variant="subtitle1" color="text.secondary" gutterBottom>
           {format(new Date(tournament.beginning), "MM/dd/yyyy")} -{" "}
           {format(new Date(tournament.ending), "MM/dd/yyyy")}{" "}
-          {tournament.stage}nd Round
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary" gutterBottom>  
+        {tournament.stage} nd Round
         </Typography>
         <Divider sx={{ my: 2 }} />
         <Typography variant="h6" gutterBottom>
