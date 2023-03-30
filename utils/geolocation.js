@@ -1,7 +1,6 @@
 import React from "react"
 import axios from "axios";
 
-
 export const getGeoLocation = (id) => {
 
     const doc = document; // Estructura que nos permite acceder a los nodos del documento
