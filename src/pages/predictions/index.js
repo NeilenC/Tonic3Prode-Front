@@ -4,20 +4,20 @@ import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import Stack from "@mui/material/Stack";
-import { useSelector } from "react-redux";
 
 async function getTeams() {
   try {
     const response = await axios.get("http://localhost:3001/api/games");
-   
     return response.data;
   } catch (error) {
     return [];
   }
 }
 
+// COMPONENTE
 const Predictions = ({ teams = [] }) => {
   const [scores, setScores] = useState({});
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     const storedScores = localStorage.getItem("scores");
@@ -26,11 +26,11 @@ const Predictions = ({ teams = [] }) => {
     }
   }, []);
 
-  const handleScoreChange = (id, team, score) => {
+  const handleScoreChange = (_id, team, score) => {
     setScores((prevState) => ({
       ...prevState,
-      [id]: {
-        ...prevState[id],
+      _id: {
+        ...prevState[_id],
         [team]: score,
       },
     }));
@@ -40,36 +40,36 @@ const Predictions = ({ teams = [] }) => {
     localStorage.setItem("scores", JSON.stringify(scores));
   }, [scores]);
 
+  useEffect(() => {
+    setUser(localStorage.getItem("uid"));
+  }, []);
+
   if (!teams) return <div>Loading...</div>;
-  // console.log("****************", teams);
 
-  const uid = localStorage.getItem("uid")
-  console.log(uid); 
-  
   const sendPredictions = async (e) => {
-    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/api/predictions/create/${user}`,
+        predictions
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-
-    const predictions = teams.map((item) => {
+  const predictions = teams.map((item) => {
+    if (scores) {
       return {
         gameId: item._id,
         prediction: {
           homeTeam: item.teams[0].name,
           awayTeam: item.teams[1].name,
-          homeTeamScore: scores[item._id]?.team1Score || 0,
-          awayTeamScore: scores[item._id]?.team2Score || 0,
+          homeTeamScore: scores._id?.team1Score || "",
+          awayTeamScore: scores._id?.team2Score || "",
         },
       };
-    });
-
-    try {
-      const response = await axios.post(`http://localhost:3001/api/predictions/${uid}`, predictions);
-
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
     }
-  };
+  });
 
   return (
     <Box
@@ -91,7 +91,7 @@ const Predictions = ({ teams = [] }) => {
             </span>
             <TextField
               type="number"
-              value={scores[item._id]?.team1Score || ""}
+              // value={scores[item._id]?.team1Score || ""}
               onChange={(e) =>
                 handleScoreChange(item._id, "team1Score", e.target.value)
               }
@@ -100,7 +100,7 @@ const Predictions = ({ teams = [] }) => {
             <span>-</span>
             <TextField
               type="number"
-              value={scores[item._id]?.team2Score || ""}
+              // value={scores[item._id]?.team2Score || ""}
               onChange={(e) =>
                 handleScoreChange(item._id, "team2Score", e.target.value)
               }
@@ -117,7 +117,11 @@ const Predictions = ({ teams = [] }) => {
           </Box>
         ))}
         <Stack direction="row" spacing={2}>
-          <Button variant="contained" endIcon={<SportsSoccerIcon />}>
+          <Button
+            onClick={() => sendPredictions()}
+            variant="contained"
+            endIcon={<SportsSoccerIcon />}
+          >
             Guardar Predicciones
           </Button>
         </Stack>
