@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@mui/material/Avatar";  
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
@@ -92,14 +92,14 @@ const Navbar = () => {
 
               {user ? (
                 <MenuItem onClick={handleClose}>
-                  <FormattedMessage id="perfil" />
+                  Perfil
                 </MenuItem>
               ) : (
                 ""
               )}
               {user ? (
                 <MenuItem onClick={handleClose}>
-                  <FormattedMessage id="config" />
+                  Configuración
                 </MenuItem>
               ) : (
                 ""
@@ -111,7 +111,7 @@ const Navbar = () => {
                     handleLogOut();
                   }}
                 >
-                  <FormattedMessage id="logout" />
+                  Logout
                 </MenuItem>
               ) : (
                 ""
@@ -143,7 +143,7 @@ const Navbar = () => {
             setDrawerOpen(false)
             window.location.href = "http://localhost:3000/admin";
             }}>
-            <FormattedMessage id="panel" />
+            Panel de Administrador  
 
           </MenuItem>
         </div>
