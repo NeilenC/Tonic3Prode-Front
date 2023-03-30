@@ -1,8 +1,10 @@
-import HomeButton from "@/commons/HomeButton";
+import HomeButton from "../tournamentHome/HomeButton";
 import React from "react";
 import { useSelector } from "react-redux";
 // import slidePrototype from "../slideProtorype"
 import Link from "next/link";
+import RankingCard from "../ranking/PositionCard";
+
 
 
 const home = () => {
@@ -22,6 +24,9 @@ const home = () => {
         </Link>
         <Link href={"/ranking"}>
           <HomeButton title={`Ranking`} />
+        </Link>
+        <Link href={"/"}>
+          <HomeButton title={`Fixture`} />
         </Link>
       </div>
     </>
