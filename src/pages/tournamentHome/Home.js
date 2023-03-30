@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import Fixture from "../fixture/Fixture";
+import Fixture from "../fixture";
 import RankingCard from "../ranking/PositionCard";
 import Link from "next/link";
 

@@ -40,7 +40,7 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<RankingIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px"}}
-        onClick = {() => {window.location.href = `/tournament/${id}/ranking`}}
+        onClick = {() => {window.location.href = `/ranking`}}
       >
         Ranking
       </Button>
