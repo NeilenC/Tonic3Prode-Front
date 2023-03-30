@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
-import { FormattedMessage } from "react-intl";
+//import { FormattedMessage } from "react-intl";
 import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
 import { useSelector, useDispatch } from "react-redux";
@@ -83,16 +83,16 @@ const Navbar = () => {
               onClose={handleClose}
             >
               {uid ? (<MenuItem onClick={handleClose}>
-                <FormattedMessage id="perfil" />
+                Perfil
               </MenuItem>) : ("")}
               {uid ? (<MenuItem onClick={handleClose}>
-                <FormattedMessage id="config" />
+                Configuracion
               </MenuItem>) : ("")}
               {uid ? (
                 <MenuItem onClick={() =>{
                   handleClose()
                   handleLogOut()}} >
-                  <FormattedMessage id="logout" />
+                 Logout
                 </MenuItem>
               ) : (
                 ""
@@ -108,19 +108,19 @@ const Navbar = () => {
       >
         <div style={{ width: "250px" }}>
           <MenuItem onClick={() => setDrawerOpen(false)}>
-            <FormattedMessage id="predictions" />
+            Predicciones
           </MenuItem>
           <MenuItem onClick={() => setDrawerOpen(false)}>
-            <FormattedMessage id="ranking" />
+           Ranking
           </MenuItem>
           <MenuItem onClick={() => setDrawerOpen(false)}>
-            <FormattedMessage id="fixture" />
+           Fixture
           </MenuItem>
           <MenuItem onClick={() => setDrawerOpen(false)}>
-            <FormattedMessage id="torneos" />
+            Torneos
           </MenuItem>
           <MenuItem onClick={() => setDrawerOpen(false)}>
-            <FormattedMessage id="panel" />
+           Panel
           </MenuItem>
         </div>
       </Drawer>
