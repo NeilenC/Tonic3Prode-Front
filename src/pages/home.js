@@ -37,10 +37,8 @@ const home = ({ width }) => {
         >
           {tournaments.map((tournament) => {
             return (
-              <Grid item key={tournament._id} xs={12} sm={6} md={4}>
-                <Link href={"/tournamentHome"}>
+              <Grid item key={tournament._id} xs={12} sm={6} md={4} onClick={() => {{window.location.href = `http://localhost:3000/tournamentHome/${tournament.id}` }}}>
                   <TournamentCard tournament={tournament} />
-                </Link>
               </Grid>
             );
           })}

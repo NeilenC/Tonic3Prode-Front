@@ -20,8 +20,8 @@ const Results = () => {
   const [user, setUser] = useState("");
 
   useEffect(() => {
-      setUser(localStorage.getItem("uid"));
-    }, []);
+    setUser(localStorage.getItem("uid"));
+  }, []);
 
   useEffect(() => {
     axios
@@ -53,7 +53,7 @@ const Results = () => {
   };
 
   const handleSubmit = async () => {
-    const uid = user 
+    const uid = user;
     const newResult = await Promise.all(
       games.map(async (game) => ({
         gameId: game._id,
@@ -94,42 +94,19 @@ const Results = () => {
           <Typography variant="h5">Cargar partidos</Typography>
         </div>
       </CardContent>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          onClick={() => setType(!type)}
-          style={{ marginBottom: "10px", width: "100%" }}
-        >
+      <div>
+        <Button variant="contained" onClick={() => setType(!type)}>
           {type ? "Single-elimination" : "Knockout"}
-        </Button> 
-        <Button
-          variant="contained"
-          style={{ marginBottom: "10px", width: "100%" }}
-        >
-          ETAPA:
         </Button>
+        <Button variant="contained">ETAPA:</Button>
         <TextField
           label="Etapa"
           variant="outlined"
           size="small"
           value={stage}
           onChange={(e) => setStage(e.target.value)}
-          style={{
-            marginBottom: "10px",
-            width: "100%",
-          }}
         />
-        <Button
-          variant="contained"
-          onClick={() => handleSubmit()}
-          style={{ marginBottom: "10px", width: "100%" }}
-        >
+        <Button variant="contained" onClick={() => handleSubmit()}>
           Guardar resultados
         </Button>
       </div>
@@ -140,65 +117,23 @@ const Results = () => {
       </CardContent>
 
       {games.map((item, i) => (
-        <Box
-          key={item._id}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            my: 2,
-          }}
-          style={{
-            marginBottom: i !== games.length - 1 ? "50px" : "0",
-            border: "1px solid black",
-            padding: "10px",
-            borderRadius: "25px",
-            backgroundColor: "lightblue",
-            width: "100%",
-          }}
-        >
-          <Box
-            sx={{ display: "flex", alignItems: "center", width: "100%" }}
-            style={{
-              justifyContent: "space-between",
-              marginBottom: "10px",
-            }}
-          >
+        <Box key={item._id}>
+          <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
             <img
               src={item.teams[0].logo_url}
               alt={item.teams[0].name}
               style={{ width: "25%", maxWidth: "100px", marginRight: "10px" }}
             />
-            <span
-              style={{
-                fontSize: "80%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-                width: "25%",
-              }}
-            >
-              {item.teams[0].shortName}
-            </span>
+            <span>{item.teams[0].shortName}</span>
             <InputBase
               placeholder=""
               inputProps={{
                 "aria-label": "score",
                 min: "0",
                 type: "number",
-                style: {
-                  width: "80px",
-                  borderRadius: "8px",
-                  backgroundColor: "white",
-                  padding: "10px",
-                  textAlign: "center",
-                  fontSize: "14px",
-                },
               }}
               value={item.teams[0].score}
               onChange={(e) => handleScoreChange(i, 0, e)}
-              style={{ width: "25%" }}
             />
 
             <span style={{ width: "25%", textAlign: "center" }}> VS </span>
@@ -209,49 +144,19 @@ const Results = () => {
                 min: "0",
                 type: "number",
                 "aria-label": "score",
-                style: {
-                  width: "80px",
-                  borderRadius: "8px",
-                  backgroundColor: "white",
-                  padding: "10px",
-                  textAlign: "center",
-                  fontSize: "14px",
-                },
               }}
               value={item.teams[1].score}
               onChange={(e) => handleScoreChange(i, 1, e)}
               style={{ width: "25%" }}
             />
-            <span
-              style={{
-                fontSize: "80%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-                width: "25%",
-              }}
-            >
-              {item.teams[1].shortName}
-            </span>
+            <span>{item.teams[1].shortName}</span>
             <img
               src={item.teams[1].logo_url}
               alt={item.teams[1].name}
               style={{ width: "25%", maxWidth: "100px", marginLeft: "10px" }}
             />
           </Box>
-          <span
-            style={{
-              fontSize: "80%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              width: "25%",
-              textAlign: "center",
-              wordWrap: "break-word",
-            }}
-          >
+          <span>
             {item.result.length > 0
               ? (item.result[0].winner === item.teams[0].name && (
                   <span style={{ color: "red" }}>PERDEDOR</span>
