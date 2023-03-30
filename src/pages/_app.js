@@ -5,9 +5,9 @@ import Spanish from "../languages/es.json";
 import English from "../languages/en.json";
 import Portugues from "../languages/br.json";
 import store from "../../redux/store";
-import { getGeoLocation } from "../geolocation";
+import { getGeoLocation } from "../../utils/geolocation";
 import { Toaster } from "react-hot-toast";
-import Navbar from "./home/Navbar";
+import Navbar from "./Navbar";
 
 export default function App({ Component, pageProps }) {
   const locale = typeof window !== "undefined" ? navigator.language : "es-MX";

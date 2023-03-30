@@ -25,18 +25,6 @@ export default function Slider() {
     return accumulator;
   }, {});
 
-  // const matchGroups = Object.entries(matchesByDate).map(([date, matches]) => {
-  //     const groups = [];
-  //     matches.forEach((match, i) => {
-  //       const groupIndex = Math.floor(i / 3);
-  //       if (!groups[groupIndex]) {
-  //         groups[groupIndex] = [];
-  //       }
-  //       groups[groupIndex].push(match);
-  //     });
-  //     return groups;
-  //   });
-
   return (
     <>
       <Box style={{ display: "flex", flexDirection: "column"}}>
@@ -72,33 +60,3 @@ export default function Slider() {
     </>
   );
 }
-
-// return (
-//     <>
-
-//   <div style={{ marginTop: "100px", backgroundColor: "white" }}>
-//     <Carousel {...carouselProps}>
-//       {matchGroups.map((groups) => (
-//         <Box className={styles["grid-box"]} key={groups[0].date}>
-//           {groups.map((matches) => (
-//             <Box key={matches[0].id}  style={{ display: "flex", flexDirection: "column" }}>
-//               {matches.map((match) => (
-
-//                 <MatchCard
-//                 date={match.date}
-//                   key={match.id}
-//                   time={match.time}
-//                   homeTeam={match.homeTeam}
-//                   awayTeam={match.awayTeam}
-//                 />
-//               ))}
-//             </Box>
-//           ))}
-//         </Box>
-//       ))}
-//     </Carousel>
-//   </div>
-//   </>
-
-// );
-//   }
