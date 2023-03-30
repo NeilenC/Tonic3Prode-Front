@@ -5,7 +5,7 @@ import Matches from "./Matches";
 import GeneralInfo from "./GeneralInfo";
 import { Box } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
-import { FormattedMessage } from "react-intl";
+//import { FormattedMessage } from "react-intl";
 import axios from "axios";
 import { createDateStrForInputFromSections } from "@mui/x-date-pickers/internals";
 
@@ -133,7 +133,7 @@ function LinearStepper() {
         >
           <Step>
             <StepLabel>
-              <FormattedMessage id="info" />
+             Informacion
             </StepLabel>
             {!isMobile ? (
               <StepContent>
