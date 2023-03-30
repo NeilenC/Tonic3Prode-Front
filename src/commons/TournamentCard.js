@@ -23,8 +23,14 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const TournamentCard = ({ tournament }) => {
+
+  const handleCardClick = () => {
+    window.location.href = `/tournamentHome/${tournament._id}`;
+  }
+
   return (
     <StyledCard
+      onClick={() => handleCardClick()}
       sx={{
         margin: "20px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)",

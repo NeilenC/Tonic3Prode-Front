@@ -112,7 +112,9 @@ function LinearStepper() {
     }
 
     await createMatches();
-  };
+
+    window.location.href = "http://localhost:3000/admin";
+};
 
   return (
     <Box

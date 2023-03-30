@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-// import { IntlProvider } from "react-intl";
+//import { IntlProvider } from "react-intl";
 import { Provider } from "react-redux";
 // import Spanish from "../languages/es.json";
 // import English from "../languages/en.json";

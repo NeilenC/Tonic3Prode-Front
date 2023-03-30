@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
+import Avatar from "@mui/material/Avatar";  
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
@@ -21,11 +21,15 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const uid = useSelector((state) => state.uid);
-  const dispatch = useDispatch()
+  const [user, setUser] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+    useEffect( () => {
+     setUser(localStorage.getItem("uid"));
+    }, []);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -35,11 +39,14 @@ const Navbar = () => {
   };
 
   const handleLogOut = () => {
-    dispatch(setUid(""));
+    localStorage.removeItem("uid")
+    setUser("");
+    window.location.href = "http://localhost:3000/";
     logOut(auth);
   };
 
-  useEffect(() => { }, [uid]);
+
+
 
   return (
     <>
@@ -82,17 +89,29 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              {uid ? (<MenuItem onClick={handleClose}>
-                Perfil
-              </MenuItem>) : ("")}
-              {uid ? (<MenuItem onClick={handleClose}>
-                Configuracion
-              </MenuItem>) : ("")}
-              {uid ? (
-                <MenuItem onClick={() =>{
-                  handleClose()
-                  handleLogOut()}} >
-                 Logout
+
+              {user ? (
+                <MenuItem onClick={handleClose}>
+                  Perfil
+                </MenuItem>
+              ) : (
+                ""
+              )}
+              {user ? (
+                <MenuItem onClick={handleClose}>
+                  Configuración
+                </MenuItem>
+              ) : (
+                ""
+              )}
+              {user ? (
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    handleLogOut();
+                  }}
+                >
+                  Logout
                 </MenuItem>
               ) : (
                 ""
@@ -119,8 +138,13 @@ const Navbar = () => {
           <MenuItem onClick={() => setDrawerOpen(false)}>
             Torneos
           </MenuItem>
-          <MenuItem onClick={() => setDrawerOpen(false)}>
-           Panel
+
+          <MenuItem onClick={() => {
+            setDrawerOpen(false)
+            window.location.href = "http://localhost:3000/admin";
+            }}>
+            Panel de Administrador  
+
           </MenuItem>
         </div>
       </Drawer>
