@@ -17,7 +17,11 @@ const Results = () => {
   const [games, setGames] = React.useState([]);
   const [stage, setStage] = React.useState("");
   const [type, setType] = React.useState(true);
-  const uid = localStorage.getItem("uid");
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+      setUser(localStorage.getItem("uid"));
+    }, []);
 
   useEffect(() => {
     axios
@@ -49,6 +53,7 @@ const Results = () => {
   };
 
   const handleSubmit = async () => {
+    const uid = user 
     const newResult = await Promise.all(
       games.map(async (game) => ({
         gameId: game._id,
