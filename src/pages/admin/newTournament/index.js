@@ -29,7 +29,8 @@ function LinearStepper() {
       !generalInfo.members ||
       !generalInfo.numMatches ||
       !generalInfo.beginning ||
-      !generalInfo.finishing
+      !generalInfo.finishing ||
+      !generalInfo.imageUrl
     ) {
       alert("You must complete all the fields of this page to continue");
       return;
@@ -48,21 +49,20 @@ function LinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (JSON.parse(localStorage.getItem("matches").length) > 1) {
       setIsFinishDisabled(false);
     }
   }, [numMatches]); */
 
-
   const handleFinish = async () => {
     const generalInfo = JSON.parse(localStorage.getItem("generalInfo"));
     const teams = JSON.parse(localStorage.getItem("teams"));
     const matches = JSON.parse(localStorage.getItem("matches"));
-    
-    const active = generalInfo.status === "active"? true : false
-    const stage = "32" // el front todavia no lo envia
-    const details = "this is the details of the tournament"
+
+    const active = generalInfo.status === "active" ? true : false;
+    const stage = "32"; // el front todavia no lo envia
+    const details = "this is the details of the tournament";
 
     async function createTournament() {
       const response = await axios.post(
@@ -76,6 +76,7 @@ function LinearStepper() {
           title: generalInfo.title,
           details: details,
           type: generalInfo.type,
+          image_url: generalInfo.imageUrl,
         }
       );
       console.log(response.data);
@@ -111,8 +112,7 @@ function LinearStepper() {
     }
 
     await createMatches();
-
-};
+  };
 
   return (
     <Box
@@ -132,9 +132,7 @@ function LinearStepper() {
           sx={{ width: isMobile ? "100%" : "300px" }}
         >
           <Step>
-            <StepLabel>
-             Informacion
-            </StepLabel>
+            <StepLabel>Informacion</StepLabel>
             {!isMobile ? (
               <StepContent>
                 In this step you must enter the relevant data of the tournament
