@@ -1,28 +1,34 @@
 import React from "react";
 import { useEffect } from "react";
-import { CardContent, Typography, Box, TextField, Button } from "@mui/material";
+import {
+  CardContent,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  InputBase,
+} from "@mui/material";
 import styles from "../../styles/admin/newTournament/Results.module.css";
 import { FormattedMessage } from "react-intl";
 import axios from "axios";
-import { Butterfly_Kids } from "next/font/google";
 import { useSelector } from "react-redux";
-import { fontWeight } from "@mui/system";
 
 const Results = () => {
   const [games, setGames] = React.useState([]);
   const [stage, setStage] = React.useState("");
-  const [result, setResult] = React.useState([]);
   const [type, setType] = React.useState(true);
-   const uid = useSelector((state) => state.uid);
+  const uid = useSelector((state) => state.uid);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/games")
+    axios
+      .get("http://localhost:3001/api/games")
       .then((allgames) => {
-        return allgames
-      }).then((allgames)=> {
+        return allgames;
+      })
+      .then((allgames) => {
         const games = allgames.data.filter((item) => item.stage === "32");
-        setGames(games)
-        console.log(games)
+        setGames(games);
+        console.log(games);
       })
       .catch((error) => {
         console.error(error);
@@ -30,36 +36,50 @@ const Results = () => {
   }, []);
 
   const handleScoreChange = (index, teamIndex, e) => {
-    const updatedGames = [...games];
-    updatedGames[index].teams[teamIndex].score = e.target.value;
-    setGames(updatedGames);
+    if (e.target.value) {
+      console.log(e.target.value);
+      const updatedGames = [...games];
+      updatedGames[index].teams[teamIndex].score = parseInt(e.target.value);
+      setGames(updatedGames);
+    } else {
+      const updatedGames = [...games];
+      updatedGames[index].teams[teamIndex].score = "pending";
+      setGames(updatedGames);
+    }
   };
 
-  const handleSubmit = () => {
-    const newResult = games.map((game) => ({
-      gameId: game._id,
-      homeTeam: game.teams[0].name,
-      awayTeam: game.teams[1].name,
-      homeTeamScore: game.teams[0].score,
-      awayTeamScore: game.teams[1].score,
-      winner:
-        game.teams[0].score > game.teams[1].score
-          ? game.teams[0].name
-          : game.teams[0].score < game.teams[1].score
-          ? game.teams[1].name
-          : "Tie",
-    }
-    )
- 
+  const handleSubmit = async () => {
+    const newResult = await Promise.all(
+      games.map(async (game) => ({
+        gameId: game._id,
+        homeTeam: game.teams[0].name,
+        awayTeam: game.teams[1].name,
+        homeTeamScore: game.teams[0].score,
+        awayTeamScore: game.teams[1].score,
+        winner:
+          game.teams[0].score > game.teams[1].score
+            ? game.teams[0].name
+            : game.teams[1].name,
+      }))
     );
-    setResult(newResult);
-    console.log(result)
-    console.log(uid);
 
-    axios.put("http://localhost:3001/api/games/admin", {
+    console.log("mando al back", {
       uid: uid,
-      result: result,
+      results: newResult,
     });
+
+    axios
+      .put("http://localhost:3001/api/games/admin", {
+        uid: uid,
+        results: newResult,
+      })
+      .then((response) => {
+        console.log(response);
+        location.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -76,16 +96,20 @@ const Results = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          flexWrap: "wrap",
         }}
       >
         <Button
           variant="contained"
           onClick={() => setType(!type)}
-          style={{ marginRight: "10px" }}
+          style={{ marginRight: "10px", marginBottom: "10px" }}
         >
           {type ? "Single-elimination" : "Knockout"}
         </Button>
-        <Button variant="contained" style={{ marginRight: "10px" }}>
+        <Button
+          variant="contained"
+          style={{ marginRight: "10px", marginBottom: "10px" }}
+        >
           ETAPA:
         </Button>
         <TextField
@@ -94,14 +118,22 @@ const Results = () => {
           size="small"
           value={stage}
           onChange={(e) => setStage(e.target.value)}
-          style={{ marginRight: "10px" }}
+          style={{
+            marginRight: "10px",
+            marginBottom: "10px",
+            alignContent: "center",
+          }}
         />
-        <Button variant="contained" onClick={() => handleSubmit()}>
+        <Button
+          variant="contained"
+          onClick={() => handleSubmit()}
+          style={{ marginBottom: "10px" }}
+        >
           Guardar resultados
         </Button>
       </div>
       <CardContent className={styles.global}>
-        <div className={styles.title}>
+        <div className={styles.title} style={{ fontSize: "20px" }}>
           <Typography variant="h5">
             <FormattedMessage id="ETAPA SELECCIONADA" />
           </Typography>
@@ -123,11 +155,12 @@ const Results = () => {
             backgroundColor: "lightblue",
             marginRight: "50px",
             marginLeft: "50px",
+            flexWrap: "wrap",
           }}
         >
           <span
             style={{
-              fontSize: "90%",
+              fontSize: "80%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -135,7 +168,14 @@ const Results = () => {
               padding: "0 10px",
             }}
           >
-            EMPATE
+            {item.result.length > 0
+              ? (item.result[0].winner === item.teams[0].name && (
+                  <span style={{ color: "green" }}>GANADOR</span>
+                )) ||
+                (item.result[0].winner === item.teams[1].name && (
+                  <span style={{ color: "red" }}>PERDEDOR</span>
+                ))
+              : "SIN DEFINIR"}
           </span>
           <img
             src={item.teams[0].logo_url}
@@ -144,7 +184,7 @@ const Results = () => {
           />
           <span
             style={{
-              fontSize: "90%",
+              fontSize: "80%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -153,35 +193,48 @@ const Results = () => {
           >
             {item.teams[0].shortName}
           </span>
-          <TextField
-            label="Resultado"
-            variant="outlined"
-            size="small"
+          <InputBase
+            placeholder=""
+            inputProps={{
+              "aria-label": "score",
+              min: "0",
+              type: "number",
+              style: {
+                width: "80px",
+                borderRadius: "8px",
+                backgroundColor: "white",
+                padding: "10px",
+                textAlign: "center",
+                fontSize: "14px",
+              },
+            }}
             value={item.teams[0].score}
             onChange={(e) => handleScoreChange(i, 0, e)}
-            style={{
-              margin: "0 10px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-            }}
           />
+
           <span> VS </span>
 
-          <TextField
-            label="Resultado"
-            variant="outlined"
-            size="small"
+          <InputBase
+            placeholder=""
+            inputProps={{
+              min: "0",
+              type: "number",
+              "aria-label": "score",
+              style: {
+                width: "80px",
+                borderRadius: "8px",
+                backgroundColor: "white",
+                padding: "10px",
+                textAlign: "center",
+                fontSize: "14px",
+              },
+            }}
             value={item.teams[1].score}
             onChange={(e) => handleScoreChange(i, 1, e)}
-            style={{
-              margin: "0 10px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-            }}
           />
           <span
             style={{
-              fontSize: "90%",
+              fontSize: "80%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -197,7 +250,7 @@ const Results = () => {
           />
           <span
             style={{
-              fontSize: "90%",
+              fontSize: "80%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -205,7 +258,14 @@ const Results = () => {
               padding: "0 10px",
             }}
           >
-            EMPATE
+            {item.result.length > 0
+              ? (item.result[0].winner === item.teams[0].name && (
+                  <span style={{ color: "red" }}>PERDEDOR</span>
+                )) ||
+                (item.result[0].winner === item.teams[1].name && (
+                  <span style={{ color: "green" }}>GANADOR</span>
+                ))
+              : "SIN DEFINIR"}
           </span>
         </Box>
       ))}
@@ -213,4 +273,4 @@ const Results = () => {
   );
 };
 
-export default Results
+export default Results;
