@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   CardContent,
   Typography,
@@ -17,7 +17,11 @@ const Results = () => {
   const [games, setGames] = React.useState([]);
   const [stage, setStage] = React.useState("");
   const [type, setType] = React.useState(true);
-  const uid = useSelector((state) => state.uid);
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+      setUser(localStorage.getItem("uid"));
+    }, []);
 
   useEffect(() => {
     axios
@@ -49,6 +53,7 @@ const Results = () => {
   };
 
   const handleSubmit = async () => {
+    const uid = user
     const newResult = await Promise.all(
       games.map(async (game) => ({
         gameId: game._id,
@@ -86,29 +91,26 @@ const Results = () => {
     <>
       <CardContent className={styles.global}>
         <div className={styles.title}>
-          <Typography variant="h5">
-            Cargar partidos
-          </Typography>
+          <Typography variant="h5">Cargar partidos</Typography>
         </div>
       </CardContent>
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "column",
           alignItems: "center",
-          flexWrap: "wrap",
         }}
       >
         <Button
           variant="contained"
           onClick={() => setType(!type)}
-          style={{ marginRight: "10px", marginBottom: "10px" }}
+          style={{ marginBottom: "10px", width: "100%" }}
         >
           {type ? "Single-elimination" : "Knockout"}
-        </Button>
+        </Button> 
         <Button
           variant="contained"
-          style={{ marginRight: "10px", marginBottom: "10px" }}
+          style={{ marginBottom: "10px", width: "100%" }}
         >
           ETAPA:
         </Button>
@@ -119,119 +121,125 @@ const Results = () => {
           value={stage}
           onChange={(e) => setStage(e.target.value)}
           style={{
-            marginRight: "10px",
             marginBottom: "10px",
-            alignContent: "center",
+            width: "100%",
           }}
         />
         <Button
           variant="contained"
           onClick={() => handleSubmit()}
-          style={{ marginBottom: "10px" }}
+          style={{ marginBottom: "10px", width: "100%" }}
         >
           Guardar resultados
         </Button>
       </div>
       <CardContent className={styles.global}>
         <div className={styles.title} style={{ fontSize: "20px" }}>
-          <Typography variant="h5">
-           Etapa seleccionada
-          </Typography>
+          <Typography variant="h5">Etapa seleccionada</Typography>
         </div>
       </CardContent>
 
       {games.map((item, i) => (
         <Box
           key={item._id}
-          sx={{ display: "flex", alignItems: "center", my: 2 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            my: 2,
+          }}
           style={{
             marginBottom: i !== games.length - 1 ? "50px" : "0",
-            display: "flex",
-            alignItems: "center",
             border: "1px solid black",
             padding: "10px",
-            justifyContent: "space-between",
             borderRadius: "25px",
             backgroundColor: "lightblue",
-            marginRight: "50px",
-            marginLeft: "50px",
-            flexWrap: "wrap",
+            width: "100%",
           }}
         >
-          <span
+          <Box
+            sx={{ display: "flex", alignItems: "center", width: "100%" }}
             style={{
-              fontSize: "80%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              padding: "0 10px",
+              justifyContent: "space-between",
+              marginBottom: "10px",
             }}
           >
-            {item.result.length > 0
-              ? (item.result[0].winner === item.teams[0].name && (
-                  <span style={{ color: "green" }}>GANADOR</span>
-                )) ||
-                (item.result[0].winner === item.teams[1].name && (
-                  <span style={{ color: "red" }}>PERDEDOR</span>
-                ))
-              : "SIN DEFINIR"}
-          </span>
-          <img
-            src={item.teams[0].logo_url}
-            alt={item.teams[0].name}
-            style={{ width: "5%" }}
-          />
-          <span
-            style={{
-              fontSize: "80%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-            }}
-          >
-            {item.teams[0].shortName}
-          </span>
-          <InputBase
-            placeholder=""
-            inputProps={{
-              "aria-label": "score",
-              min: "0",
-              type: "number",
-              style: {
-                width: "80px",
-                borderRadius: "8px",
-                backgroundColor: "white",
-                padding: "10px",
-                textAlign: "center",
-                fontSize: "14px",
-              },
-            }}
-            value={item.teams[0].score}
-            onChange={(e) => handleScoreChange(i, 0, e)}
-          />
+            <img
+              src={item.teams[0].logo_url}
+              alt={item.teams[0].name}
+              style={{ width: "25%", maxWidth: "100px", marginRight: "10px" }}
+            />
+            <span
+              style={{
+                fontSize: "80%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                width: "25%",
+              }}
+            >
+              {item.teams[0].shortName}
+            </span>
+            <InputBase
+              placeholder=""
+              inputProps={{
+                "aria-label": "score",
+                min: "0",
+                type: "number",
+                style: {
+                  width: "80px",
+                  borderRadius: "8px",
+                  backgroundColor: "white",
+                  padding: "10px",
+                  textAlign: "center",
+                  fontSize: "14px",
+                },
+              }}
+              value={item.teams[0].score}
+              onChange={(e) => handleScoreChange(i, 0, e)}
+              style={{ width: "25%" }}
+            />
 
-          <span> VS </span>
+            <span style={{ width: "25%", textAlign: "center" }}> VS </span>
 
-          <InputBase
-            placeholder=""
-            inputProps={{
-              min: "0",
-              type: "number",
-              "aria-label": "score",
-              style: {
-                width: "80px",
-                borderRadius: "8px",
-                backgroundColor: "white",
-                padding: "10px",
-                textAlign: "center",
-                fontSize: "14px",
-              },
-            }}
-            value={item.teams[1].score}
-            onChange={(e) => handleScoreChange(i, 1, e)}
-          />
+            <InputBase
+              placeholder=""
+              inputProps={{
+                min: "0",
+                type: "number",
+                "aria-label": "score",
+                style: {
+                  width: "80px",
+                  borderRadius: "8px",
+                  backgroundColor: "white",
+                  padding: "10px",
+                  textAlign: "center",
+                  fontSize: "14px",
+                },
+              }}
+              value={item.teams[1].score}
+              onChange={(e) => handleScoreChange(i, 1, e)}
+              style={{ width: "25%" }}
+            />
+            <span
+              style={{
+                fontSize: "80%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                width: "25%",
+              }}
+            >
+              {item.teams[1].shortName}
+            </span>
+            <img
+              src={item.teams[1].logo_url}
+              alt={item.teams[1].name}
+              style={{ width: "25%", maxWidth: "100px", marginLeft: "10px" }}
+            />
+          </Box>
           <span
             style={{
               fontSize: "80%",
@@ -239,23 +247,9 @@ const Results = () => {
               alignItems: "center",
               justifyContent: "center",
               fontWeight: "bold",
-            }}
-          >
-            {item.teams[1].shortName}
-          </span>
-          <img
-            src={item.teams[1].logo_url}
-            alt={item.teams[1].name}
-            style={{ width: "5%" }}
-          />
-          <span
-            style={{
-              fontSize: "80%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              padding: "0 10px",
+              width: "25%",
+              textAlign: "center",
+              wordWrap: "break-word",
             }}
           >
             {item.result.length > 0
