@@ -5,7 +5,9 @@ import {
   CssBaseline,
   TextField,
   Typography,
+
 } from "@mui/material";
+import InputMask from "react-input-mask";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -14,7 +16,6 @@ import { setUserInfo } from "../../../redux/reducers/userInfo";
 
 export const LoginForm = () => {
   const userInfo = useSelector((state) => state.userInfo);
-  const userUid = useSelector((state) => state.uid);
   const email = userInfo.email;
   const nameGoogle = userInfo.name;
   const lastNameGoogle = userInfo.lastName;
@@ -24,8 +25,8 @@ export const LoginForm = () => {
   const dispatch = useDispatch();
 
   const handleClick = (e) => {
+    const uid = localStorage.getItem("uid");
     e.preventDefault();
-    const uid = userUid;
     axios
       .post("http://localhost:3001/api/users/", {
         username: username,
@@ -116,7 +117,7 @@ export const LoginForm = () => {
           />
           <TextField
             margin="normal"
-            required
+            required={true}
             fullWidth
             name="address"
             label="Address"
@@ -125,17 +126,22 @@ export const LoginForm = () => {
             autoComplete="current-address"
             onChange={(e) => setAddress(e.target.value)}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="cellphone"
-            label="Cellphone"
-            type="cellphone"
-            id="cellphone"
-            autoComplete="current-cellphone"
+          <InputMask
+            mask="+99-999-99999999"
+            maskChar=""
             onChange={(e) => setCellphone(e.target.value)}
-          />
+          >
+            {() => (
+              <TextField
+                id="Cellphone"
+                type="text"
+                fullWidth
+                inputProps={{ maxLength: 16 }}
+                placeholder="+54-911-12345678"
+                required={true}
+              />
+            )}
+          </InputMask>
           <Button
             type="submit"
             fullWidth

@@ -1,10 +1,11 @@
+
 import HomeButton from "../tournamentHome/HomeButton";
+
 import React from "react";
 import { useSelector } from "react-redux";
 // import slidePrototype from "../slideProtorype"
 import Link from "next/link";
 import RankingCard from "../ranking/PositionCard";
-
 
 
 const home = () => {
@@ -19,7 +20,7 @@ const home = () => {
         <Link href={"/predictions"}>
           <HomeButton title={`Predicciones`} />
         </Link>
-        <Link href={"/"}> 
+        <Link href={"/"}>
           <HomeButton title={`Resultados`} />
         </Link>
         <Link href={"/ranking"}>

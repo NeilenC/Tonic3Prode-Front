@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import styles from "../../../styles/admin/newTournament/generalInfo.module.css";
 import { useMediaQuery } from "@mui/material";
-import { FormattedMessage } from "react-intl";
+//import { FormattedMessage } from "react-intl";
 
 const GeneralInfo = () => {
   const [title, setTitle] = useState("");
@@ -16,6 +16,7 @@ const GeneralInfo = () => {
   const [numMatches, setNumMatches] = useState(32);
   const [beginning, setBeginning] = useState("");
   const [finishing, setFinishing] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
@@ -27,10 +28,9 @@ const GeneralInfo = () => {
       setMembers(generalInfo.members);
       setBeginning(generalInfo.beginning);
       setFinishing(generalInfo.finishing);
+      setImageUrl(generalInfo.imageUrl);
     }
   }, []);
-
-
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -43,8 +43,16 @@ const GeneralInfo = () => {
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
     localStorage.setItem(
-      "generalInfo",    
+      "generalInfo",
       JSON.stringify({ ...getGeneralInfo(), status: event.target.value })
+    );
+  };
+
+  const handleImageUrlChange = (event) => {
+    setImageUrl(event.target.value);
+    localStorage.setItem(
+      "generalInfo",
+      JSON.stringify({ ...getGeneralInfo(), imageUrl: event.target.value })
     );
   };
 
@@ -65,7 +73,7 @@ const GeneralInfo = () => {
   };
 
   const handleBeginningChange = (event) => {
-    if(event.target.value === "") return;
+    if (event.target.value === "") return;
     const [year, month, day] = event.target.value.split("-");
     let newDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     setBeginning(newDate);
@@ -76,7 +84,7 @@ const GeneralInfo = () => {
   };
 
   const handleFinishingChange = (event) => {
-    if(event.target.value === "") return;
+    if (event.target.value === "") return;
     const [year, month, day] = event.target.value.split("-");
     let newDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     if (newDate < beginning) {
@@ -103,106 +111,96 @@ const GeneralInfo = () => {
   };
 
   return (
-      <form
-        suppressHydrationWarning={true}
-        className={styles.form}
-        style={{ width: "100%", minWidth: isMobile ? "auto" : "auto" }}
-      >
-        <TextField
-          label="Title"
-          value={title}
-          onChange={handleTitleChange}
-          fullWidth
+    <form
+      suppressHydrationWarning={true}
+      className={styles.form}
+      style={{ width: "100%", minWidth: isMobile ? "auto" : "auto" }}
+    >
+      <TextField
+        label="Title"
+        value={title}
+        onChange={handleTitleChange}
+        fullWidth
+        className={styles.input}
+        required
+      />
+      <FormControl fullWidth>
+        <InputLabel id="status-select-label">Estado</InputLabel>
+        <Select
+          labelId="status-select-label"
+          id="status-select"
+          value={status}
+          label="Status"
+          onChange={handleStatusChange}
           className={styles.input}
-          required
-        />
-        <FormControl fullWidth>
-          <InputLabel id="status-select-label">
-            <FormattedMessage id="state" />
-          </InputLabel>
-          <Select
-            labelId="status-select-label"
-            id="status-select"
-            value={status}
-            label="Status"
-            onChange={handleStatusChange}
-            className={styles.input}
-          >
-            <MenuItem value="active">
-              <FormattedMessage id="active" />
-            </MenuItem>
-            <MenuItem value="finish">
-              <FormattedMessage id="finish" />
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="type-select-label">
-            <FormattedMessage id="type" />
-          </InputLabel>
-          <Select
-            labelId="type-select-label"
-            id="type-select"
-            value={type}
-            label="Type"
-            onChange={handleTypeChange}
-            className={styles.input}
-          >
-            <MenuItem value="winner remains on court">
-              <FormattedMessage id="Winner remains on court" />
-            </MenuItem>
-            <MenuItem value="points tournament">
-              <FormattedMessage id="Points tournament" />
-            </MenuItem>
-            <MenuItem value="points tournament with group face">
-              <FormattedMessage id="Points tournament with group face" />
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="members-select-label">
-            <FormattedMessage id="members" />
-          </InputLabel>
-          <Select
-            labelId="members-select-label"
-            id="members-select"
-            value={members}
-            label="Members"
-            onChange={handleMembersChange}
-            className={styles.input}
-          >
-            <MenuItem value="teams">
-              <FormattedMessage id="teams" />
-            </MenuItem>
-            <MenuItem value="countrys">
-              <FormattedMessage id="countries" />
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          label="Beginning"
-          type="date"
-          fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={beginning}
-          onChange={handleBeginningChange}
+        >
+          <MenuItem value="active">Activo</MenuItem>
+          <MenuItem value="finish">Finalizado</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel id="type-select-label">Tipo</InputLabel>
+        <Select
+          labelId="type-select-label"
+          id="type-select"
+          value={type}
+          label="Type"
+          onChange={handleTypeChange}
           className={styles.input}
-        />
-        <TextField
-          label="Finishing"
-          type="date"
-          fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={finishing}
-          onChange={handleFinishingChange}
+        >
+          <MenuItem value="winner remains on court">Ganador</MenuItem>
+          <MenuItem value="points tournament">Puntos</MenuItem>
+          <MenuItem value="points tournament with group face">
+            Puntos en la fase de grupos
+          </MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth>
+        <InputLabel id="members-select-label">Miembros</InputLabel>
+        <Select
+          labelId="members-select-label"
+          id="members-select"
+          value={members}
+          label="Members"
+          onChange={handleMembersChange}
           className={styles.input}
-          disabled={beginning === "" ? "true" : ""}
-        />
-      </form>
+        >
+          <MenuItem value="teams">Equipos</MenuItem>
+          <MenuItem value="countrys">Países</MenuItem>
+        </Select>
+      </FormControl>
+      <TextField
+        label="Beginning"
+        type="date"
+        fullWidth
+        InputLabelProps={{
+          shrink: true,
+        }}
+        value={beginning}
+        onChange={handleBeginningChange}
+        className={styles.input}
+      />
+      <TextField
+        label="Finishing"
+        type="date"
+        fullWidth
+        InputLabelProps={{
+          shrink: true,
+        }}
+        value={finishing}
+        onChange={handleFinishingChange}
+        className={styles.input}
+        disabled={beginning === "" ? "true" : ""}
+      />
+      <TextField
+        label="Image URL"
+        value={imageUrl}
+        onChange={handleImageUrlChange}
+        fullWidth
+        className={styles.input}
+        required
+      />
+    </form>
   );
 };
 

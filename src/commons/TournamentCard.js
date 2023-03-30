@@ -23,8 +23,14 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const TournamentCard = ({ tournament }) => {
+
+  const handleCardClick = () => {
+    window.location.href = `/tournamentHome/${tournament._id}`;
+  }
+
   return (
     <StyledCard
+      onClick={() => handleCardClick()}
       sx={{
         margin: "20px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
@@ -35,10 +41,7 @@ const TournamentCard = ({ tournament }) => {
       }}
     >
       <StyledImgContainer>
-        <StyledImg
-          src="https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blte9c9176021b28a67/635982a86c3afa0bf5601819/FgBCe58WAAADilF.jpg"
-          alt="Tournament"
-        />
+        <StyledImg src={tournament.image_url} alt="Tournament" />
       </StyledImgContainer>
       <StyledCardContent>
         <Typography variant="h5" component="h2" gutterBottom>
@@ -48,8 +51,8 @@ const TournamentCard = ({ tournament }) => {
           {format(new Date(tournament.beginning), "MM/dd/yyyy")} -{" "}
           {format(new Date(tournament.ending), "MM/dd/yyyy")}{" "}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>  
-        {tournament.stage} nd Round
+        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+          {tournament.stage} nd Round
         </Typography>
         <Divider sx={{ my: 2 }} />
         <Typography variant="h6" gutterBottom>
