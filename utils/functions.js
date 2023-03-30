@@ -22,6 +22,7 @@ export const signUpGoogle = async (auth, dispatch) => {
     const userMongoDB = users.data.filter(
       (user) => user.uid === userFirebase.uid
     );
+    console.log("USERM", userMongoDB);
     if (userMongoDB.length > 0) {
       dispatch(setFirstLogin(false));
       toast.success("Successfully Logged In !");

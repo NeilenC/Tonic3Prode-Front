@@ -16,7 +16,6 @@ import { setUserInfo } from "../../../redux/reducers/userInfo";
 
 export const LoginForm = () => {
   const userInfo = useSelector((state) => state.userInfo);
-  const userUid = useSelector((state) => state.uid);
   const email = userInfo.email;
   const nameGoogle = userInfo.name;
   const lastNameGoogle = userInfo.lastName;
@@ -26,8 +25,8 @@ export const LoginForm = () => {
   const dispatch = useDispatch();
 
   const handleClick = (e) => {
+    const uid = localStorage.getItem("uid");
     e.preventDefault();
-    const uid = userUid;
     axios
       .post("http://localhost:3001/api/users/", {
         username: username,
