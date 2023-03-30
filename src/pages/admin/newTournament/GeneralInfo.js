@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import styles from "../../../styles/admin/newTournament/generalInfo.module.css";
 import { useMediaQuery } from "@mui/material";
-import { FormattedMessage } from "react-intl";
+//import { FormattedMessage } from "react-intl";
 
 const GeneralInfo = () => {
   const [title, setTitle] = useState("");
@@ -118,7 +118,7 @@ const GeneralInfo = () => {
         />
         <FormControl fullWidth>
           <InputLabel id="status-select-label">
-            <FormattedMessage id="state" />
+           Estado
           </InputLabel>
           <Select
             labelId="status-select-label"
@@ -129,16 +129,16 @@ const GeneralInfo = () => {
             className={styles.input}
           >
             <MenuItem value="active">
-              <FormattedMessage id="active" />
+             Activo
             </MenuItem>
             <MenuItem value="finish">
-              <FormattedMessage id="finish" />
+         Finalizado
             </MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth>
           <InputLabel id="type-select-label">
-            <FormattedMessage id="type" />
+           Tipo
           </InputLabel>
           <Select
             labelId="type-select-label"
@@ -149,19 +149,19 @@ const GeneralInfo = () => {
             className={styles.input}
           >
             <MenuItem value="winner remains on court">
-              <FormattedMessage id="Winner remains on court" />
+             Ganador
             </MenuItem>
             <MenuItem value="points tournament">
-              <FormattedMessage id="Points tournament" />
+             Puntos
             </MenuItem>
             <MenuItem value="points tournament with group face">
-              <FormattedMessage id="Points tournament with group face" />
+             Puntos en la fase de grupos
             </MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth>
           <InputLabel id="members-select-label">
-            <FormattedMessage id="members" />
+            Miembros
           </InputLabel>
           <Select
             labelId="members-select-label"
@@ -172,10 +172,10 @@ const GeneralInfo = () => {
             className={styles.input}
           >
             <MenuItem value="teams">
-              <FormattedMessage id="teams" />
+            Equipos
             </MenuItem>
             <MenuItem value="countrys">
-              <FormattedMessage id="countries" />
+             País
             </MenuItem>
           </Select>
         </FormControl>

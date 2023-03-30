@@ -9,7 +9,7 @@ import {
   InputBase,
 } from "@mui/material";
 import styles from "../../styles/admin/newTournament/Results.module.css";
-import { FormattedMessage } from "react-intl";
+//import { FormattedMessage } from "react-intl";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -87,7 +87,7 @@ const Results = () => {
       <CardContent className={styles.global}>
         <div className={styles.title}>
           <Typography variant="h5">
-            <FormattedMessage id="Cargar partidos" />
+            Cargar partidos
           </Typography>
         </div>
       </CardContent>
@@ -135,7 +135,7 @@ const Results = () => {
       <CardContent className={styles.global}>
         <div className={styles.title} style={{ fontSize: "20px" }}>
           <Typography variant="h5">
-            <FormattedMessage id="ETAPA SELECCIONADA" />
+           Etapa seleccionada
           </Typography>
         </div>
       </CardContent>
