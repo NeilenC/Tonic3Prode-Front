@@ -3,7 +3,7 @@ import axios from "axios";
 import TournamentCard from "@/commons/TournamentCard";
 import { Box, Grid } from "@mui/material";
 
-const Tournaments = ({ width }) => {
+const home = ({ width }) => {
   const [tournaments, setTournaments] = useState([]);
 
   useEffect(() => {
@@ -42,4 +42,4 @@ const Tournaments = ({ width }) => {
   );
 };
 
-export default Tournaments;
+export default home;

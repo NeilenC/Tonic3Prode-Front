@@ -11,10 +11,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { FormattedMessage } from "react-intl";
-import { auth } from "../utils/firebaseConfig";
-import { logOut } from "../utils/functions";
+import { auth } from "../../utils/firebaseConfig";
+import { logOut } from "../../utils/functions";
 import { useSelector, useDispatch } from "react-redux";
-import { setUid } from "../../../redux/reducers/uid";
+import { setUid } from "../../redux/reducers/uid";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",

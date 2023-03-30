@@ -1,7 +1,7 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import FutureMatches from "../matches/FutureMatches";
+import Fixture from "../fixture/Fixture";
 import RankingCard from "../ranking/PositionCard";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ const Home = () => {
       <Link href={"/ranking"}>
       <RankingCard />
       </Link>
-      <FutureMatches />
+      <Fixture />
     </>
   );
 };

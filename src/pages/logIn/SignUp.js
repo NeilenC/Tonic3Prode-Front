@@ -1,7 +1,7 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { signUpGoogle }  from "../utils/functions";
-import { auth } from "../utils/firebaseConfig";
+import { signUpGoogle }  from "../../../utils/functions";
+import { auth } from "../../../utils/firebaseConfig";
 import GoogleIcon from "@mui/icons-material/Google";
 import { LoginForm } from "./LoginForm";
 import { useSelector, useDispatch } from "react-redux";
@@ -39,7 +39,7 @@ const dispatch = useDispatch();
               }}
             >
               <Typography component="h1" variant="h5" sx={{ mt: 5 }}>
-                BIENVENIDOS A GAMBET
+                Welcome to gambet
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
                 <Button
