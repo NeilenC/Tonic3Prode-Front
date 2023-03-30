@@ -23,8 +23,14 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const TournamentCard = ({ tournament }) => {
+
+  const handleCardClick = () => {
+    window.location.href = `/tournamentHome/${tournament._id}`;
+  }
+
   return (
     <StyledCard
+      onClick={() => handleCardClick()}
       sx={{
         margin: "20px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
@@ -48,8 +54,8 @@ const TournamentCard = ({ tournament }) => {
           {format(new Date(tournament.beginning), "MM/dd/yyyy")} -{" "}
           {format(new Date(tournament.ending), "MM/dd/yyyy")}{" "}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>  
-        {tournament.stage} nd Round
+        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+          {tournament.stage} nd Round
         </Typography>
         <Divider sx={{ my: 2 }} />
         <Typography variant="h6" gutterBottom>
