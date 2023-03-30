@@ -1,11 +1,4 @@
-// ■ ABM Torneo
-// ■ ABM de equipos
-// ■ ABM Jugadores
-// ■ ABM cruces de equipos
-// ■ ABM Premios
-
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Box, Button, Grid } from "@mui/material";
 import {
   SportsSoccer as TournamentIcon,
@@ -15,7 +8,7 @@ import {
   BarChart as MetricsIcon,
   SwitchAccount as UsersIcon
 } from "@mui/icons-material";
-import Tournaments from "./Tournaments";
+import Tournaments from "./tournaments/index";
 import Teams from "./Teams";
 import Players from "./Players";
 import Prizes from "./Prizes";
