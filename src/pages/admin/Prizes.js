@@ -3,26 +3,19 @@ import { Box, Button, Typography } from "@mui/material";
 import { EmojiEvents as PrizesIcon } from "@mui/icons-material";
 import axios from "axios";
 
-
 const Prizes = () => {
   const [prizes, setPrizes] = useState([]);
   const [country, setCountry] = useState("Argentina");
 
-  const handleCountry = () => {
-    if (country === "Argentina") {
-      setCountry("Brazil");
-    } else if (country === "Brazil") {
-      setCountry("United States");
-    } else {
-      setCountry("Argentina");
-    }
-  }
-  
+  const handleCountry = (country) => {
+    setCountry(country);
+  };
+
   useEffect(() => {
     axios.get("http://localhost:3001/api/prizes").then((res) => {
-      console.log(res.data)
+      console.log(res.data);
       setPrizes(res.data);
-    })
+    });
   }, []);
 
   return (
@@ -39,30 +32,30 @@ const Prizes = () => {
         }}
       >
         <Button
+          variant={country === "Argentina" ? "contained" : "outlined"}
+          color="primary"
           sx={{ marginRight: "10px" }}
           startIcon={<PrizesIcon />}
-          onClick={() => {
-            () => handleCountry("Argentina");
-          }}
+          onClick={() => handleCountry("Argentina")}
         >
-          ARGENTINA
+          Argentina
         </Button>
         <Button
+          variant={country === "Brazil" ? "contained" : "outlined"}
+          color="primary"
           sx={{ marginRight: "10px" }}
           startIcon={<PrizesIcon />}
-          onClick={() => {
-            () => handleCountry("Brazil");
-          }}
+          onClick={() => handleCountry("Brazil")}
         >
-          BRAZIL
+          Brazil
         </Button>
         <Button
+          variant={country === "United States" ? "contained" : "outlined"}
+          color="primary"
           startIcon={<PrizesIcon />}
-          onClick={() => {
-            () => handleCountry("USA");
-          }}
+          onClick={() => handleCountry("United States")}
         >
-          UNITED STATES
+          United States
         </Button>
       </Box>
       <Box>
@@ -78,27 +71,58 @@ const Prizes = () => {
           }}
         >
           {prizes.map((prize) => (
-            <Box key={prize.country} sx={{ marginX: 2 }}>
-              <Typography variant="h6" align="center">
+            <Box
+              key={prize.country}
+              sx={{
+                width: "300px",
+                margin: "10px",
+                backgroundColor: "#fff",
+                borderRadius: "8px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+                overflow: "hidden",
+                padding: "16px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                align="center"
+                color="primary"
+                sx={{ marginBottom: "10px" }}
+              >
                 {prize.country}
               </Typography>
+              <PrizesIcon
+                sx={{ fontSize: "40px", marginBottom: "10px" }}
+                color="primary"
+              />
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "center",
                   alignItems: "center",
                 }}
               >
-                <PrizesIcon sx={{ fontSize: 40 }} />
-                <Typography variant="h5" align="center">
-                  1st Prize: {prize.first.Argentina}
+                <Typography
+                  variant="h5"
+                  align="center"
+                  color="textPrimary"
+                  sx={{ marginBottom: "10px" }}
+                >
+                  1st Prize: {prize.first[country]}
                 </Typography>
-                <Typography variant="h5" align="center">
-                  2nd Prize: {prize.second.Argentina}
+                <Typography
+                  variant="h5"
+                  align="center"
+                  color="textPrimary"
+                  sx={{ marginBottom: "10px" }}
+                >
+                  2nd Prize: {prize.second[country]}
                 </Typography>
-                <Typography variant="h5" align="center">
-                  3rd Prize: {prize.third.Argentina}
+                <Typography variant="h5" align="center" color="textPrimary">
+                  3rd Prize: {prize.third[country]}
                 </Typography>
               </Box>
             </Box>

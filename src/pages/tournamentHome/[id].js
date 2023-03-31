@@ -14,13 +14,22 @@ const Home = ({}) => {
   const id  = router.query.id;
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Button
         size="xl"
         variant="outlined"
         startIcon={<MypredictionsIcon />}
         sx={{ width: "250px", margin: "25px 0px 15px 0px", fontSize: "20px" }}
-        onClick = {() => {window.location.href = `/predictions`}}
+        onClick={() => {
+          window.location.href = `/predictions/`;
+        }}
       >
         My predictions
       </Button>
@@ -29,8 +38,10 @@ const Home = ({}) => {
         size="xl"
         variant="outlined"
         startIcon={<FixtureIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px"}}
-        onClick = {() => {window.location.href = `/fixture`}}
+        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
+        onClick={() => {
+          window.location.href = `/fixture`;
+        }}
       >
         Fixture
       </Button>
@@ -39,8 +50,10 @@ const Home = ({}) => {
         size="xl"
         variant="outlined"
         startIcon={<RankingIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px"}}
-        onClick = {() => {window.location.href = `/ranking`}}
+        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
+        onClick={() => {
+          window.location.href = `/ranking`;
+        }}
       >
         Ranking
       </Button>
@@ -49,8 +62,10 @@ const Home = ({}) => {
         size="xl"
         variant="outlined"
         startIcon={<PrizesIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px"}}
-        onClick = {() => {window.location.href = `/tournament/${id}/prizes`}} 
+        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
+        onClick={() => {
+          window.location.href = `/tournament/${id}/prizes`;
+        }}
       >
         Prizes
       </Button>
@@ -59,8 +74,10 @@ const Home = ({}) => {
         size="xl"
         variant="outlined"
         startIcon={<TournamentIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px"}}
-        onClick = {() => {window.location.href = `/home`}}
+        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
+        onClick={() => {
+          window.location.href = `/home`;
+        }}
       >
         Tournaments
       </Button>

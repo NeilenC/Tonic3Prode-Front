@@ -10,6 +10,8 @@ const StyledCard = styled(Card)({
 
 const StyledImgContainer = styled("div")({
   width: "100%",
+  maxHeight: "150px",
+  overflow: "hidden", 
 });
 
 const StyledImg = styled("img")({
@@ -43,23 +45,31 @@ const TournamentCard = ({ tournament }) => {
       <StyledImgContainer>
         <StyledImg src={tournament.image_url} alt="Tournament" />
       </StyledImgContainer>
-      <StyledCardContent>
+      <StyledCardContent sx={{ textAlign: "center" }}>
         <Typography variant="h5" component="h2" gutterBottom>
           {tournament.title}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+        <Typography
+          variant="subtitle1"
+          color="text.secondary"
+          gutterBottom
+          sx={{ fontWeight: "bold" }}
+        >
           {format(new Date(tournament.beginning), "MM/dd/yyyy")} -{" "}
           {format(new Date(tournament.ending), "MM/dd/yyyy")}{" "}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-          {tournament.stage} nd Round
+
+        <Typography
+          variant="subtitle1"
+          color="text.secondary"
+          gutterBottom
+          sx={{ fontWeight: "bold" }}
+        >
+          Stage: {tournament.stage}
         </Typography>
         <Divider sx={{ my: 2 }} />
         <Typography variant="h6" gutterBottom>
-          Teams:
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          {tournament.teams.length} teams are participating.
+          Teams: {tournament.teams.length}
         </Typography>
       </StyledCardContent>
     </StyledCard>
