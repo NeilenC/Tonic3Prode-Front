@@ -19,28 +19,28 @@ function LinearStepper() {
     const teams = JSON.parse(localStorage.getItem("teams"));
     const matches = JSON.parse(localStorage.getItem("matches"));
 
-    if (!generalInfo) {
-      alert("You must complete all the fields of this page to continue");
-      return;
-    } else if (
-      !generalInfo.title ||
-      !generalInfo.status ||
-      !generalInfo.type ||
-      !generalInfo.members ||
-      !generalInfo.numMatches ||
-      !generalInfo.beginning ||
-      !generalInfo.finishing ||
-      !generalInfo.imageUrl
-    ) {
-      alert("You must complete all the fields of this page to continue");
-      return;
-    } else if ((!teams || teams.length < 2) && activeStep === 1) {
-      alert("You must enter at least two teams");
-      return;
-    } else if (!matches && activeStep === 2) {
-      alert("You must enter the matches of the first stage");
-      return;
-    }
+    // if (!generalInfo) {
+    //   alert("You must complete all the fields of this page to continue");
+    //   return;
+    // } else if (
+    //   !generalInfo.title ||
+    //   !generalInfo.status ||
+    //   !generalInfo.type ||
+    //   !generalInfo.members ||
+    //   !generalInfo.numMatches ||
+    //   !generalInfo.beginning ||
+    //   !generalInfo.finishing ||
+    //   !generalInfo.imageUrl
+    // ) {
+    //   alert("You must complete all the fields of this page to continue");
+    //   return;
+    // } else if ((!teams || teams.length < 2) && activeStep === 1) {
+    //   alert("You must enter at least two teams");
+    //   return;
+    // } else if (!matches && activeStep === 2) {
+    //   alert("You must enter the matches of the first stage");
+    //   return;
+    // }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -65,10 +65,12 @@ function LinearStepper() {
     const details = "this is the details of the tournament";
 
     async function createTournament() {
+      const uid = localStorage.getItem("uid");
+
       const response = await axios.post(
         "http://localhost:3001/api/tournaments/admin/createTournament",
         {
-          uid: 0,
+          uid: uid,
           active: active,
           beginning: generalInfo.beginning,
           ending: generalInfo.finishing,
@@ -84,12 +86,12 @@ function LinearStepper() {
     }
 
     const idTournament = await createTournament();
-
+    const uid = localStorage.getItem("uid");
     async function createTeams() {
       const response = await axios.put(
         `http://localhost:3001/api/tournaments/admin/${idTournament}/createTeams`,
         {
-          uid: 0,
+          uid: uid,
           teams: teams,
         }
       );
@@ -103,7 +105,7 @@ function LinearStepper() {
       const response = await axios.post(
         `http://localhost:3001/api/games/admin/${idTournament}`,
         {
-          uid: 0,
+          uid: uid,
           matches: matches,
         }
       );

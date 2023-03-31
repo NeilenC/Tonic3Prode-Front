@@ -13,32 +13,49 @@ import styles from "../../../styles/matches/ResultCard.module.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import ResultCard from "@/commons/ResultCard";
+import { useRouter } from "next/router";
+
+
 
 const Results = () => {
+  const router = useRouter();
   const [games, setGames] = React.useState([]);
   const [stage, setStage] = React.useState("");
   const [type, setType] = React.useState(true);
   const [user, setUser] = useState("");
+  const [id, setId] = useState("");
 
   useEffect(() => {
     setUser(localStorage.getItem("uid"));
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
+  if (router.query.id) {
+    setId(router.query.id);
+  }
+}, [router.query.id]);
+
+useEffect(() => {
+  console.log(id);
+  if (id) {
+    console.log(`http://localhost:3001/api/games/${id}`)
     axios
-      .get("http://localhost:3001/api/games")
+      .get(`http://localhost:3001/api/games/${id}`)
       .then((allgames) => {
         return allgames;
       })
       .then((allgames) => {
-        const games = allgames.data.filter((item) => item.stage === "32");
+        console.log(allgames)
+        const games = allgames.data.filter((item) => item.status === "pending");
         setGames(games);
         console.log(games);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }
+}, [id]);
+
 
   const handleScoreChange = (index, teamIndex, e) => {
     if (e.target.value) {

@@ -7,18 +7,10 @@ import Stack from "@mui/material/Stack";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
-async function getTeams() {
-  try {
-    const response = await axios.get("http://localhost:3001/api/games");
-    return response.data;
-  } catch (error) {
-    return [];
-  }
-}
-
 // COMPONENTE
-const Predictions = ({ teams = [] }) => {
+const Predictions = () => {
   const router = useRouter();
+  const [games, setGames] = useState([]);
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
@@ -31,10 +23,34 @@ const Predictions = ({ teams = [] }) => {
   }, []);
 
   useEffect(() => {
+    console.log("id", router.query.id);
     if (router.query.id) {
       setId(router.query.id);
     }
   }, [router.query.id]);
+
+  useEffect(() => {
+    console.log(id);
+    if (id) {
+      console.log(`http://localhost:3001/api/games/${id}`);
+      axios
+        .get(`http://localhost:3001/api/games/${id}`)
+        .then((allgames) => {
+          return allgames;
+        })
+        .then((allgames) => {
+          console.log(allgames);
+          const games = allgames.data.filter(
+            (item) => item.status === "pending"
+          );
+          setGames(games);
+          console.log(games);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [id]);
 
   const handleScoreChange = (_id, team, score) => {
     setScores((prevState) => ({
@@ -54,8 +70,6 @@ const Predictions = ({ teams = [] }) => {
     setUser(localStorage.getItem("uid"));
   }, []);
 
-  if (!teams) return <div>Loading...</div>;
-
   const sendPredictions = async (e) => {
     console.log(predictions);
     try {
@@ -70,7 +84,7 @@ const Predictions = ({ teams = [] }) => {
     }
   };
 
-  const predictions = teams.map((item) => {
+  const predictions = games.map((item) => {
     if (scores) {
       return {
         gameId: item._id,
@@ -110,7 +124,7 @@ const Predictions = ({ teams = [] }) => {
           widht: "auto",
         }}
       >
-        {teams.map((item) => (
+        {games.map((item) => (
           <Box
             key={item._id}
             sx={{
@@ -177,14 +191,5 @@ const Predictions = ({ teams = [] }) => {
     </Box>
   );
 };
-
-export async function getServerSideProps() {
-  const teams = await getTeams();
-  return {
-    props: {
-      teams,
-    },
-  };
-}
 
 export default Predictions;
