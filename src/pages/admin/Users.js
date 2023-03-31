@@ -6,10 +6,10 @@
 
 import React from 'react'
 
-const Metrics = () => {
+const Users = () => {
   return (
-    <div>Metrics</div>
+    <div>Users</div>
   )
 }
 
-export default Metrics
+export default Users

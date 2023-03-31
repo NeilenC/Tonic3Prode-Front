@@ -12,6 +12,7 @@ import Tournaments from "./tournaments/index";
 import Teams from "./Teams";
 import Players from "./Players";
 import Prizes from "./Prizes";
+import Users from "./Users";
 import Metrics from "./Metrics";
 
 const index = () => {
@@ -26,6 +27,7 @@ const index = () => {
     teams: <Teams />,
     players: <Players />,
     prizes: <Prizes />,
+    users: <Users />,
     metrics: <Metrics />,
   };
 
@@ -45,7 +47,7 @@ const index = () => {
         <Button sx={{marginRight:"10px" }} startIcon={<TeamsIcon />} onClick={() => changeActualComponent("teams")} >Teams</Button>
         <Button sx={{marginRight:"10px" }} startIcon={<PlayersIcon />} onClick={() => changeActualComponent("players")}>Team players</Button>
         <Button sx={{marginRight:"10px" }} startIcon={<PrizesIcon />}onClick={() => changeActualComponent("prizes")}>Prizes</Button>
-        <Button sx={{marginRight:"10px" }} startIcon={<UsersIcon />}onClick={() => changeActualComponent("prizes")}>Users</Button>
+        <Button sx={{marginRight:"10px" }} startIcon={<UsersIcon />}onClick={() => changeActualComponent("users")}>Users</Button>
         <Button startIcon={<MetricsIcon />} onClick={() => changeActualComponent("metrics")}>Metrics</Button>
        
       </Box>

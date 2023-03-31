@@ -34,6 +34,11 @@ function ResultCard({ time, homeTeam, awayTeam, handleScoreChange, i }) {
           type: "number",
         }}
         value={homeTeam.score}
+        sx={{
+          background: "white",
+          borderRadius: "5px",
+          border: "0.25px solid lightblue",
+        }}
         onChange={(e) => handleScoreChange(i, 0, e)}
       />
       <div className={styles.cardColumn}>
@@ -48,14 +53,19 @@ function ResultCard({ time, homeTeam, awayTeam, handleScoreChange, i }) {
         </div>
       </div>
       <InputBase
-        className={`${styles.cardColumn} ${styles.inputColumn}`}
+        className={styles.cardColumn}
         placeholder=""
         inputProps={{
+          "aria-label": "score",
           min: "0",
           type: "number",
-          "aria-label": "score",
         }}
         value={awayTeam.score}
+        sx={{
+          background: "white",
+          borderRadius: "5px",
+          border: "0.25px solid lightblue",
+        }}
         onChange={(e) => handleScoreChange(i, 1, e)}
       />
       <div className={styles.cardColumn}>

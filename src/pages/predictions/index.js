@@ -4,6 +4,7 @@ import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import Stack from "@mui/material/Stack";
+import { toast } from "react-toastify";
 
 async function getTeams() {
   try {
@@ -47,11 +48,14 @@ const Predictions = ({ teams = [] }) => {
   if (!teams) return <div>Loading...</div>;
 
   const sendPredictions = async (e) => {
+    console.log(predictions)
     try {
       const response = await axios.post(
         `http://localhost:3001/api/predictions/create/${user}`,
         predictions
-      );
+      )
+      console.log(response);
+      toast.success("You Successfully updated your predictions !");
     } catch (error) {
       console.error(error);
     }
@@ -72,6 +76,7 @@ const Predictions = ({ teams = [] }) => {
   });
 
   return (
+    
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
@@ -79,21 +84,44 @@ const Predictions = ({ teams = [] }) => {
         onClick={() => sendPredictions()}
         variant="contained"
         endIcon={<SportsSoccerIcon />}
-        sx={{ textAlign: "center", width: "auto", height: "1.5%", margin: "10px"}}
+        sx={{
+          textAlign: "center",
+          width: "auto",
+          height: "1.5%",
+          margin: "10px",
+        }}
       >
         Guardar Predicciones
       </Button>
-      <form onSubmit={sendPredictions} sx={{display:"flex", alignItems:"center", justifyContent: "center", widht:"auto" }}>
+      <form
+        onSubmit={sendPredictions}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          widht: "auto",
+        }}
+      >
         {teams.map((item) => (
           <Box
             key={item._id}
-            sx={{ textAlign: 'center', my: 2 }}
+            sx={{
+              textAlign: "center",
+              my: 2,
+              border: "0.25px solid lightblue",
+              borderRadius: "5px",
+              width: "auto",
+              height: "auto",
+              padding: "10px",
+              mx: 20,
+            }}
           >
             <img
               src={item.teams[0].logo_url}
               alt={item.teams[0].name}
-              style={{ width: "4%" }}
+              style={{ width: "4%", height: "auto" }}
             />
+
             <span style={{ fontSize: "90%", display: "inline-block" }}>
               {item.teams[0].shortName}
             </span>
@@ -120,7 +148,7 @@ const Predictions = ({ teams = [] }) => {
             <img
               src={item.teams[1].logo_url}
               alt={item.teams[1].name}
-              style={{ width: "4%" }}
+              style={{ width: "4%", height: "auto" }}
             />
           </Box>
         ))}
@@ -129,7 +157,12 @@ const Predictions = ({ teams = [] }) => {
         onClick={() => sendPredictions()}
         variant="contained"
         endIcon={<SportsSoccerIcon />}
-        sx={{ textAlign: "center", width: "auto", height: "1.5%", margin: "15px" }}
+        sx={{
+          textAlign: "center",
+          width: "auto",
+          height: "1.5%",
+          margin: "15px",
+        }}
       >
         Guardar Predicciones
       </Button>

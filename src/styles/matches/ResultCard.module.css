@@ -15,8 +15,7 @@
 
 @media (max-width: 480px){
   .customCard {
-    grid-template-columns: repeat(5, 1fr);
-    height: 40px;
+    grid-template-columns: repeat(7, 1fr);
   }
 }
 

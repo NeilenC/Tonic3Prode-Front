@@ -7,9 +7,8 @@ import {
   TextField,
   Button,
   InputBase,
-  Card,
 } from "@mui/material";
-import styles from "../../../styles/admin/newTournament/Results.module.css";
+import styles from "../../../styles/matches/ResultCard.module.css";
 //import { FormattedMessage } from "react-intl";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -121,23 +120,29 @@ const Results = () => {
       <Box>
         {games.map((item, i) => (
           <>
-            <ResultCard
-              key={i}
-              time={item.time}
-              homeTeam={item.teams[0]}
-              awayTeam={item.teams[1]}
-              handleScoreChange={handleScoreChange}
-              sx={{ marginTop: "20px", display:"flex" }}
-            />{/* 
-            <Card key={item._id} sx={{ marginTop: "20px" }}>
-            <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-              <img
-                src={item.teams[0].logo_url}
-                alt={item.teams[0].name}
-                style={{ width: "25%", maxWidth: "100px", marginRight: "10px" }}
-              />
-              <span>{item.teams[0].shortName}</span>
+            <CardContent className={styles.customCard} key={i}>
+              <div className={styles.cardColumn}>
+                <div className={styles.titleWrapper}>
+                  <Typography
+                    variant="subtitle1"
+                    align="center"
+                    className={styles.teamName}
+                  >
+                    {item.teams[0].shortName}
+                  </Typography>
+                </div>
+              </div>
+              <div className={styles.cardColumn}>
+                <div className={styles.teamLogoWrapper}>
+                  <img
+                    src={item.teams[0].logo_url}
+                    alt={item.teams[0].nombre}
+                    className={styles.teamLogo}
+                  />
+                </div>
+              </div>
               <InputBase
+                className={styles.cardColumn}
                 placeholder=""
                 inputProps={{
                   "aria-label": "score",
@@ -145,40 +150,62 @@ const Results = () => {
                   type: "number",
                 }}
                 value={item.teams[0].score}
+                sx={{
+                  background: "white",
+                  borderRadius: "5px",
+                  border: "0.25px solid lightblue",
+                }}
                 onChange={(e) => handleScoreChange(i, 0, e)}
               />
-
-              <span style={{ width: "25%", textAlign: "center" }}> VS </span>
-
+              <div className={styles.cardColumn}>
+                <div className="date-container">
+                  <Typography
+                    variant="subtitle1"
+                    align="center"
+                    className={styles.matchDate}
+                  >
+                    Vs.
+                  </Typography>
+                </div>
+              </div>
               <InputBase
+                className={styles.cardColumn}
                 placeholder=""
                 inputProps={{
+                  "aria-label": "score",
                   min: "0",
                   type: "number",
-                  "aria-label": "score",
                 }}
                 value={item.teams[1].score}
+                sx={{
+                  background: "white",
+                  borderRadius: "5px",
+                  border: "0.25px solid lightblue",
+                }}
                 onChange={(e) => handleScoreChange(i, 1, e)}
-                style={{ width: "25%" }}
               />
-              <span>{item.teams[1].shortName}</span>
-              <img
-                src={item.teams[1].logo_url}
-                alt={item.teams[1].name}
-                style={{ width: "25%", maxWidth: "100px", marginLeft: "10px" }}
-              />
-            </Box>
-            <span>
-              {item.result.length > 0
-                ? (item.result[0].winner === item.teams[0].name && (
-                    <span style={{ color: "red" }}>PERDEDOR</span>
-                  )) ||
-                  (item.result[0].winner === item.teams[1].name && (
-                    <span style={{ color: "green" }}>GANADOR</span>
-                  ))
-                : "SIN DEFINIR"}
-            </span>
-          </Card>  */}
+              <div className={styles.cardColumn}>
+                <div className={styles.teamLogoWrapper}>
+                  <img
+                    src={item.teams[1].logo_url}
+                    alt={item.teams[1].nombre}
+                    className={styles.teamLogo}
+                  />
+                </div>
+              </div>
+              <div className={styles.cardColumn}>
+                <div className={styles.titleWrapper}>
+                  <Typography
+                    variant="subtitle1"
+                    align="center"
+                    className={styles.teamName}
+                  >
+                    {item.teams[1].shortName}
+                  </Typography>
+                </div>
+                <div />
+              </div>
+            </CardContent>
           </>
         ))}
       </Box>
