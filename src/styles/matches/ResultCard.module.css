@@ -1,0 +1,77 @@
+.customCard {
+  background-color: #f6f6f6;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-column-gap: 8px;
+  grid-row-gap: 16px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-width: 600px;
+  height: 80px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+@media (max-width: 480px){
+  .customCard {
+    grid-template-columns: repeat(5, 1fr);
+    height: 40px;
+  }
+}
+
+.teamLogoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+}
+
+.teamLogo {
+  width: 100%;
+  height: auto;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.teamName {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.matchDate {
+  font-size: 1rem;
+  color: #333;
+}
+
+.titleWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardColumn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.inputColumn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+}
+
+.inputBase {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  text-align: center;
+  color: #333;
+}

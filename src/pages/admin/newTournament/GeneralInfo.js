@@ -114,7 +114,7 @@ const GeneralInfo = () => {
     <form
       suppressHydrationWarning={true}
       className={styles.form}
-      style={{ width: "100%", minWidth: isMobile ? "auto" : "auto" }}
+      style={{ width: "100%", minWidth: isMobile ? "360px" : "auto",  }}
     >
       <TextField
         label="Title"

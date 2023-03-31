@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";  
+import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
@@ -26,27 +26,23 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-    useEffect( () => {
-     setUser(localStorage.getItem("uid"));
-    }, []);
+  useEffect(() => {
+    setUser(localStorage.getItem("uid"));
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("uid")
+    localStorage.removeItem("uid");
     setUser("");
     window.location.href = "http://localhost:3000/";
     logOut(auth);
   };
-
-
-
 
   return (
     <>
@@ -89,18 +85,9 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-
+              {user ? <MenuItem onClick={handleClose}>Perfil</MenuItem> : ""}
               {user ? (
-                <MenuItem onClick={handleClose}>
-                  Perfil
-                </MenuItem>
-              ) : (
-                ""
-              )}
-              {user ? (
-                <MenuItem onClick={handleClose}>
-                  Configuración
-                </MenuItem>
+                <MenuItem onClick={handleClose}>Configuración</MenuItem>
               ) : (
                 ""
               )}
@@ -126,25 +113,21 @@ const Navbar = () => {
         onClose={() => setDrawerOpen(false)}
       >
         <div style={{ width: "250px" }}>
-          <MenuItem onClick={() => setDrawerOpen(false)}>
-            Predicciones
+          <MenuItem
+            onClick={() => {
+              setDrawerOpen(false);
+              window.location.href = "http://localhost:3000/home";
+            }}
+          >
+            Tournaments
           </MenuItem>
-          <MenuItem onClick={() => setDrawerOpen(false)}>
-           Ranking
-          </MenuItem>
-          <MenuItem onClick={() => setDrawerOpen(false)}>
-           Fixture
-          </MenuItem>
-          <MenuItem onClick={() => setDrawerOpen(false)}>
-            Torneos
-          </MenuItem>
-
-          <MenuItem onClick={() => {
-            setDrawerOpen(false)
-            window.location.href = "http://localhost:3000/admin";
-            }}>
-            Panel de Administrador  
-
+          <MenuItem
+            onClick={() => {
+              setDrawerOpen(false);
+              window.location.href = "http://localhost:3000/admin";
+            }}
+          >
+            Admin Panel
           </MenuItem>
         </div>
       </Drawer>

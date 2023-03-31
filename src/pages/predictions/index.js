@@ -75,11 +75,19 @@ const Predictions = ({ teams = [] }) => {
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <form onSubmit={sendPredictions}>
+      <Button
+        onClick={() => sendPredictions()}
+        variant="contained"
+        endIcon={<SportsSoccerIcon />}
+        sx={{ textAlign: "center", width: "auto", height: "1.5%", margin: "10px"}}
+      >
+        Guardar Predicciones
+      </Button>
+      <form onSubmit={sendPredictions} sx={{display:"flex", alignItems:"center", justifyContent: "center", widht:"auto" }}>
         {teams.map((item) => (
           <Box
             key={item._id}
-            sx={{ display: "flex", alignItems: "center", my: 2 }}
+            sx={{ textAlign: 'center', my: 2 }}
           >
             <img
               src={item.teams[0].logo_url}
@@ -116,16 +124,15 @@ const Predictions = ({ teams = [] }) => {
             />
           </Box>
         ))}
-        <Stack direction="row" spacing={2}>
-          <Button
-            onClick={() => sendPredictions()}
-            variant="contained"
-            endIcon={<SportsSoccerIcon />}
-          >
-            Guardar Predicciones
-          </Button>
-        </Stack>
       </form>
+      <Button
+        onClick={() => sendPredictions()}
+        variant="contained"
+        endIcon={<SportsSoccerIcon />}
+        sx={{ textAlign: "center", width: "auto", height: "1.5%", margin: "15px" }}
+      >
+        Guardar Predicciones
+      </Button>
     </Box>
   );
 };

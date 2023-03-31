@@ -20,7 +20,7 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<MypredictionsIcon />}
         sx={{ width: "250px", margin: "25px 0px 15px 0px", fontSize: "20px" }}
-        onClick = {() => {window.location.href = `/tournament/${id}/mypredictions`}}
+        onClick = {() => {window.location.href = `/predictions`}}
       >
         My predictions
       </Button>
@@ -30,7 +30,7 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<FixtureIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px"}}
-        onClick = {() => {window.location.href = `/tournament/${id}/fixture`}}
+        onClick = {() => {window.location.href = `/fixture`}}
       >
         Fixture
       </Button>

@@ -7,11 +7,13 @@ import {
   TextField,
   Button,
   InputBase,
+  Card,
 } from "@mui/material";
 import styles from "../../../styles/admin/newTournament/Results.module.css";
 //import { FormattedMessage } from "react-intl";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import ResultCard from "@/commons/ResultCard";
 
 const Results = () => {
   const [games, setGames] = React.useState([]);
@@ -88,87 +90,99 @@ const Results = () => {
   };
 
   return (
-    <>
-      <CardContent className={styles.global}>
-        <div className={styles.title}>
-          <Typography variant="h5">Cargar partidos</Typography>
-        </div>
-      </CardContent>
-      <div>
-        <Button variant="contained" onClick={() => setType(!type)}>
+    <Box>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Button
+          sx={{ marginTop: "20px" }}
+          variant="contained"
+          onClick={() => setType(!type)}
+        >
           {type ? "Single-elimination" : "Knockout"}
         </Button>
-        <Button variant="contained">ETAPA:</Button>
+        <Button sx={{ marginTop: "20px" }} variant="contained">
+          ETAPA:
+        </Button>
         <TextField
           label="Etapa"
           variant="outlined"
           size="small"
           value={stage}
           onChange={(e) => setStage(e.target.value)}
+          sx={{ marginTop: "20px" }}
         />
-        <Button variant="contained" onClick={() => handleSubmit()}>
+        <Button
+          sx={{ marginTop: "20px" }}
+          variant="contained"
+          onClick={() => handleSubmit()}
+        >
           Guardar resultados
         </Button>
-      </div>
-      <CardContent className={styles.global}>
-        <div className={styles.title} style={{ fontSize: "20px" }}>
-          <Typography variant="h5">Etapa seleccionada</Typography>
-        </div>
-      </CardContent>
+      </Box>
+      <Box>
+        {games.map((item, i) => (
+          <>
+            <ResultCard
+              key={i}
+              time={item.time}
+              homeTeam={item.teams[0]}
+              awayTeam={item.teams[1]}
+              handleScoreChange={handleScoreChange}
+              sx={{ marginTop: "20px", display:"flex" }}
+            />{/* 
+            <Card key={item._id} sx={{ marginTop: "20px" }}>
+            <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+              <img
+                src={item.teams[0].logo_url}
+                alt={item.teams[0].name}
+                style={{ width: "25%", maxWidth: "100px", marginRight: "10px" }}
+              />
+              <span>{item.teams[0].shortName}</span>
+              <InputBase
+                placeholder=""
+                inputProps={{
+                  "aria-label": "score",
+                  min: "0",
+                  type: "number",
+                }}
+                value={item.teams[0].score}
+                onChange={(e) => handleScoreChange(i, 0, e)}
+              />
 
-      {games.map((item, i) => (
-        <Box key={item._id}>
-          <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-            <img
-              src={item.teams[0].logo_url}
-              alt={item.teams[0].name}
-              style={{ width: "25%", maxWidth: "100px", marginRight: "10px" }}
-            />
-            <span>{item.teams[0].shortName}</span>
-            <InputBase
-              placeholder=""
-              inputProps={{
-                "aria-label": "score",
-                min: "0",
-                type: "number",
-              }}
-              value={item.teams[0].score}
-              onChange={(e) => handleScoreChange(i, 0, e)}
-            />
+              <span style={{ width: "25%", textAlign: "center" }}> VS </span>
 
-            <span style={{ width: "25%", textAlign: "center" }}> VS </span>
-
-            <InputBase
-              placeholder=""
-              inputProps={{
-                min: "0",
-                type: "number",
-                "aria-label": "score",
-              }}
-              value={item.teams[1].score}
-              onChange={(e) => handleScoreChange(i, 1, e)}
-              style={{ width: "25%" }}
-            />
-            <span>{item.teams[1].shortName}</span>
-            <img
-              src={item.teams[1].logo_url}
-              alt={item.teams[1].name}
-              style={{ width: "25%", maxWidth: "100px", marginLeft: "10px" }}
-            />
-          </Box>
-          <span>
-            {item.result.length > 0
-              ? (item.result[0].winner === item.teams[0].name && (
-                  <span style={{ color: "red" }}>PERDEDOR</span>
-                )) ||
-                (item.result[0].winner === item.teams[1].name && (
-                  <span style={{ color: "green" }}>GANADOR</span>
-                ))
-              : "SIN DEFINIR"}
-          </span>
-        </Box>
-      ))}
-    </>
+              <InputBase
+                placeholder=""
+                inputProps={{
+                  min: "0",
+                  type: "number",
+                  "aria-label": "score",
+                }}
+                value={item.teams[1].score}
+                onChange={(e) => handleScoreChange(i, 1, e)}
+                style={{ width: "25%" }}
+              />
+              <span>{item.teams[1].shortName}</span>
+              <img
+                src={item.teams[1].logo_url}
+                alt={item.teams[1].name}
+                style={{ width: "25%", maxWidth: "100px", marginLeft: "10px" }}
+              />
+            </Box>
+            <span>
+              {item.result.length > 0
+                ? (item.result[0].winner === item.teams[0].name && (
+                    <span style={{ color: "red" }}>PERDEDOR</span>
+                  )) ||
+                  (item.result[0].winner === item.teams[1].name && (
+                    <span style={{ color: "green" }}>GANADOR</span>
+                  ))
+                : "SIN DEFINIR"}
+            </span>
+          </Card>  */}
+          </>
+        ))}
+      </Box>
+    </Box>
   );
 };
 

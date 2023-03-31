@@ -56,7 +56,7 @@ const Tournaments = () => {
         Add new tournament
       </Button>
       <TableContainer sx={{ display:"flex", width:"auto", align:"center" }}>
-        <Table >
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
