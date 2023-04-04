@@ -1,32 +1,32 @@
-import React from "react"
-import axios from "axios";
+// import React from "react"
+// import axios from "axios";
 
-export const getGeoLocation = (id) => {
+// export const getGeoLocation = (id) => {
 
-    const doc = document; // Estructura que nos permite acceder a los nodos del documento
-    const nav = navigator; // Devuelve caracteristicas del dispositivo que esta accediendo
-//   const $id = doc.getElementById(id);
+//     const doc = document; // Estructura que nos permite acceder a los nodos del documento
+//     const nav = navigator; // Devuelve caracteristicas del dispositivo que esta accediendo
+// //   const $id = doc.getElementById(id);
 
 
-   const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-    };
+//    const options = {
+//         enableHighAccuracy: true,
+//         timeout: 5000,
+//         maximumAge: 0,
+//     };
 
-  async function success(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    // let infoRegion = await getRegionInfo(latitude,longitude)
-    // console.log("info region", infoRegion)
-  }
-    const error = (err) => {
-        alert(`ERROR(${err.code}): ${err.message}`);
-  };
+//   async function success(position) {
+//     const latitude = position.coords.latitude;
+//     const longitude = position.coords.longitude;
+//     // let infoRegion = await getRegionInfo(latitude,longitude)
+//     // console.log("info region", infoRegion)
+//   }
+//     const error = (err) => {
+//         alert(`ERROR(${err.code}): ${err.message}`);
+//   };
 
-  nav.geolocation.getCurrentPosition(success, error, options);
+//   nav.geolocation.getCurrentPosition(success, error, options);
   
-};
+// };
 
 
 // async function getRegionInfo(lat, lng) {
