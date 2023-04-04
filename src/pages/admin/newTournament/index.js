@@ -114,7 +114,9 @@ function LinearStepper() {
     }
 
     await createMatches();
-
+    localStorage.removeItem("generalInfo");
+    localStorage.removeItem("teams");
+    localStorage.removeItem("matches");
     window.location.href = "http://localhost:3000/admin";
 };
 

@@ -41,8 +41,8 @@ const Teams = () => {
   }, []);
 
   const handleSortRequest = (property) => {
-    // Define the sort function here
-  };
+      // Define the sort function here
+    };
 
   const handleClick = (event, row) => {
     const selectedIndex = selected.findIndex((sel) => sel._id === row._id);

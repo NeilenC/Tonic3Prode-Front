@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Select } from "@mui/material";
 import { EmojiEvents as PrizesIcon } from "@mui/icons-material";
 import axios from "axios";
 
 const Prizes = () => {
   const [prizes, setPrizes] = useState([]);
   const [country, setCountry] = useState("Argentina");
+  const [tournaments, SetTournaments] = useState("");
 
   const handleCountry = () => {
     if (country === "Argentina") {
@@ -18,8 +19,9 @@ const Prizes = () => {
   };
 
   useEffect(() => {
+    console.log("me active")
     axios.get("http://localhost:3001/api/prizes").then((res) => {
-      console.log(res.data);
+      console.log(res.data, "hola");
       setPrizes(res.data);
     });
   }, []);
@@ -37,6 +39,7 @@ const Prizes = () => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
+
         <Button
           sx={{ marginRight: "10px" }}
           startIcon={<PrizesIcon />}

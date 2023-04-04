@@ -55,7 +55,7 @@ const Tournaments = () => {
       >
         Add new tournament
       </Button>
-      <TableContainer sx={{ display:"flex", width:"auto", align:"center" }}>
+      <TableContainer sx={{ display: "flex", width: "auto", align: "center" }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -68,38 +68,42 @@ const Tournaments = () => {
           </TableHead>
           <TableBody>
             {tournaments.map((tournament) => (
-              <TableRow
-                key={tournament._id}
-                onMouseEnter={() => {
-                  setSelectedRow(tournament._id);
-                  setSelectedTournamentUrl(
-                    `http://localhost:3000/admin/tournaments/${tournament._id}`
-                  );
-                }}
-                onMouseLeave={() => {
-                  setSelectedRow(null);
-                  setSelectedTournamentUrl(null);
-                }}
-                onClick={() => window.location.assign(selectedTournamentUrl)}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  backgroundColor:
-                    selectedRow === tournament._id ? "#e0e0e0" : "",
-                  cursor: "pointer",
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {tournament.title}
-                </TableCell>
-                <TableCell align="right">
-                  {formatDate(tournament.beginning)}
-                </TableCell>
-                <TableCell align="right">
-                  {formatDate(tournament.ending)}
-                </TableCell>
-                <TableCell align="right">{tournament.stage}</TableCell>
-                <TableCell align="right">{tournament.type}</TableCell>
-              </TableRow>
+              <>
+                <TableRow
+                  key={tournament._id}
+                  onMouseEnter={() => {
+                    setSelectedRow(tournament._id);
+                    setSelectedTournamentUrl(
+                      `http://localhost:3000/admin/tournaments/${tournament._id}`
+                    );
+                  }}
+                  onMouseLeave={() => {
+                    setSelectedRow(null);
+                    setSelectedTournamentUrl(null);
+                  }}
+                  onClick={() =>
+                    (window.location.href = `http://localhost:3000/admin/tournaments/${tournament._id}`)
+                  }
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    backgroundColor:
+                      selectedRow === tournament._id ? "#e0e0e0" : "",
+                    cursor: "pointer",
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {tournament.title}
+                  </TableCell>
+                  <TableCell align="right">
+                    {formatDate(tournament.beginning)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {formatDate(tournament.ending)}
+                  </TableCell>
+                  <TableCell align="right">{tournament.stage}</TableCell>
+                  <TableCell align="right">{tournament.type}</TableCell>
+                </TableRow>
+              </>
             ))}
           </TableBody>
         </Table>
