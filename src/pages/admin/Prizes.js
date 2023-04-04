@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { EmojiEvents as PrizesIcon } from "@mui/icons-material";
 import axios from "axios";
+import customAxios from "../../../utils/customAxios";
 import AddIcon from "@mui/icons-material/Add";
 
 const Prizes = () => {
@@ -31,8 +32,8 @@ const Prizes = () => {
   };
 
   const handleTournamentChange = (event) => {
-    axios
-      .get("http://localhost:3001/api/tournaments")
+    customAxios
+      .get("http://localhost:3001/api/tournaments/all")
       .then((res) => {
         const filteredTournament = res.data.find(
           (tournament) => tournament.title === event.target.value
@@ -49,24 +50,28 @@ const Prizes = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/tournaments").then((res) => {
-      const tournaments = res.data.map((tournament) => tournament.title);
-      setTournamentTitles(tournaments);
-    });
+    customAxios
+      .get("http://localhost:3001/api/tournaments/all")
+      .then((res) => {
+        const tournaments = res.data.map((tournament) => tournament.title);
+        setTournamentTitles(tournaments);
+      });
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/tournaments").then((res) => {
-      console.log(res.data, "info tournaments");
-      const tournaments = res.data.map((tournament) => tournament.title);
-      console.log(tournaments, "tournaments");
-      setTournament(tournaments);
-    });
+    customAxios
+      .get("http://localhost:3001/api/tournaments/all")
+      .then((res) => {
+        console.log(res.data, "info tournaments");
+        const tournaments = res.data.map((tournament) => tournament.title);
+        console.log(tournaments, "tournaments");
+        setTournament(tournaments);
+      });
   }, []);
 
   useEffect(() => {
     console.log(tournamentID, "tournamentID");
-    axios
+    customAxios
       .get("http://localhost:3001/api/prizes")
       .then((res) => {
         const filteredPrizes = res.data.filter(
