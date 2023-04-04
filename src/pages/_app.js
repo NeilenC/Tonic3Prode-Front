@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 // import English from "../languages/en.json";
 // import Portugues from "../languages/br.json";
 import store from "../../redux/store";
-import { getGeoLocation } from "../../utils/geolocation";
+//import { getGeoLocation } from "../../utils/geolocation";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./Navbar";
 
