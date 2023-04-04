@@ -36,8 +36,7 @@
     "react-toastify": "^9.1.2",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "slick-carousel": "^1.8.1",
-    "standard": "^17.0.0"
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "css-loader": "^6.7.3"
