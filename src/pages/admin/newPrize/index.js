@@ -212,12 +212,13 @@ const PrizeInfo = () => {
   };
 
   const handleSubmit = (event) => {
+    const uid = localStorage.getItem("uid");
     event.preventDefault();
     const prizeInfo = JSON.parse(localStorage.getItem("prizeInfo"));
     localStorage.removeItem("prizeInfo");
 
     axios
-      .post("http://localhost:3001/api/prizes/admin/addprize", prizeInfo)
+      .post(`http://localhost:3001/api/prizes/admin/${uid}/addprize`, prizeInfo)
       .then((res) => {
         console.log(res.data);
       });
