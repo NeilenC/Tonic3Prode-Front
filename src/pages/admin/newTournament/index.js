@@ -61,7 +61,6 @@ function LinearStepper() {
     const matches = JSON.parse(localStorage.getItem("matches"));
 
     const active = generalInfo.status === "active" ? true : false;
-    const stage = "32"; // el front todavia no lo envia
     const details = "this is the details of the tournament";
 
     async function createTournament() {
@@ -74,7 +73,7 @@ function LinearStepper() {
           active: active,
           beginning: generalInfo.beginning,
           ending: generalInfo.finishing,
-          stage: stage,
+          stage: generalInfo.stage,
           title: generalInfo.title,
           details: details,
           type: generalInfo.type,

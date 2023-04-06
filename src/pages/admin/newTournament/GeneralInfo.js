@@ -13,9 +13,10 @@ const GeneralInfo = () => {
   const [status, setStatus] = useState("active");
   const [type, setType] = useState("winner-remains-on-court");
   const [members, setMembers] = useState("teams");
-  const [numMatches, setNumMatches] = useState(32);
+  const [numMatches, setNumMatches] = useState("");
   const [beginning, setBeginning] = useState("");
   const [finishing, setFinishing] = useState("");
+  const [stage, setStage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -28,6 +29,7 @@ const GeneralInfo = () => {
       setMembers(generalInfo.members);
       setBeginning(generalInfo.beginning);
       setFinishing(generalInfo.finishing);
+      setStage(generalInfo.stage);
       setImageUrl(generalInfo.imageUrl);
     }
   }, []);
@@ -61,6 +63,15 @@ const GeneralInfo = () => {
     localStorage.setItem(
       "generalInfo",
       JSON.stringify({ ...getGeneralInfo(), type: event.target.value })
+    );
+  };
+
+  const handleStageChange = (event) => {
+    setStage(event.target.value);
+    setNumMatches(event.target.value)
+    localStorage.setItem(
+      "generalInfo",
+      JSON.stringify({ ...getGeneralInfo(), stage: event.target.value, numMatches: event.target.value })
     );
   };
 
@@ -107,6 +118,8 @@ const GeneralInfo = () => {
       numMatches,
       beginning,
       finishing,
+      stage,
+      imageUrl,
     };
   };
 
@@ -114,7 +127,7 @@ const GeneralInfo = () => {
     <form
       suppressHydrationWarning={true}
       className={styles.form}
-      style={{ width: "100%", minWidth: isMobile ? "360px" : "auto",  }}
+      style={{ width: "100%", minWidth: isMobile ? "360px" : "auto" }}
     >
       <TextField
         label="Title"
@@ -125,7 +138,7 @@ const GeneralInfo = () => {
         required
       />
       <FormControl fullWidth>
-        <InputLabel id="status-select-label">Estado</InputLabel>
+        <InputLabel id="status-select-label">Status</InputLabel>
         <Select
           labelId="status-select-label"
           id="status-select"
@@ -134,12 +147,12 @@ const GeneralInfo = () => {
           onChange={handleStatusChange}
           className={styles.input}
         >
-          <MenuItem value="active">Activo</MenuItem>
-          <MenuItem value="finish">Finalizado</MenuItem>
+          <MenuItem value="active">Active</MenuItem>
+          <MenuItem value="finish">Finish</MenuItem>
         </Select>
       </FormControl>
       <FormControl fullWidth>
-        <InputLabel id="type-select-label">Tipo</InputLabel>
+        <InputLabel id="type-select-label">Type</InputLabel>
         <Select
           labelId="type-select-label"
           id="type-select"
@@ -148,15 +161,35 @@ const GeneralInfo = () => {
           onChange={handleTypeChange}
           className={styles.input}
         >
-          <MenuItem value="winner remains on court">Ganador</MenuItem>
-          <MenuItem value="points tournament">Puntos</MenuItem>
-          <MenuItem value="points tournament with group face">
-            Puntos en la fase de grupos
+          <MenuItem value="winner remains on court">
+            Winner remains on court
+          </MenuItem>
+          <MenuItem value="points tournament">Points tournament</MenuItem>
+          <MenuItem value="points tournament with group stage">
+            Points with group stage
           </MenuItem>
         </Select>
       </FormControl>
       <FormControl fullWidth>
-        <InputLabel id="members-select-label">Miembros</InputLabel>
+          <InputLabel id="Stage-select-label">Stage</InputLabel>
+          <Select
+            labelId="Stage-select-label"
+            id="Stage-select"
+            value={stage}
+            label="Stage"
+            onChange={handleStageChange}
+            className={styles.input}
+          >
+            <MenuItem value="32">32</MenuItem>
+            <MenuItem value="16">16</MenuItem>
+            <MenuItem value="8">8</MenuItem>
+            <MenuItem value="4">4</MenuItem>
+            <MenuItem value="2">2</MenuItem>
+            <MenuItem value="1">1</MenuItem>
+          </Select>
+        </FormControl>
+      <FormControl fullWidth>
+        <InputLabel id="members-select-label">Members</InputLabel>
         <Select
           labelId="members-select-label"
           id="members-select"
@@ -165,8 +198,8 @@ const GeneralInfo = () => {
           onChange={handleMembersChange}
           className={styles.input}
         >
-          <MenuItem value="teams">Equipos</MenuItem>
-          <MenuItem value="countrys">Países</MenuItem>
+          <MenuItem value="teams">Teams</MenuItem>
+          <MenuItem value="countries">Countries</MenuItem>
         </Select>
       </FormControl>
       <TextField

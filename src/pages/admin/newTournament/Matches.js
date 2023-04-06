@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import AddMatchCard from "@/commons/AddMatchCard";
-import availableStadiums from "@/fakeData/stadiums";
 import { Box, width } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 import axios from "axios";
@@ -24,20 +23,11 @@ const Matches = () => {
   const [teams, setTeams] = useState(
     JSON.parse(localStorage.getItem("teams")) || []
   );
-  const [stadiums, setStadiums] = useState(availableStadiums);
   const [matches, setMatches] = useState(
     JSON.parse(localStorage.getItem("matches")) || []
   );
   const isMobile = useMediaQuery("(max-width:600px)");
   const [editingMatch, setEditingMatch] = useState(null);
-
-  useEffect(() => {
-    async function getStadiums() {
-      const response = await axios.get("http://localhost:3001/api/stadiums");
-      setStadiums(response.data);
-    }
-    getStadiums();
-  }, []);
 
   const handleAddMatch = (newMatch) => {
     if (editingMatch) {
@@ -110,14 +100,6 @@ const Matches = () => {
                   display: isMobile ? "none" : "static",
                 }}
               >
-                Stadium
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "center",
-                  display: isMobile ? "none" : "static",
-                }}
-              >
                 Actions
               </TableCell>
             </TableRow>
@@ -126,9 +108,7 @@ const Matches = () => {
             {matches.map((match, i) => (
               <TableRow key={i + 1}>
                 <TableCell sx={{ textAlign: "center" }}>{i + 1}</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  {match.date}
-                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{match.date}</TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
@@ -142,14 +122,6 @@ const Matches = () => {
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {isMobile ? match.awayTeam.shortName : match.awayTeam.name}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    textAlign: "center",
-                    display: isMobile ? "none" : "static",
-                  }}
-                >
-                  {match.stadium.name}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -189,7 +161,6 @@ const Matches = () => {
           <AddMatchCard
             onAddMatch={handleAddMatch}
             teams={teams}
-            stadiums={stadiums}
             editingMatch={editingMatch}
           />
         </DialogContent>
