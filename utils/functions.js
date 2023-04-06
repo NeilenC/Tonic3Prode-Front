@@ -47,3 +47,9 @@ export const signUpGoogle = async (auth, dispatch) => {
 export const logOut = (auth) => {
   signOut(auth);
 };
+
+export const changeHour = (hour) => {
+  let hours = Math.floor(hour / 100);
+  let minutes = hour % 100;
+  return  hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+};

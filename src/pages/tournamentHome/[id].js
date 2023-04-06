@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box, Button } from "@mui/material";
 import {
   Scoreboard as MypredictionsIcon,
@@ -28,7 +28,8 @@ const Home = ({}) => {
         startIcon={<MypredictionsIcon />}
         sx={{ width: "250px", margin: "25px 0px 15px 0px", fontSize: "20px" }}
         onClick={() => {
-          window.location.href = `/predictions/`;
+         // window.location.href = `Predictions/`;
+          router.push(`Predictions/${id}`) 
         }}
       >
         My predictions
@@ -83,6 +84,7 @@ const Home = ({}) => {
       </Button>
     </Box>
   );
-};
+      }
+//};
 
 export default Home;
