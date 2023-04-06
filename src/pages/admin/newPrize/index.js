@@ -12,6 +12,7 @@ import {
   Box,
 } from "@mui/material";
 import axios from "axios";
+import customAxios from "../../../../utils/customAxios";
 
 const PrizeInfo = () => {
   // States
@@ -57,7 +58,7 @@ const PrizeInfo = () => {
       setThirdPrize(prizeInfo.thirdPrize);
     }
 
-    axios.get("http://localhost:3001/api/tournaments").then((res) => {
+    customAxios.get("http://localhost:3001/api/tournaments/all").then((res) => {
       console.log(res.data, "info tournaments");
       const tournaments = res.data.map((tournament) => tournament.title);
       console.log(tournaments, "tournaments");
@@ -73,8 +74,8 @@ const PrizeInfo = () => {
   };
 
   const handleTournamentChange = (event) => {
-    axios
-      .get("http://localhost:3001/api/tournaments")
+    customAxios
+      .get("http://localhost:3001/api/tournaments/all")
       .then((res) => {
         const filteredTournament = res.data.find(
           (tournament) => tournament.title === event.target.value
@@ -211,12 +212,13 @@ const PrizeInfo = () => {
   };
 
   const handleSubmit = (event) => {
+    const uid = localStorage.getItem("uid");
     event.preventDefault();
     const prizeInfo = JSON.parse(localStorage.getItem("prizeInfo"));
     localStorage.removeItem("prizeInfo");
 
     axios
-      .post("http://localhost:3001/api/prizes/admin/addprize", prizeInfo)
+      .post(`http://localhost:3001/api/prizes/admin/${uid}/addprize`, prizeInfo)
       .then((res) => {
         console.log(res.data);
       });

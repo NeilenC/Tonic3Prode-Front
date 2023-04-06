@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
+import customAxios from "../../../../utils/customAxios";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -20,9 +21,9 @@ const Tournaments = () => {
 
   useEffect(() => {
     async function searchTournaments() {
-      const response = await axios.get(
-        "http://localhost:3001/api/tournaments/"
-      );
+      const response = 
+      await customAxios.
+      get("http://localhost:3001/api/tournaments/all");
       return response.data;
     }
     searchTournaments().then((data) => setTournaments(data));

@@ -9,8 +9,9 @@ const home = ({ width }) => {
 
   useEffect(() => {
     async function searchTournaments() {
+      const uid = localStorage.getItem("uid");
       const response = await axios.get(
-        "http://localhost:3001/api/tournaments/"
+        `http://localhost:3001/api/tournaments/all/${uid}`
       );
       console.log(response.data);
       return response.data;

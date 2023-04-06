@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import styles from "../../../styles/matches/ResultCard.module.css";
 import axios from "axios";
+import customAxios from "../../../../utils/customAxios";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 
@@ -28,7 +29,7 @@ const Results = () => {
     setUser(localStorage.getItem("uid"));
 
     if (id) {
-      axios
+      customAxios
         .get(`http://localhost:3001/api/games/search/${id}`)
         .then((allgames) => {
           return allgames;
@@ -50,7 +51,7 @@ const Results = () => {
 
   useEffect(() => {
     if (stage) {
-      axios
+      customAxios
         .get(`http://localhost:3001/api/games/search/${id}`)
         .then((allgames) => {
           return allgames;
