@@ -13,7 +13,7 @@ const home = ({ width }) => {
       const response = await axios.get(
         `http://localhost:3001/api/tournaments/all/${uid}`
       );
-      console.log(response.data);
+
       return response.data;
     }
     searchTournaments().then((data) => setTournaments(data));
@@ -38,8 +38,19 @@ const home = ({ width }) => {
         >
           {tournaments.map((tournament) => {
             return (
-              <Grid item key={tournament._id} xs={12} sm={6} md={4} onClick={() => {{window.location.href = `http://localhost:3000/tournamentHome/${tournament._id}` }}}>
-                  <TournamentCard tournament={tournament} />
+              <Grid
+                item
+                key={tournament._id}
+                xs={12}
+                sm={6}
+                md={4}
+                onClick={() => {
+                  {
+                    window.location.href = `http://localhost:3000/tournamentHome/${tournament._id}`;
+                  }
+                }}
+              >
+                <TournamentCard tournament={tournament} />
               </Grid>
             );
           })}

@@ -12,13 +12,16 @@ export const signUpGoogle = async (auth, dispatch) => {
     const userFirebase = await new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => resolve(user));
     });
+
     console.log("USERF", userFirebase);
     const users = await axios.get("http://localhost:3001/api/users");
     localStorage.setItem("uid", userFirebase.uid);
-    dispatch(setUserInfo({
-      email: userFirebase.email,
-      fullName: userFirebase.displayName,
-    }));
+    dispatch(
+      setUserInfo({
+        email: userFirebase.email,
+        fullName: userFirebase.displayName,
+      })
+    );
     const userMongoDB = users.data.filter(
       (user) => user.uid === userFirebase.uid
     );
@@ -30,11 +33,11 @@ export const signUpGoogle = async (auth, dispatch) => {
     } else {
       dispatch(setFirstLogin(true));
       dispatch(
-      setUserInfo({
-              email: userFirebase.email,
-              username: userFirebase.displayName,
-            })
-          );
+        setUserInfo({
+          email: userFirebase.email,
+          username: userFirebase.displayName,
+        })
+      );
       toast.error(
         "User not found in database. Please complete the login form."
       );
@@ -51,5 +54,5 @@ export const logOut = (auth) => {
 export const changeHour = (hour) => {
   let hours = Math.floor(hour / 100);
   let minutes = hour % 100;
-  return  hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+  return hours + ":" + (minutes < 10 ? "0" : "") + minutes;
 };
