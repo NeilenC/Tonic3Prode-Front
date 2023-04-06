@@ -1,0 +1,32 @@
+.numberInput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+}
+
+.input {
+  color: black;
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
+  background-color: #f3f0f0;
+  appearance: textfield;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .number-input {
+    max-width: 150px;
+  }
+}
+
+.containsNumber {
+  background-color: red;
+}
