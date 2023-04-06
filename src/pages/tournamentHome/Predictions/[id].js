@@ -112,21 +112,31 @@ const Predictions = () => {
           homeTeamScore: scores[item._id]?.team1Score || "",
           awayTeamScore: scores[item._id]?.team2Score || "",
         },
+        status: scores[item._id]?.team1Score && scores[item._id]?.team2Score ? "pre_match" : "pending"
       };
     }
   });
 
-  const sendPredictions = async (e) => {
+  //////////Objeto para el update//////////
+  const updatePredictions = games.map((item) => {
+    return {
+      gameId: item.id
+
+    }
+  })
+  
+  const sendPredictions = async () => {
     try {
       const response = await axios.post(
         `http://localhost:3001/api/predictions/create/${user}`,
         predictions
       );
-      toast.success("You Successfully updated your predictions !");
+      toast.success("You Successfully create your predictions !");
     } catch (error) {
       console.error(error);
     }
   };
+
 
   /////////// COMIENZO DEL COMPONENTE //////////////////
   return (
@@ -149,7 +159,7 @@ const Predictions = () => {
             </MenuItem>
           ))}
         </Select>
-            
+
         <Button
           onClick={() => sendPredictions()}
           variant="contained"
@@ -182,6 +192,7 @@ const Predictions = () => {
                   <PredictionCards
                     item={item}
                     handleScoreChange={handleScoreChange}
+                    user={user} id={id}
                   />
                 </Box>
               ) : (

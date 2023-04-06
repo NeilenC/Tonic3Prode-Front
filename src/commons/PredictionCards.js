@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
 
-const PredictionCards = ({ item, handleScoreChange }) => {
+const PredictionCards = ({ item, handleScoreChange, user, id }) => {
   const [team1Score, setTeam1Score] = useState(0);
   const [team2Score, setTeam2Score] = useState(0);
-  const [style, setStyle] = useState(false);
+  const [userPredictions, setUserPredictios] = useState([]);
 
-  
   const handleTeam1Increment = () => {
     if (team1Score <= 30) {
       setTeam1Score(team1Score + 1);
@@ -41,6 +41,58 @@ const PredictionCards = ({ item, handleScoreChange }) => {
     handleScoreChange(item._id, "team2Score", team2Score);
   }, [team1Score, team2Score]);
 
+  ////Filtar todos las predicciones segun el id del torneo de cada usuario //////
+  // Si hay un partido que no tiene predicciones, mandar un { "" } ////
+  useEffect(() => {
+    const getUserPredictions = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/predictions/${user}
+          `
+        );
+        const predictionsData = response.data;
+        const filterPredictios = predictionsData.filter(
+          (prediction) => prediction.gameId.tournaments == id
+        );
+        setUserPredictios(filterPredictios);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserPredictions();
+  }, []);
+
+  console.log(userPredictions);
+  //// Actualizacion de la prediccion /////
+
+  // const updatePredictions = userPredictions?.map((item) => {
+  //   return (
+  //     {
+  //       gameId: gameId._id,
+  //       userId: userId._id,
+  //     },
+  //     {
+  //       predictions: {
+  //         awayTeamScore,
+  //         homeTeamScore,
+  //       },
+  //       status,
+  //     }
+  //   );
+  // });
+
+  const actualizarPredictions = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/api/predictions/${user}`,
+        predictions
+      );
+      toast.success("You Successfully updated your predictions !");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box
       key={item._id}
@@ -51,7 +103,7 @@ const PredictionCards = ({ item, handleScoreChange }) => {
         width: "100%",
         maxWidth: "400px",
         gap: "10px",
-        p: "60px",
+        p: "40px",
         margin: "10px",
         backgroundColor: "#fcfcfc",
         flexDirection: "column",
@@ -59,22 +111,27 @@ const PredictionCards = ({ item, handleScoreChange }) => {
       }}
       className={styles.numberInput}
     >
+      <Button variant="text">Submit prediction change </Button>
       {/* MODIFICAR */}
       <Typography>{changeHour(item.hour)}</Typography>
-      { item.result[0] ? <Box
-        sx={{
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Typography sx={{ textAlign: "center", justifyContent: "center" }}>
-          Result:
-        </Typography>
-        <Box>
-          {item.result[0]?.awayTeamScore} - {item.result[0]?.homeTeamScore}
+      {item.result[0] ? (
+        <Box
+          sx={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography sx={{ textAlign: "center", justifyContent: "center" }}>
+            Result:
+          </Typography>
+          <Box>
+            {item.result[0]?.awayTeamScore} - {item.result[0]?.homeTeamScore}
+          </Box>
         </Box>
-      </Box> : ""}
+      ) : (
+        ""
+      )}
       <Box sx={{ alignItems: "center", gap: "1px" }}>
         {" "}
         <div
@@ -95,9 +152,13 @@ const PredictionCards = ({ item, handleScoreChange }) => {
           </span>
         </div>
         <div style={{ flexDirection: "column" }}>
-          <IconButton aria-label="increment" onClick={handleTeam1Increment}>
-            <Add />
-          </IconButton>
+          {item.status != "close" ? (
+            <IconButton aria-label="increment" onClick={handleTeam1Increment}>
+              <Add />
+            </IconButton>
+          ) : (
+            ""
+          )}
 
           <input
             type="number"
@@ -108,12 +169,16 @@ const PredictionCards = ({ item, handleScoreChange }) => {
             value={team1Score || ""}
             onChange={(e) => {
               handleScoreChange(item._id, "team1Score", e.target.value);
-              setStyle(true)
+              setStyle(true);
             }}
           />
-          <IconButton aria-label="decrement" onClick={handleTeam1Decrement}>
-            <Remove />
-          </IconButton>
+          {item.status != "close" ? (
+            <IconButton aria-label="decrement" onClick={handleTeam1Decrement}>
+              <Remove />
+            </IconButton>
+          ) : (
+            ""
+          )}
         </div>
       </Box>
       <span> Vs </span>
@@ -125,10 +190,13 @@ const PredictionCards = ({ item, handleScoreChange }) => {
             justifyContent: "center",
           }}
         >
-          <IconButton aria-label="increment" onClick={handleTeam2Increment}>
-            <Add />
-          </IconButton>
-
+          {item.status != "close" ? (
+            <IconButton aria-label="increment" onClick={handleTeam2Increment}>
+              <Add />
+            </IconButton>
+          ) : (
+            ""
+          )}
           <input
             type="number"
             min="0"
@@ -138,12 +206,16 @@ const PredictionCards = ({ item, handleScoreChange }) => {
             value={team2Score || ""}
             onChange={(e) => {
               handleScoreChange(item._id, "team2Score", e.target.value);
-              setStyle(true)
+              setStyle(true);
             }}
           />
-          <IconButton aria-label="decrement" onClick={handleTeam2Decrement}>
-            <Remove />
-          </IconButton>
+          {item.status != "close" ? (
+            <IconButton aria-label="decrement" onClick={handleTeam2Decrement}>
+              <Remove />
+            </IconButton>
+          ) : (
+            ""
+          )}
           <div
             style={{
               display: "flex",
