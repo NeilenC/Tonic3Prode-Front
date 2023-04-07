@@ -104,11 +104,8 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
 
     const beginningDate = new Date(JSON.parse(localStorage.getItem("generalInfo")).beginning);
     const finishingDate = new Date(JSON.parse(localStorage.getItem("generalInfo")).finishing);
-    console.log("finishingDate", finishingDate)
-    console.log("beginningDate", beginningDate)
     const inputDate = new Date(year, month - 1, day); // el mes arranca de 0 
-    console.log("inputDate", inputDate)
-
+ 
     if (inputDate < beginningDate && year.length === 4) {
       alert("The date entered is before than the tournament beginning date. Please enter a valid date.");
       return;

@@ -1,0 +1,33 @@
+{
+    "welcome": "Welcome",
+    "matches": "Future matches",
+    
+    
+    "predictions": "My predictions",
+    "ranking" : "Ranking",
+    "fixture" : "Fixtures",
+    "torneo": "Tournaments",
+    "panel": "Admin panel",
+    
+    "profile": "Profile",
+    "config": "Configuration",
+    "logout": "Logout",
+    
+    "state": "Status",
+    "finish": "Finished",
+    "inactive": "Inactive",
+    "active": "Active",
+    
+    "type": "Type",
+    "winner": "Winner",
+    "points": "Points",
+    "points2": "Points tournament with group phase",
+    "members": "Members",
+    "teams": "Teams",
+    "countries": "Country",
+    
+    "notifications" :"I want to receive notifications",
+    "save":"Save changes",
+    "cell": "Numero telefónico"
+
+    }

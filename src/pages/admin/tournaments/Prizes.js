@@ -19,7 +19,6 @@ const Prizes = () => {
 
   useEffect(() => {
     axios.get("http://localhost:3001/api/prizes").then((res) => {
-      console.log(res.data);
       setPrizes(res.data);
     });
   }, []);

@@ -12,7 +12,6 @@ const home = ({ width }) => {
       const response = await axios.get(
         "http://localhost:3001/api/tournaments/"
       );
-      console.log(response.data);
       return response.data;
     }
     searchTournaments().then((data) => setTournaments(data));

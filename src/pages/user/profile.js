@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -7,6 +7,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { makeStyles } from "@material-ui/core/styles";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import SetIdiomas from "@/commons/SetIdiomas";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   success: {
@@ -27,27 +29,12 @@ const profile = () => {
   const [uid, setUid] = useState("");
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
-  const [locale, setLocale] = useState('en');
-
-  
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
   }, []);
-  
 
-  const handleLocaleChange = (e) => {
-    setLocale(e.target.value);
-  };
-
-  const languages = [
-    { value: null, label: '-' },
-    { value: 'en', label: 'English' },
-    { value: 'es', label: 'Español' },
-    { value: 'pt', label: 'Portugues' },
-  ];
-
-//Obtenemos info usuario
+  //Obtenemos info usuario
   async function getUser(uid) {
     try {
       const response = await fetch(`http://localhost:3001/api/users/${uid}`);
@@ -59,7 +46,7 @@ const profile = () => {
       return err;
     }
   }
-  
+
   useEffect(() => {
     getUser();
   }, [uid]);
@@ -85,7 +72,7 @@ const profile = () => {
       }
       return data;
     } catch (error) {
-      return error
+      return error;
     }
   };
 
@@ -102,7 +89,7 @@ const profile = () => {
 
   return (
     <Box
-    // flexDirection={column}
+      // flexDirection={column}
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "25ch" },
@@ -123,7 +110,8 @@ const profile = () => {
         />
         <TextField
           margin="normal"
-          label="Numero celular"
+          label={<FormattedMessage id="cell" />}
+
           type="number"
           InputLabelProps={{
             shrink: true,
@@ -135,16 +123,9 @@ const profile = () => {
           onChange={handleChange}
           inputProps={{ "aria-label": "controlled" }}
         />
-        Deseo recibir notificaciones
+        <FormattedMessage id="notifications" />
       </div>
-      Cambiar idioma: <br/>
-            <select value={locale} onChange={handleLocaleChange}>
-        {languages.map((language) => (
-          <option key={language.value} value={language.value}>
-            {language.label}
-          </option>
-        ))}
-      </select>
+      <SetIdiomas />
       <Button
         type="submit"
         fullWidth
@@ -152,7 +133,7 @@ const profile = () => {
         sx={{ mt: 3, mb: 2 }}
         onClick={handleSave}
       >
-        Guardar cambios
+        <FormattedMessage id="save" />
       </Button>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <SnackbarContent
@@ -160,7 +141,6 @@ const profile = () => {
           message={
             <span className={useStyles.message}>
               <CheckCircleIcon className={useStyles.icon} />
-              Cambios guardados con éxito
             </span>
           }
         />
