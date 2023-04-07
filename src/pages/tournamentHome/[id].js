@@ -93,10 +93,10 @@ const Home = ({}) => {
         sx={{ width: "250px", margin: "25px 0px 15px 0px", fontSize: "20px" }}
         onClick={() => {
           sendPredictions();
-          //router.push(`Predictions/${id}`);
+          router.push(`Predictions/${id}`);
         }}
       >
-        <Link href={`Predictions/${id}`}>Predictions</Link>
+      Predictions
       </Button>
 
       <Button
