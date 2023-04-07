@@ -14,11 +14,13 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../../../redux/reducers/userInfo";
 
+
 export const LoginForm = () => {
   const userInfo = useSelector((state) => state.userInfo);
   const email = userInfo.email;
   const nameGoogle = userInfo.name;
   const lastNameGoogle = userInfo.lastName;
+  const countryIP = userInfo.country;
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
   const [cellphone, setCellphone] = useState("");
@@ -36,12 +38,14 @@ export const LoginForm = () => {
         lastName: lastNameGoogle,
         address: address,
         cellphone: cellphone,
+        country: countryIP,
       })
       .then((res) => {
         dispatch(
           setUserInfo({
             email: "",
             fullName: "",
+            country: "",
           })
         );
         window.location.href = "http://localhost:3000/home";
@@ -142,6 +146,18 @@ export const LoginForm = () => {
               />
             )}
           </InputMask>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="country"
+            label="Country"
+            name="country"
+            autoComplete="country"
+            autoFocus
+            defaultValue={countryIP}
+            disabled={true}
+          />
           <Button
             type="submit"
             fullWidth

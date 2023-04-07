@@ -35,6 +35,7 @@ export const signUpGoogle = async (auth, dispatch) => {
         setUserInfo({
           email: userFirebase.email,
           fullName: userFirebase.displayName,
+          country: country,
         })
       );
       const userMongoDB = users.data.filter(
@@ -51,6 +52,7 @@ export const signUpGoogle = async (auth, dispatch) => {
           setUserInfo({
             email: userFirebase.email,
             username: userFirebase.displayName,
+            country: country,
           })
         );
         toast.error(
