@@ -33,14 +33,18 @@ const profile = () => {
 
   //Obtenemos info usuario
   async function getUser(uid) {
-    try {
-      const response = await fetch(`http://localhost:3001/api/users/search/${uid}`);
-      const data = await response.json();
-      setCellphone(data.cellphone);
-      setAddress(data.address);
-      return data;
-    } catch (err) {
-      return err;
+    if (uid !== "undefined") {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/users/search/${uid}`
+        );
+        const data = await response.json();
+        setCellphone(data.cellphone);
+        setAddress(data.address);
+        return data;
+      } catch (err) {
+        return err;
+      }
     }
   }
 
@@ -49,27 +53,29 @@ const profile = () => {
   }, [uid]);
 
   const handleSave = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/users/update/${uid}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            cellphone,
-            address,
-          }),
+    if (uid !== "undefined") {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/users/update/${uid}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              cellphone,
+              address,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (response.status === 200) {
+          setOpen(true);
         }
-      );
-      const data = await response.json();
-      if (response.status === 200) {
-        setOpen(true);
+        return data;
+      } catch (error) {
+        return error;
       }
-      return data;
-    } catch (error) {
-      return error;
     }
   };
 

@@ -34,18 +34,17 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-      uid
-        ? axios
-            .get(`http://localhost:3001/api/users/search/${uid}`)
-            .then((res) => {
-              setUser(res.data);
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        : null;
-    }, [uid]);
-
+    uid
+      ? axios
+          .get(`http://localhost:3001/api/users/search/${uid}`)
+          .then((res) => {
+            setUser(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      : null;
+  }, [uid]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -105,8 +104,16 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              {user && <MenuItem onClick={handleClose}>Perfil</MenuItem>}
-              {user && <MenuItem onClick={handleClose}>Configuración</MenuItem>}
+              {user && (
+                <Link href="/user/profilePage">
+                  <MenuItem onClick={handleClose}>Perfil</MenuItem>
+                </Link>
+              )}
+              {user && (
+                <Link href="/user/editProfile">
+                  <MenuItem onClick={handleClose}>Configuración</MenuItem>
+                </Link>
+              )}
               {user && (
                 <MenuItem
                   onClick={() => {
@@ -127,25 +134,19 @@ const Navbar = () => {
         onClose={() => setDrawerOpen(false)}
       >
         <div style={{ width: "250px" }}>
-          <MenuItem
-            onClick={() => {
-              setDrawerOpen(false);
-              window.location.href = "http://localhost:3000/home";
-            }}
-          >
-            Tournaments
-          </MenuItem>
-
-          {user.rol === "admin" ? (
-            <MenuItem
-              onClick={() => {
-                setDrawerOpen(false);
-                window.location.href = "http://localhost:3000/admin";
-              }}
-            >
-              Admin Panel
+          <Link href="/home">
+            <MenuItem onClick={() => setDrawerOpen(false)}>
+              Tournaments
             </MenuItem>
-          ) : null}
+          </Link>
+
+          {user.rol === "admin" && (
+            <Link href="/admin">
+              <MenuItem onClick={() => setDrawerOpen(false)}>
+                Admin Panel
+              </MenuItem>
+            </Link>
+          )}
         </div>
       </Drawer>
     </>
