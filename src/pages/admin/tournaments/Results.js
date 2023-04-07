@@ -115,7 +115,8 @@ const Results = () => {
     });
 
     axios
-      .put("http://localhost:3001/api/games/admin", {
+      .put(`http://localhost:3001/api/games/admin/${id}`, {
+        stage:"32",
         uid: uid,
         results: newResult,
       })

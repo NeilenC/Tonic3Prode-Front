@@ -8,6 +8,7 @@ import store from "../../redux/store";
 //import { getGeoLocation } from "../../utils/geolocation";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./Navbar";
+import { onPageLoad } from "../../utils/verificationIP"; 
 
 export default function App({ Component, pageProps }) {
   // const locale = typeof window !== "undefined" ? navigator.language : "es";
