@@ -15,6 +15,7 @@ import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUid } from "../../redux/reducers/uid";
+import Link from "next/link";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -87,7 +88,9 @@ const Navbar = () => {
             >
               {user ? <MenuItem onClick={handleClose}>Perfil</MenuItem> : ""}
               {user ? (
+                <Link href="/user/profile">
                 <MenuItem onClick={handleClose}>Configuración</MenuItem>
+                </Link>
               ) : (
                 ""
               )}

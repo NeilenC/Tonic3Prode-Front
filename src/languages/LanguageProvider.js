@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import Spanish from "./es.json";
 import English from "./en.json";
 import Portugues from "./pt.json";
-import { IntlProvider } from "react-intl";
+import { injectIntl, IntlProvider, IntlShape,  ReactIntlErrorCode } from "react-intl";
 export const LanguageContext = createContext();
 
 const LanguageProvider = ({ children }) => {
@@ -24,7 +24,7 @@ const LanguageProvider = ({ children }) => {
       setLanguage(English);
     } else if (locale.includes("pt")) {
       setLanguage(Portugues);
-    } else {
+    } else if (locale.includes("es")){
       setLanguage(Spanish);
     }
   }, [locale]);

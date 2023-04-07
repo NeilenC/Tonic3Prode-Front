@@ -20,7 +20,6 @@ const SetIdiomas = () => {
 
   return (
     <div>
-      Cambiar idioma: <br />
       <select value={locale} onChange={handleLocaleChange}>
         {languages.map((language) => (
           <option key={language.value} value={language.value}>

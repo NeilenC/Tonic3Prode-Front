@@ -1,14 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
+import React, { useEffect, useState } from "react";
+import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { makeStyles } from "@material-ui/core/styles";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SetIdiomas from "@/commons/SetIdiomas";
-import { FormattedMessage } from "react-intl";
+import ReactInputMask from "react-input-mask";
 
 const useStyles = makeStyles((theme) => ({
   success: {
@@ -89,53 +86,26 @@ const profile = () => {
 
   return (
     <Box
-      // flexDirection={column}
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "25ch" },
-        display: "column",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        border: "0.5vh solid grey",
+        maxWidth: "50%",
+        margin: "auto",
+        p: "2% 1.5% 2% 1.5% ",
+        mt: "2%",
       }}
       noValidate
       autoComplete="on"
     >
-      <div>
-        <TextField
-          label="Dirección"
-          variant="outlined"
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <TextField
-          margin="normal"
-          label={<FormattedMessage id="cell" />}
+      <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
+        Modificar datos de usuario:
+      </Typography>
 
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={(e) => setCellphone(e.target.value)}
-        />
-        <Checkbox
-          checked={checked}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-        <FormattedMessage id="notifications" />
-      </div>
-      <SetIdiomas />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={handleSave}
-      >
-        <FormattedMessage id="save" />
-      </Button>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <SnackbarContent
           className={useStyles.success}
           message={
@@ -145,6 +115,73 @@ const profile = () => {
           }
         />
       </Snackbar>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: "3%",
+          marginTop: "3%",
+        }}
+      >
+        <TextField
+          mt="5%"
+          label="Dirección"
+          variant="outlined"
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <ReactInputMask
+          mask="+99-999-99999999"
+          maskChar=""
+          onChange={(e) => setCellphone(e.target.value)}
+        >
+          {() => (
+            <TextField
+              id="Cellphone"
+              type="text"
+              label="Numero celular"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              placeholder="+54-911-12345678"
+              required={true}
+            />
+          )}
+        </ReactInputMask>
+      </div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
+          Deseo recibir notificaciones
+        </Typography>
+        <Checkbox
+          checked={checked}
+          onChange={handleChange}
+          inputProps={{ "aria-label": "controlled" }}
+        />
+      </div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Typography
+          component="p"
+          variant="p"
+          color="#454546"
+          marginTop="3%"
+          marginLeft="1.5%"
+        >
+          Cambiar idioma:
+        </Typography>
+        <SetIdiomas />
+      </div>
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleSave}
+      >
+        Guardar cambios
+      </Button>
     </Box>
   );
 };
