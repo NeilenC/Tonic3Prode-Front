@@ -60,7 +60,7 @@ const PredictionCards = ({
     handleTeam1Decrement();
     handleTeam2Increment();
     handleTeam2Decrement();
-  }, [team1Score, team2Score])
+  }, [team1Score, team2Score]);
 
   //   // useEffect(() => {
   //   //   handleScoreChange(item._id, "team1Score", team1Score);
@@ -75,12 +75,12 @@ const PredictionCards = ({
           `http://localhost:3001/api/predictions/${user}
               `
         );
-        console.log("Linea 88", response.data);
+        console.log("Linea 78", response.data);
         const predictionsData = response.data;
         const filterPredictios = predictionsData.filter(
           (prediction) => prediction.gameId.tournaments == id
         );
-        console.log("linea 93", filterPredictios);
+        console.log("linea 83", filterPredictios);
         setUserPredictios(filterPredictios);
       } catch (error) {
         console.error(error);
@@ -93,7 +93,7 @@ const PredictionCards = ({
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
-
+  console.log("GAMEPREDICTIONS =======>", gamePredictions);
   return (
     <>
       <Box
@@ -113,7 +113,7 @@ const PredictionCards = ({
               Result:
             </Typography>
             <Box>
-              {game.result[0]?.awayTeamScore} - {game.result[0]?.homeTeamScore}
+              {game.result[0]?.homeTeamScore} - {game.result[0]?.awayTeamScore}
             </Box>
           </Box>
         ) : (
@@ -121,12 +121,12 @@ const PredictionCards = ({
         )}
 
         <img
-          src={gamePredictions[0]?.prediction.awayTeam.logo_url}
-          alt={gamePredictions[0]?.prediction.awayTeam.name}
+          src={gamePredictions[0]?.prediction.homeTeam.logo_url}
+          alt={gamePredictions[0]?.prediction.homeTeam.name}
           style={{ width: "4%" }}
         />
         <span style={{ fontSize: "90%", display: "inline-block" }}>
-          {gamePredictions[0]?.prediction.awayTeam.name}
+          {gamePredictions[0]?.prediction.homeTeam.shortName}
         </span>
         {gamePredictions[0]?.status != "close" ? (
           <IconButton
@@ -139,9 +139,9 @@ const PredictionCards = ({
           ""
         )}
         <input
-          type="number" 
+          type="number"
           defaultValue={0}
-          value={value}
+          //value={value}
           onChange={(e) => handleTeam1Increment()}
         />
         {gamePredictions[0]?.status != "close" ? (
@@ -161,7 +161,7 @@ const PredictionCards = ({
         )}
         <input
           type="number"
-          value={gamePredictions[0]?.prediction.homeTeamScore}
+          value={gamePredictions[0]?.prediction.awayTeamScore}
           // onChange={(e) =>
           //   handleScoreChange(item._id, "team2Score", e.target.value)
           // }
@@ -180,11 +180,11 @@ const PredictionCards = ({
           ""
         )}
         <span style={{ fontSize: "90%", display: "inline-block" }}>
-          {gamePredictions[0]?.prediction.homeTeam.name}
+          {gamePredictions[0]?.prediction.awayTeam.shortName}
         </span>
         <img
-          src={gamePredictions[0]?.prediction.homeTeam.logo_url}
-          alt={gamePredictions[0]?.prediction.homeTeam.name}
+          src={gamePredictions[0]?.prediction.awayTeam.logo_url}
+          alt={gamePredictions[0]?.prediction.awayTeam.name}
           style={{ width: "4%" }}
         />
       </Box>
