@@ -1,168 +1,194 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button, TextField } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
 
-const PredictionCards = ({ item, handleScoreChange }) => {
+const PredictionCards = ({
+  game,
+  // handleScoreChange,
+  user,
+  id,
+}) => {
   const [team1Score, setTeam1Score] = useState(0);
   const [team2Score, setTeam2Score] = useState(0);
-  const [style, setStyle] = useState(false);
+  const [userPredictions, setUserPredictios] = useState([]);
+  //const [scores, setScores] = useState({})
 
-  
   const handleTeam1Increment = () => {
-    if (team1Score <= 30) {
-      setTeam1Score(team1Score + 1);
+    console.log("FUNCIONA LINEA 22");
+    const awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
+    if (typeof awayTeamScore == "string") {
+      awayTeamScore = 0;
+    } else {
+      setTeam1Score(awayTeamScore + 1);
     }
   };
 
   const handleTeam1Decrement = () => {
-    if (team1Score >= 0) {
-      setTeam1Score(team1Score - 1);
+    const awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
+    if (typeof awayTeamScore == "string") {
+      awayTeamScore = 0;
+    } else {
+      setTeam1Score(awayTeamScore - 1);
     }
   };
 
   const handleTeam2Increment = () => {
-    if (team2Score <= 30) {
-      setTeam2Score(team2Score + 1);
+    const homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
+    if (typeof homeTeamScore == "string") {
+      homeTeamScore = 0;
+    } else {
+      setTeam2Score(homeTeamScore + 1);
     }
   };
 
   const handleTeam2Decrement = () => {
-    if (team2Score >= 0) {
-      setTeam2Score(team2Score - 1);
+    const homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
+    if (typeof homeTeamScore == "string") {
+      homeTeamScore = 0;
+    } else {
+      setTeam2Score(homeTeamScore + 1);
     }
   };
 
   useEffect(() => {
-    handleScoreChange(item._id, "team1Score", team1Score);
-    handleScoreChange(item._id, "team2Score", team2Score);
+    handleTeam1Increment();
+    handleTeam1Decrement();
+    handleTeam2Increment();
+    handleTeam2Decrement();
   }, [team1Score, team2Score]);
 
+  //   // useEffect(() => {
+  //   //   handleScoreChange(item._id, "team1Score", team1Score);
+  //   //   handleScoreChange(item._id, "team2Score", team2Score);
+  //   // }, [team1Score, team2Score]);
+
+  // //////// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///////
+  useEffect(() => {
+    const getUserPredictions = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/predictions/${user}
+              `
+        );
+        console.log("Linea 78", response.data);
+        const predictionsData = response.data;
+        const filterPredictios = predictionsData.filter(
+          (prediction) => prediction.gameId.tournaments == id
+        );
+        console.log("linea 83", filterPredictios);
+        setUserPredictios(filterPredictios);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserPredictions();
+  }, [game]);
+
+  ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
+  const gamePredictions = userPredictions?.filter(
+    (prediction) => prediction.gameId._id === game._id
+  );
+  console.log("GAMEPREDICTIONS =======>", gamePredictions);
   return (
-    <Box
-      key={item._id}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        maxWidth: "400px",
-        gap: "10px",
-        p: "60px",
-        margin: "10px",
-        backgroundColor: "#fcfcfc",
-        flexDirection: "column",
-        borderRadius: "15px",
-      }}
-      className={styles.numberInput}
-    >
-      {/* MODIFICAR */}
-      <Typography>{changeHour(item.hour)}</Typography>
-      { item.result[0] ? <Box
-        sx={{
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+    <>
+      <Box
+        key={gamePredictions[0]?.gameId._id}
+        sx={{ display: "flex", alignItems: "center", my: 2 }}
       >
-        <Typography sx={{ textAlign: "center", justifyContent: "center" }}>
-          Result:
-        </Typography>
-        <Box>
-          {item.result[0]?.awayTeamScore} - {item.result[0]?.homeTeamScore}
-        </Box>
-      </Box> : ""}
-      <Box sx={{ alignItems: "center", gap: "1px" }}>
-        {" "}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            src={item.teams[0].logo_url}
-            alt={item.teams[0].name}
-            style={{ width: "30px", height: "30px" }}
-          />
-          <span style={{ fontSize: "90%", display: "inline-block" }}>
-            {item.teams[0].shortName}
-          </span>
-        </div>
-        <div style={{ flexDirection: "column" }}>
-          <IconButton aria-label="increment" onClick={handleTeam1Increment}>
-            <Add />
-          </IconButton>
-
-          <input
-            type="number"
-            min="0"
-            max="30"
-            pattern="[0-9]|[1-2][0-9]|30"
-            className={styles.input}
-            value={team1Score || ""}
-            onChange={(e) => {
-              handleScoreChange(item._id, "team1Score", e.target.value);
-              setStyle(true)
-            }}
-          />
-          <IconButton aria-label="decrement" onClick={handleTeam1Decrement}>
-            <Remove />
-          </IconButton>
-        </div>
-      </Box>
-      <span> Vs </span>
-      <Box sx={{ alignItems: "center", gap: "1px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <IconButton aria-label="increment" onClick={handleTeam2Increment}>
-            <Add />
-          </IconButton>
-
-          <input
-            type="number"
-            min="0"
-            max="30"
-            pattern="[0-9]|[1-2][0-9]|30"
-            className={styles.input}
-            value={team2Score || ""}
-            onChange={(e) => {
-              handleScoreChange(item._id, "team2Score", e.target.value);
-              setStyle(true)
-            }}
-          />
-          <IconButton aria-label="decrement" onClick={handleTeam2Decrement}>
-            <Remove />
-          </IconButton>
-          <div
-            style={{
-              display: "flex",
+        <Typography>{changeHour(game.hour)}</Typography>
+        {game.result[0] ? (
+          <Box
+            sx={{
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <img
-              src={item.teams[1].logo_url}
-              alt={item.teams[1].name}
-              style={{ width: "30px", height: "30px" }}
-            />
-            <span style={{ fontSize: "90%", display: "inline-block" }}>
-              {item.teams[1].shortName}
-            </span>
-          </div>
-        </div>
+            <Typography sx={{ textAlign: "center", justifyContent: "center" }}>
+              Result:
+            </Typography>
+            <Box>
+              {game.result[0]?.homeTeamScore} - {game.result[0]?.awayTeamScore}
+            </Box>
+          </Box>
+        ) : (
+          ""
+        )}
+
+        <img
+          src={gamePredictions[0]?.prediction.homeTeam.logo_url}
+          alt={gamePredictions[0]?.prediction.homeTeam.name}
+          style={{ width: "4%" }}
+        />
+        <span style={{ fontSize: "90%", display: "inline-block" }}>
+          {gamePredictions[0]?.prediction.homeTeam.shortName}
+        </span>
+        {gamePredictions[0]?.status != "close" ? (
+          <IconButton
+            aria-label="increment"
+            onClick={() => handleTeam1Increment()}
+          >
+            <Add />
+          </IconButton>
+        ) : (
+          ""
+        )}
+        <input
+          type="number"
+          defaultValue={0}
+          //value={value}
+          onChange={(e) => handleTeam1Increment()}
+        />
+        {gamePredictions[0]?.status != "close" ? (
+          <IconButton aria-label="decrement">
+            <Remove />
+          </IconButton>
+        ) : (
+          ""
+        )}
+        <span> Vs </span>
+        {gamePredictions[0]?.status != "close" ? (
+          <IconButton aria-label="increment">
+            <Add />
+          </IconButton>
+        ) : (
+          ""
+        )}
+        <input
+          type="number"
+          value={gamePredictions[0]?.prediction.awayTeamScore}
+          // onChange={(e) =>
+          //   handleScoreChange(item._id, "team2Score", e.target.value)
+          // }
+          sx={{
+            mx: 3,
+            textAlign: "center",
+            width: "10%",
+            height: "1.5%",
+          }}
+        />
+        {gamePredictions[0]?.status != "close" ? (
+          <IconButton aria-label="decrement">
+            <Remove />
+          </IconButton>
+        ) : (
+          ""
+        )}
+        <span style={{ fontSize: "90%", display: "inline-block" }}>
+          {gamePredictions[0]?.prediction.awayTeam.shortName}
+        </span>
+        <img
+          src={gamePredictions[0]?.prediction.awayTeam.logo_url}
+          alt={gamePredictions[0]?.prediction.awayTeam.name}
+          style={{ width: "4%" }}
+        />
       </Box>
-    </Box>
+    </>
   );
 };
 

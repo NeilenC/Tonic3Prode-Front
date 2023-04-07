@@ -1,7 +1,9 @@
-import React from "react";
-import { Card, CardContent, Typography, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, Typography, Divider, Button } from "@mui/material";
 import { format } from "date-fns";
 import { styled } from "@mui/material/styles";
+import axios from "axios";
+import { Identity } from "@mui/base";
 
 const StyledCard = styled(Card)({
   display: "flex",
@@ -11,7 +13,7 @@ const StyledCard = styled(Card)({
 const StyledImgContainer = styled("div")({
   width: "100%",
   maxHeight: "150px",
-  overflow: "hidden", 
+  overflow: "hidden",
 });
 
 const StyledImg = styled("img")({
@@ -25,14 +27,40 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const TournamentCard = ({ tournament }) => {
+  const [user, setUser] = useState(
+    JSON.stringify(localStorage.getItem("uid")) || null
+  );
+  const [inscript, setInscript] = useState(false);
+
+  useEffect(() => {
+    let uid = user.replace(/"/g, "")
+    console.log("IDDDD", uid)
+    if (tournament.users.includes(uid)) {
+      setInscript(true);
+    } else {
+      setInscript(false);
+    }
+  }, []);
+  console.log("tournament name", tournament.title)
+  console.log("tournament users", tournament.users);
+  console.log("usuario inscripto", inscript)
+
+  const handleAddusertoTournament = async () => {
+    let uid = user.replace(/"/g, "");
+    const response = await axios.post(
+      `http://localhost:3001/api/tournaments/${tournament._id}/user`,
+      {
+        uid: uid,
+      }
+    );
+  };
 
   const handleCardClick = () => {
     window.location.href = `/tournamentHome/${tournament._id}`;
-  }
+  };
 
   return (
     <StyledCard
-      onClick={() => handleCardClick()}
       sx={{
         margin: "20px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
@@ -68,9 +96,13 @@ const TournamentCard = ({ tournament }) => {
           Stage: {tournament.stage}
         </Typography>
         <Divider sx={{ my: 2 }} />
-        <Typography variant="h6" gutterBottom>
-          Teams: {tournament.teams.length}
-        </Typography>
+        {inscript === true ? (
+          <Button onClick={handleAddusertoTournament}>
+            Inscirbir en torneo
+          </Button>
+        ) : (
+          <Button onClick={handleCardClick}>Ingresar al torneo</Button>
+        )}
       </StyledCardContent>
     </StyledCard>
   );

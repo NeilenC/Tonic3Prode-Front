@@ -79,6 +79,10 @@ const PendingResultsTable = ({ gamesAdmin }) => {
     team1Penalties,
     team2Penalties
   ) => {
+    return "hola"
+  }
+  
+  /* {
     const result = game.result ? game.result[0] : ""; // valor predeterminado es una cadena vacía
     let winningTeam;
     if (team1Goals > team2Goals) {
@@ -93,7 +97,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
       winningTeam = "Pendiente";
     }
     return winningTeam;
-  };
+  } */;
 
   const rows = [...games, ...newGames];
 
@@ -146,7 +150,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result === [] ? null : game.result[0].homeTeamScore}
+                    {game.result === [] ? null : 1}
                   </span>
                 )}
               </TableCell>
@@ -170,7 +174,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result[0].awayTeamScore}
+                    {game.result === [] ? null : 1}
                   </span>
                 )}
               </TableCell>
@@ -212,7 +216,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result[0].homeTeamPenalties}
+                     {game.result === [] ? null : 1}
                   </span>
                 )}
               </TableCell>
@@ -240,7 +244,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result[0].awayTeamPenalties}
+                    {game.result === [] ? null : 1}
                   </span>
                 )}
               </TableCell>
