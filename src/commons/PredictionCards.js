@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
-import { Box, Typography, Button, TextField } from "@mui/material";
+import { Box, Typography, Button, TextField, InputBase } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
+import { string } from "i/lib/util";
+//import styles from "../styles/matches/ResultCard.module.css";
 
 const PredictionCards = ({
   game,
@@ -13,54 +15,62 @@ const PredictionCards = ({
   user,
   id,
 }) => {
-  const [team1Score, setTeam1Score] = useState(0);
-  const [team2Score, setTeam2Score] = useState(0);
   const [userPredictions, setUserPredictios] = useState([]);
   //const [scores, setScores] = useState({})
+  const [homeScore, setHomeScore] = useState("");
+  const [awayScore, setAwayScore] = useState("");
 
-  const handleTeam1Increment = () => {
-    console.log("FUNCIONA LINEA 22");
-    const awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
-    if (typeof awayTeamScore == "string") {
-      awayTeamScore = 0;
-    } else {
-      setTeam1Score(awayTeamScore + 1);
+  console.log("=========> HOME", homeScore);
+  console.log("========> AWAY", awayScore);
+
+  ////////////////////////////////////////////////////
+
+  const handleAddHome = () => {
+    let homeTeamScore = gamePredictions[0].prediction.homeTeamScore;
+    if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
+      setHomeScore(0);
+    } else if (homeScore >= 0) {
+      let newHomeTeamScore = homeScore + 1;
+      setHomeScore(newHomeTeamScore);
     }
   };
 
-  const handleTeam1Decrement = () => {
-    const awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
-    if (typeof awayTeamScore == "string") {
-      awayTeamScore = 0;
-    } else {
-      setTeam1Score(awayTeamScore - 1);
+  const handleRemoveHome = () => {
+    let homeTeamScore = gamePredictions[0].prediction.homeTeamScore;
+    if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
+      setHomeScore(0);
+    } else if (homeScore >= 1) {
+      let newHomeTeamScore = homeScore - 1;
+      setHomeScore(newHomeTeamScore);
     }
   };
 
-  const handleTeam2Increment = () => {
-    const homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
-    if (typeof homeTeamScore == "string") {
-      homeTeamScore = 0;
-    } else {
-      setTeam2Score(homeTeamScore + 1);
+  const handleAddAway = () => {
+    let awayTeamScore = gamePredictions[0].prediction.awayTeamScore;
+    if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
+      setAwayScore(0);
+    } else if (awayScore >= 0) {
+      let newAwayTeamScore = awayScore + 1;
+      setAwayScore(newAwayTeamScore);
     }
   };
 
-  const handleTeam2Decrement = () => {
-    const homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
-    if (typeof homeTeamScore == "string") {
-      homeTeamScore = 0;
-    } else {
-      setTeam2Score(homeTeamScore + 1);
+  const handleRemoveAway = () => {
+    let awayTeamScore = gamePredictions[0].prediction.awayTeamScore;
+    if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
+      setAwayScore(0);
+    } else if (awayScore >= 1) {
+      let newAwayTeamScore = awayScore - 1;
+      setAwayScore(newAwayTeamScore);
     }
   };
 
-  useEffect(() => {
-    handleTeam1Increment();
-    handleTeam1Decrement();
-    handleTeam2Increment();
-    handleTeam2Decrement();
-  }, [team1Score, team2Score]);
+  // useEffect(() => {
+  //   handleTeam1Increment();
+  //   handleTeam1Decrement();
+  //   handleTeam2Increment();
+  //   handleTeam2Decrement();
+  // }, [team1Score, team2Score]);
 
   //   // useEffect(() => {
   //   //   handleScoreChange(item._id, "team1Score", team1Score);
@@ -75,12 +85,10 @@ const PredictionCards = ({
           `http://localhost:3001/api/predictions/${user}
               `
         );
-        console.log("Linea 78", response.data);
         const predictionsData = response.data;
         const filterPredictios = predictionsData.filter(
           (prediction) => prediction.gameId.tournaments == id
         );
-        console.log("linea 83", filterPredictios);
         setUserPredictios(filterPredictios);
       } catch (error) {
         console.error(error);
@@ -93,7 +101,7 @@ const PredictionCards = ({
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
-  console.log("GAMEPREDICTIONS =======>", gamePredictions);
+  //console.log("GAMEPREDICTIONS =======>", gamePredictions);
   return (
     <>
       <Box
@@ -129,23 +137,29 @@ const PredictionCards = ({
           {gamePredictions[0]?.prediction.homeTeam.shortName}
         </span>
         {gamePredictions[0]?.status != "close" ? (
-          <IconButton
-            aria-label="increment"
-            onClick={() => handleTeam1Increment()}
-          >
+          <IconButton aria-label="increment" onClick={handleAddHome}>
             <Add />
           </IconButton>
         ) : (
           ""
         )}
-        <input
-          type="number"
-          defaultValue={0}
-          //value={value}
-          onChange={(e) => handleTeam1Increment()}
+        <InputBase
+          inputProps={{
+            "aria-label": "score",
+            min: "0",
+            type: "number",
+            style: { appearance: "none" },
+          }}
+          className={styles.input}
+          value={
+            typeof gamePredictions[0]?.prediction.homeTeamScore == "number"
+              ? gamePredictions[0]?.prediction.homeTeamScore
+              : homeScore
+          } /// Si la existe la prediccion que la muestre, si no que muestre el "" de homeScore
+          onChange={(e) => setHomeScore(e.target.value)}
         />
         {gamePredictions[0]?.status != "close" ? (
-          <IconButton aria-label="decrement">
+          <IconButton aria-label="decrement" onClick={handleRemoveHome}>
             <Remove />
           </IconButton>
         ) : (
@@ -153,18 +167,22 @@ const PredictionCards = ({
         )}
         <span> Vs </span>
         {gamePredictions[0]?.status != "close" ? (
-          <IconButton aria-label="increment">
+          <IconButton aria-label="increment" onClick={handleAddAway}>
             <Add />
           </IconButton>
         ) : (
           ""
         )}
-        <input
-          type="number"
-          value={gamePredictions[0]?.prediction.awayTeamScore}
-          // onChange={(e) =>
-          //   handleScoreChange(item._id, "team2Score", e.target.value)
-          // }
+        <InputBase
+          inputProps={{
+            "aria-label": "score",
+            min: "0",
+            type: "number",
+            style: { appearance: "none" },
+          }}
+          className={styles.input}
+          value={awayScore}
+          onChange={(e) => setAwayScore(e.target.value)}
           sx={{
             mx: 3,
             textAlign: "center",
@@ -173,7 +191,7 @@ const PredictionCards = ({
           }}
         />
         {gamePredictions[0]?.status != "close" ? (
-          <IconButton aria-label="decrement">
+          <IconButton aria-label="decrement" onClick={handleRemoveAway}>
             <Remove />
           </IconButton>
         ) : (
