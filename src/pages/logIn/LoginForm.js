@@ -26,7 +26,10 @@ export const LoginForm = () => {
   const [cellphone, setCellphone] = useState("");
   const dispatch = useDispatch();
 
-  const handleClick = (e) => {
+
+  
+
+const handleClick = (e) => {
     const uid = localStorage.getItem("uid");
     e.preventDefault();
     axios

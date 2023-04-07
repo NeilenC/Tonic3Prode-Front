@@ -15,6 +15,7 @@ import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUid } from "../../redux/reducers/uid";
+import Link from "next/link";
 import axios from "axios";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -38,6 +39,9 @@ const Navbar = () => {
             .get(`http://localhost:3001/api/users/search/${uid}`)
             .then((res) => {
               setUser(res.data);
+            })
+            .catch((err)=>{
+              console.log(err)
             })
         : null;
     }, [uid]);
