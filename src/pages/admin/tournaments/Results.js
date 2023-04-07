@@ -4,76 +4,99 @@ import {
   CardContent,
   Typography,
   Box,
-  TextField,
   Button,
   InputBase,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import styles from "../../../styles/matches/ResultCard.module.css";
-//import { FormattedMessage } from "react-intl";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import ResultCard from "@/commons/ResultCard";
+import customAxios from "../../../../utils/customAxios";
 import { useRouter } from "next/router";
-
-
+import { toast } from "react-hot-toast";
 
 const Results = () => {
   const router = useRouter();
+  const id = router.query.id;
   const [games, setGames] = React.useState([]);
-  const [stage, setStage] = React.useState("");
+  const [results, setResults] = React.useState([]);
+  const stages = ["32", "16", "8", "4", "2", "1"];
+  const [stage, setStage] = useState("");
   const [type, setType] = React.useState(true);
   const [user, setUser] = useState("");
-  const [id, setId] = useState("");
 
   useEffect(() => {
     setUser(localStorage.getItem("uid"));
-  }, []);
 
-useEffect(() => {
-  if (router.query.id) {
-    setId(router.query.id);
-  }
-}, [router.query.id]);
+    if (id) {
+      customAxios
+        .get(`http://localhost:3001/api/games/search/${id}`)
+        .then((allgames) => {
+          return allgames;
+        })
+        .then((allgames) => {
+          // console.log("allgames", allgames);
+          const games = allgames.data.filter(
+            (item) =>
+              item.status === "pending" &&
+              (item.stage === "32" || item.stage === "initial")
+          );
+          setGames(games);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [id]);
 
-useEffect(() => {
-  console.log(id);
-  if (id) {
-    console.log(`http://localhost:3001/api/games/${id}`)
-    axios
-      .get(`http://localhost:3001/api/games/${id}`)
-      .then((allgames) => {
-        return allgames;
-      })
-      .then((allgames) => {
-        console.log(allgames)
-        const games = allgames.data.filter((item) => item.status === "pending");
-        setGames(games);
-        console.log(games);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-}, [id]);
-
+  useEffect(() => {
+    if (stage) {
+      customAxios
+        .get(`http://localhost:3001/api/games/search/${id}`)
+        .then((allgames) => {
+          return allgames;
+        })
+        .then((allgames) => {
+          const games = allgames.data.filter(
+            (item) => item.status === "pending" && item.stage === "stage"
+          );
+          console.log("stagedgames", games);
+          setGames(games);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [stage]);
 
   const handleScoreChange = (index, teamIndex, e) => {
     if (e.target.value) {
       console.log(e.target.value);
-      const updatedGames = [...games];
+      const updatedGames = [...results];
+      updatedGames[index] = { ...games[index] };
       updatedGames[index].teams[teamIndex].score = parseInt(e.target.value);
-      setGames(updatedGames);
-    } else {
-      const updatedGames = [...games];
-      updatedGames[index].teams[teamIndex].score = "pending";
-      setGames(updatedGames);
+
+      const uniqueGames = updatedGames.reduce((acc, current) => {
+        if (!acc.find((item) => item._id === current._id)) {
+          return acc.concat(current);
+        } else {
+          return acc;
+        }
+      }, []);
+      console.log("uniqueGames", uniqueGames);
+      setResults(uniqueGames);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleStageChange = (e) => {
+    setStage(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const uid = user;
     const newResult = await Promise.all(
-      games.map(async (game) => ({
+      results.map(async (game) => ({
         gameId: game._id,
         homeTeam: game.teams[0].name,
         awayTeam: game.teams[1].name,
@@ -92,13 +115,14 @@ useEffect(() => {
     });
 
     axios
-      .put("http://localhost:3001/api/games/admin", {
+      .put(`http://localhost:3001/api/games/admin/${id}`, {
+        stage:"32",
         uid: uid,
         results: newResult,
       })
       .then((response) => {
         console.log(response);
-        location.reload();
+        toast.success("Your results haven been updated!");
       })
       .catch((error) => {
         console.error(error);
@@ -115,29 +139,35 @@ useEffect(() => {
         >
           {type ? "Single-elimination" : "Knockout"}
         </Button>
-        <Button sx={{ marginTop: "20px" }} variant="contained">
-          ETAPA:
-        </Button>
-        <TextField
-          label="Etapa"
-          variant="outlined"
-          size="small"
-          value={stage}
-          onChange={(e) => setStage(e.target.value)}
-          sx={{ marginTop: "20px" }}
-        />
+        <>
+          <Select
+            labelId="stage-select-label"
+            id="stage-select"
+            value={stage}
+            onChange={handleStageChange}
+            variant="outlined"
+            size="small"
+            sx={{ marginTop: "20px" }}
+          >
+            {stages.map((s) => (
+              <MenuItem key={s} value={s}>
+                Etapa {s}
+              </MenuItem>
+            ))}
+          </Select>
+        </>
         <Button
           sx={{ marginTop: "20px" }}
           variant="contained"
-          onClick={() => handleSubmit()}
+          onClick={(e) => handleSubmit(e)}
         >
           Guardar resultados
         </Button>
       </Box>
       <Box>
         {games.map((item, i) => (
-          <>
-            <CardContent className={styles.customCard} key={i}>
+          <React.Fragment key={i}>
+            <CardContent className={styles.customCard}>
               <div className={styles.cardColumn}>
                 <div className={styles.titleWrapper}>
                   <Typography
@@ -223,7 +253,7 @@ useEffect(() => {
                 <div />
               </div>
             </CardContent>
-          </>
+          </React.Fragment>
         ))}
       </Box>
     </Box>

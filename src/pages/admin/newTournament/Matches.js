@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import AddMatchCard from "@/commons/AddMatchCard";
-import availableStadiums from "@/fakeData/stadiums";
 import { Box, width } from "@mui/system";
 import { useMediaQuery } from "@mui/material";
 import axios from "axios";
@@ -24,20 +23,11 @@ const Matches = () => {
   const [teams, setTeams] = useState(
     JSON.parse(localStorage.getItem("teams")) || []
   );
-  const [stadiums, setStadiums] = useState(availableStadiums);
   const [matches, setMatches] = useState(
     JSON.parse(localStorage.getItem("matches")) || []
   );
   const isMobile = useMediaQuery("(max-width:600px)");
   const [editingMatch, setEditingMatch] = useState(null);
-
-  useEffect(() => {
-    async function getStadiums() {
-      const response = await axios.get("http://localhost:3001/api/stadiums");
-      setStadiums(response.data);
-    }
-    getStadiums();
-  }, []);
 
   const handleAddMatch = (newMatch) => {
     if (editingMatch) {
@@ -65,6 +55,52 @@ const Matches = () => {
     localStorage.setItem("matches", JSON.stringify(newMatches));
   };
 
+  const handleCreateRandomMatches = () => {
+    const startDate =  JSON.parse(localStorage.getItem("generalInfo")).beginning// fecha de inicio
+    const endDate = JSON.parse(localStorage.getItem("generalInfo")).finishing; // fecha de cierre
+    const numMatches = JSON.parse(localStorage.getItem("generalInfo")).numMatches; // cantidad de partidos a crear
+    const availableTeams = JSON.parse(localStorage.getItem("teams")); // equipos
+    const randomMatches = [];
+
+    console.log(startDate,"fecha de inicio")
+
+    for (let i = 0; i < numMatches; i++) {
+      // Seleccionar dos equipos aleatorios
+      const homeTeamIndex = Math.floor(Math.random() * availableTeams.length);
+      const homeTeam = availableTeams[homeTeamIndex];
+      availableTeams.splice(homeTeamIndex, 1);
+
+      const awayTeamIndex = Math.floor(Math.random() * availableTeams.length);
+      const awayTeam = availableTeams[awayTeamIndex];
+      availableTeams.splice(awayTeamIndex, 1);
+
+      // Asignar una fecha entre la fecha de inicio y cierre
+      const daysToAdd = Math.floor(i / 4) + 1;
+      const matchDate = new Date(startDate);
+      matchDate.setDate(matchDate.getDate() + daysToAdd);
+
+      // Asignar un horario de 1900 o 2100
+      const matchTime = i % 2 === 0 ? "19:00" : "21:00";
+
+      // Crear el objeto de partido
+      const newMatch = {
+        date: format(matchDate, "MM/dd/yyyy"),
+        time: matchTime,
+        homeTeam,
+        awayTeam,
+      };
+      
+      randomMatches.push(newMatch);
+    }
+
+    // Agregar los partidos al estado y al local storage
+    setMatches([...matches, ...randomMatches]);
+    localStorage.setItem(
+      "matches",
+      JSON.stringify([...matches, ...randomMatches])
+    );
+  };
+
   return (
     <Box sx={{ width: "100%", minWidth: isMobile ? "400px" : "auto" }}>
       <p style={{ textAlign: "center" }}>
@@ -86,6 +122,15 @@ const Matches = () => {
           sx={{ width: "145px", marginBottom: "10px" }}
         >
           Create Match
+        </Button>
+        <Button
+          variant="contained"
+          onClick={
+            handleCreateRandomMatches
+          }
+          sx={{ width: "200px", marginBottom: "10px", marginLeft: "10px" }}
+        >
+          Create random matches
         </Button>
       </Box>
       <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
@@ -110,14 +155,6 @@ const Matches = () => {
                   display: isMobile ? "none" : "static",
                 }}
               >
-                Stadium
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "center",
-                  display: isMobile ? "none" : "static",
-                }}
-              >
                 Actions
               </TableCell>
             </TableRow>
@@ -126,9 +163,7 @@ const Matches = () => {
             {matches.map((match, i) => (
               <TableRow key={i + 1}>
                 <TableCell sx={{ textAlign: "center" }}>{i + 1}</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  {match.date}
-                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{match.date}</TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
@@ -142,14 +177,6 @@ const Matches = () => {
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {isMobile ? match.awayTeam.shortName : match.awayTeam.name}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    textAlign: "center",
-                    display: isMobile ? "none" : "static",
-                  }}
-                >
-                  {match.stadium.name}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -189,7 +216,6 @@ const Matches = () => {
           <AddMatchCard
             onAddMatch={handleAddMatch}
             teams={teams}
-            stadiums={stadiums}
             editingMatch={editingMatch}
           />
         </DialogContent>

@@ -10,16 +10,25 @@ import {
 } from "@mui/material";
 import InputMask from "react-input-mask";
 
-const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
+const AddMatchCard = ({ onAddMatch, teams, editingMatch }) => {
   const [homeTeam, setHomeTeam] = useState(editingMatch?.homeTeam ?? "");
   const [awayTeam, setAwayTeam] = useState(editingMatch?.awayTeam ?? "");
-  const [stadium, setStadium] = useState(editingMatch?.stadium ?? "");
   const [date, setDate] = useState(editingMatch?.date ?? "");
   const [time, setTime] = useState(editingMatch?.time ?? "");
+  const initialResult = {
+    HomeTeamScore: null,
+    AwayTeamScore: null,
+    HomeTeamPenalties: null,
+    AwayTeamPenalties: null,
+    Winner: null,
+    WinningTeam: null,
+    WinningType: null,
+    stage: null,
+  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    if (!homeTeam || !awayTeam || !stadium || !date || !time) {
+    if (!homeTeam || !awayTeam || !date || !time) {
       alert(
         "please complete all the fields of the form before submitting the match"
       );
@@ -28,14 +37,13 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
     const newMatch = {
       homeTeam: homeTeam,
       awayTeam: awayTeam,
-      stadium: stadium,
       date,
       time,
+      result: initialResult, // initialize the result object with initialResult values
     };
     onAddMatch(newMatch);
     setHomeTeam(null);
     setAwayTeam(null);
-    setStadium(null);
     setDate("");
     setTime("");
   };
@@ -43,7 +51,6 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
   const [initialValues, setInitialValues] = useState({
     homeTeam: null,
     awayTeam: null,
-    stadium: null,
     date: "",
     time: "",
   });
@@ -53,9 +60,6 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
       setInitialValues({
         homeTeam: teams.find((team) => team._id === editingMatch.homeTeam._id),
         awayTeam: teams.find((team) => team._id === editingMatch.awayTeam._id),
-        stadium: stadiums.find(
-          (stadium) => stadium._id === editingMatch.stadium._id
-        ),
         date: editingMatch.date,
         time: editingMatch.time,
       });
@@ -65,7 +69,7 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
   const handleHomeTeamChange = (event, value) => {
     if (awayTeam === value && awayTeam) {
       alert("you can't select the same team twice");
-      return
+      return;
     }
     setHomeTeam(value);
   };
@@ -73,13 +77,9 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
   const handleAwayTeamChange = (event, value) => {
     if (homeTeam === value && homeTeam) {
       alert("you can't select the same team twice");
-      return
+      return;
     }
     setAwayTeam(value);
-  };
-
-  const handleStadiumChange = (event, value) => {
-    setStadium(value);
   };
 
   const handleDateChange = (event) => {
@@ -95,23 +95,37 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
     }
     if (parseInt(year) < 2020 && year.length === 4) {
       alert("invalid year, please enter numbers greater than 2021");
-      return
+      return;
     }
-    if (parseInt(value) <  JSON.parse(localStorage.getItem("generalInfo")).beginning) {
+    if (
+      parseInt(value) <
+      JSON.parse(localStorage.getItem("generalInfo")).beginning
+    ) {
       alert("invalid year, please enter numbers greater than 2021");
-      return
+      return;
     }
 
-    const beginningDate = new Date(JSON.parse(localStorage.getItem("generalInfo")).beginning);
-    const finishingDate = new Date(JSON.parse(localStorage.getItem("generalInfo")).finishing);
-    const inputDate = new Date(year, month - 1, day); // el mes arranca de 0 
- 
+    const beginningDate = new Date(
+      JSON.parse(localStorage.getItem("generalInfo")).beginning
+    );
+    const finishingDate = new Date(
+      JSON.parse(localStorage.getItem("generalInfo")).finishing
+    );
+    console.log("finishingDate", finishingDate);
+    console.log("beginningDate", beginningDate);
+    const inputDate = new Date(year, month - 1, day); // el mes arranca de 0
+    console.log("inputDate", inputDate);
+
     if (inputDate < beginningDate && year.length === 4) {
-      alert("The date entered is before than the tournament beginning date. Please enter a valid date.");
+      alert(
+        "The date entered is before than the tournament beginning date. Please enter a valid date."
+      );
       return;
     }
     if (finishingDate < inputDate && year.length === 4) {
-      alert("The date entered is after than the tournament beginning date. Please enter a valid date.");
+      alert(
+        "The date entered is after than the tournament beginning date. Please enter a valid date."
+      );
       return;
     }
 
@@ -123,11 +137,11 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
     const [hours, minutes] = value.split(":");
     if (parseInt(hours) > 23) {
       alert("invalid hour, please enter numbers smaller than 23");
-      return
+      return;
     }
     if (parseInt(minutes) > 59) {
       alert("invalid minutes, please enter numbers smaller than 59");
-      return
+      return;
     }
     setTime(event.target.value);
   };
@@ -156,16 +170,6 @@ const AddMatchCard = ({ onAddMatch, teams, stadiums, editingMatch }) => {
               )}
               onChange={handleAwayTeamChange}
               value={awayTeam || initialValues.awayTeam}
-            />
-            <Autocomplete
-              id="stadium"
-              options={stadiums}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField {...params} label="Stadium" />
-              )}
-              onChange={handleStadiumChange}
-              value={stadium || initialValues.stadium}
             />
             <InputLabel htmlFor="Date">date</InputLabel>
             <InputMask

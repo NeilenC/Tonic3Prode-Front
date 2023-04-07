@@ -16,6 +16,7 @@ import { logOut } from "../../utils/functions";
 import { useSelector, useDispatch } from "react-redux";
 import { setUid } from "../../redux/reducers/uid";
 import Link from "next/link";
+import axios from "axios";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -23,13 +24,25 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const Navbar = () => {
   const [user, setUser] = useState("");
+  const [uid, setUid] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    setUser(localStorage.getItem("uid"));
+    setUid(localStorage.getItem("uid"));
   }, []);
+
+  useEffect(() => {
+      uid
+        ? axios
+            .get(`http://localhost:3001/api/users/search/${uid}`)
+            .then((res) => {
+              setUser(res.data);
+            })
+        : null;
+    }, [uid]);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -57,20 +70,23 @@ const Navbar = () => {
             sx={{ mr: 2 }}
             onClick={() => setDrawerOpen(true)}
           >
-            <MenuIcon />
+            {user && <MenuIcon />}
           </IconButton>
           <Button color="inherit">GAMBET</Button>
           <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleClick}
-              color="inherit"
-            >
-              <Avatar alt="User avatar" />
-            </IconButton>
+            {user && (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleClick}
+                color="inherit"
+              >
+                <Avatar alt="User avatar" />
+              </IconButton>
+            )}
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -86,15 +102,9 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              {user ? <MenuItem onClick={handleClose}>Perfil</MenuItem> : ""}
-              {user ? (
-                <Link href="/user/profile">
-                <MenuItem onClick={handleClose}>Configuración</MenuItem>
-                </Link>
-              ) : (
-                ""
-              )}
-              {user ? (
+              {user && <MenuItem onClick={handleClose}>Perfil</MenuItem>}
+              {user && <MenuItem onClick={handleClose}>Configuración</MenuItem>}
+              {user && (
                 <MenuItem
                   onClick={() => {
                     handleClose();
@@ -103,8 +113,6 @@ const Navbar = () => {
                 >
                   Logout
                 </MenuItem>
-              ) : (
-                ""
               )}
             </Menu>
           </div>
@@ -124,14 +132,17 @@ const Navbar = () => {
           >
             Tournaments
           </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setDrawerOpen(false);
-              window.location.href = "http://localhost:3000/admin";
-            }}
-          >
-            Admin Panel
-          </MenuItem>
+
+          {user.rol === "admin" ? (
+            <MenuItem
+              onClick={() => {
+                setDrawerOpen(false);
+                window.location.href = "http://localhost:3000/admin";
+              }}
+            >
+              Admin Panel
+            </MenuItem>
+          ) : null}
         </div>
       </Drawer>
     </>
