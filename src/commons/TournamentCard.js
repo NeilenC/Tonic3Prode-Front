@@ -96,7 +96,7 @@ const TournamentCard = ({ tournament }) => {
           Stage: {tournament.stage}
         </Typography>
         <Divider sx={{ my: 2 }} />
-        {inscript === false ? (
+        {inscript === true ? (
           <Button onClick={handleAddusertoTournament}>
             Inscirbir en torneo
           </Button>
