@@ -23,20 +23,25 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const Navbar = () => {
   const [user, setUser] = useState("");
+  const [uid, setUid] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    const userStoraged = localStorage.getItem("uid");
-    userStoraged
-      ? axios
-          .get(`http://localhost:3001/api/users/search/${userStoraged}`)
-          .then((res) => {
-            setUser(res.data);
-          })
-      : null;
+    setUid(localStorage.getItem("uid"));
   }, []);
+
+  useEffect(() => {
+      uid
+        ? axios
+            .get(`http://localhost:3001/api/users/search/${uid}`)
+            .then((res) => {
+              setUser(res.data);
+            })
+        : null;
+    }, [uid]);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
