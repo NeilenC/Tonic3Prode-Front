@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { Identity } from "@mui/base";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const StyledCard = styled(Card)({
   display: "flex",
@@ -28,32 +29,43 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const TournamentCard = ({ tournament }) => {
-  const [user, setUser] = useState(
-    JSON.stringify(localStorage.getItem("uid")) || null
-  );
+  const [uid, setUid] = useState("");
+  const [user, setUser] = useState("");
   const [inscript, setInscript] = useState(false);
 
   useEffect(() => {
-    let uid = user.replace(/"/g, "")
-    console.log("IDDDD", uid)
-    if (tournament.users.includes(uid)) {
+    console.log(localStorage.getItem("uid"), "uid")
+    setUid(localStorage.getItem("uid"));
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3001/api/users/search/${uid}`
+        );
+        console.log(uid, "uid");
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  }, [uid]);
+
+  useEffect(() => {
+    if (tournament.users.includes(user._id)) {
       setInscript(true);
     } else {
       setInscript(false);
     }
-  }, []);
-  console.log("tournament name", tournament.title)
-  console.log("tournament users", tournament.users);
-  console.log("usuario inscripto", inscript)
+  }, [user]);
 
   const handleAddusertoTournament = async () => {
-    let uid = user.replace(/"/g, "");
-    const response = await axios.post(
-      `http://localhost:3001/api/tournaments/${tournament._id}/user`,
-      {
-        uid: uid,
-      }
+    const response = await axios.put(
+      `http://localhost:3001/api/tournaments/${tournament._id}/${user.id}`
     );
+    console.log(response.data);
+    toast.success("You have been registered in the tournament!");
   };
 
   // const handleCardClick = () => {
@@ -97,14 +109,22 @@ const TournamentCard = ({ tournament }) => {
           Stage: {tournament.stage}
         </Typography>
         <Divider sx={{ my: 2 }} />
-        {inscript === true ? (
+        {inscript === false ? (
           <Button onClick={handleAddusertoTournament}>
             Inscirbir en torneo
           </Button>
         ) : (
-          <Link href={`/tournamentHome/${tournament._id}`}>
-          <Button style={{ textDecoration: 'none' }}>Ingresar al torneo</Button>
-        </Link>
+          <Link
+            href={`/tournamentHome/${tournament._id}`}
+            sx={{ textDecoration: "none !important", color: "inherit" }}
+          >
+            <Button
+              style={{ textDecoration: "none" }}
+              sx={{ textDecoration: "none !important", color: "inherit" }}
+            >
+              Ingresar al torneo
+            </Button>
+          </Link>
         )}
       </StyledCardContent>
     </StyledCard>
