@@ -10,6 +10,7 @@ import {
   Games,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Home = ({}) => {
   const router = useRouter();
@@ -92,10 +93,10 @@ const Home = ({}) => {
         sx={{ width: "250px", margin: "25px 0px 15px 0px", fontSize: "20px" }}
         onClick={() => {
           sendPredictions();
-          router.push(`Predictions/${id}`);
+          //router.push(`Predictions/${id}`);
         }}
       >
-        My predictions
+        <Link href={`Predictions/${id}`}>Predictions</Link>
       </Button>
 
       <Button
@@ -103,11 +104,11 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<FixtureIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        onClick={() => {
-          window.location.href = `/fixture`;
-        }}
+        // onClick={() => {
+        //   window.location.href = `/fixture`;
+        // }}
       >
-        Fixture
+        <Link href="/fixture">Fixture</Link>
       </Button>
 
       <Button
@@ -115,23 +116,27 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<RankingIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        onClick={() => {
-          window.location.href = `/ranking`;
-        }}
+        // onClick={() => {
+        //   window.location.href = `/ranking`;
+        // }}
       >
-        Ranking
+        <Link href="/ranking">Ranking</Link>
       </Button>
 
       <Button
         size="xl"
         variant="outlined"
         startIcon={<PrizesIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        onClick={() => {
-          window.location.href = `/tournament/${id}/prizes`;
+        sx={{
+          width: "250px",
+          marginBottom: "15px",
+          fontSize: "20px",
+          textDecoration: "none",
         }}
       >
-        Prizes
+        <Link href={`/tournament/${id}/prizes`} passHref>
+          Prizes
+        </Link>
       </Button>
 
       <Button
@@ -139,11 +144,11 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<TournamentIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        onClick={() => {
-          window.location.href = `/home`;
-        }}
+        // onClick={() => {
+        //   window.location.href = `/home`;
+        // }}
       >
-        Tournaments
+        <Link href="/home">Home</Link>
       </Button>
     </Box>
   );

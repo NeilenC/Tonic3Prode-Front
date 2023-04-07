@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { Identity } from "@mui/base";
+import Link from "next/link";
 
 const StyledCard = styled(Card)({
   display: "flex",
@@ -55,9 +56,9 @@ const TournamentCard = ({ tournament }) => {
     );
   };
 
-  const handleCardClick = () => {
-    window.location.href = `/tournamentHome/${tournament._id}`;
-  };
+  // const handleCardClick = () => {
+  //   window.location.href = `/tournamentHome/${tournament._id}`;
+  // };
 
   return (
     <StyledCard
@@ -101,7 +102,9 @@ const TournamentCard = ({ tournament }) => {
             Inscirbir en torneo
           </Button>
         ) : (
-          <Button onClick={handleCardClick}>Ingresar al torneo</Button>
+          <Link href={`/tournamentHome/${tournament._id}`}>
+          <Button style={{ textDecoration: 'none' }}>Ingresar al torneo</Button>
+        </Link>
         )}
       </StyledCardContent>
     </StyledCard>
