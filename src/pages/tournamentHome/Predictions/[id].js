@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Select, MenuItem } from "@mui/material";
+import { Box, Select, MenuItem, TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/predictionCards";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 // COMPONENTE
 const Predictions = () => {
@@ -14,8 +15,17 @@ const Predictions = () => {
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
-  const stages = ["32", "16", "8", "4", "2", "1"];
-  //const [stage, setStage] = useState("");
+ 
+  ////////////////// (FUNCIONA) //////////////////////
+  const handleScoreChange = (_id, team, score) => {
+    setScores((prevState) => ({
+      ...prevState,
+      [_id]: {
+        ...prevState[_id],
+        [team]: score,
+      },
+    }));
+  };
 
   //////////// ID DEL TORNEO /////////////////
   useEffect(() => {
@@ -44,44 +54,6 @@ const Predictions = () => {
     }
   }, [id]);
 
-  ////// SE TRAEN LOS GAMES DE LOS SIGUIENTES STAGE (NO ESTA CONFIGURADO) ////////////
-
-  // useEffect(() => {
-  //   if (stage) {
-  //     axios
-  //       .get(`http://localhost:3001/api/games/search/${id}`)
-  //       .then((allgames) => {
-  //         return allgames;
-  //       })
-  //       .then((allgames) => {
-  //         const games = allgames.data.filter(
-  //           (item) => item.status === "pending" && item.stage === "stage"
-  //         );
-  //         console.log("stagedgames", games);
-  //         setGames(games);
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   }
-  // }, [stage]);
-
-  //////////////// STAGE  SELECT///////////////////
-  const handleStageChange = (e) => {
-    setStage(e.target.value);
-  };
-
-  ////////////////// (FUNCIONA) //////////////////////
-  const handleScoreChange = (_id, team, score) => {
-    setScores((prevState) => ({
-      ...prevState,
-      [_id]: {
-        ...prevState[_id],
-        [team]: score,
-      },
-    }));
-  };
-
   ////////// SE OBTIENE EL SCORE DEL LS //////////////
   useEffect(() => {
     const storedScores = localStorage.getItem("scores");
@@ -100,43 +72,38 @@ const Predictions = () => {
     setUser(localStorage.getItem("uid"));
   }, []);
 
-  //////////////// ENVIO DE PREDICCIONES AL BACK ///////////////
 
-  const predictions = games.map((item) => {
-    if (scores) {
-      return {
-        gameId: item._id,
-        prediction: {
-          homeTeam: item.teams[0].name,
-          awayTeam: item.teams[1].name,
-          homeTeamScore: scores[item._id]?.team1Score || "",
-          awayTeamScore: scores[item._id]?.team2Score || "",
-        },
-        status: scores[item._id]?.team1Score && scores[item._id]?.team2Score ? "pre_match" : "pending"
-      };
-    }
-  });
+  ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
 
-  //////////Objeto para el update//////////
-  const updatePredictions = games.map((item) => {
-    return {
-      gameId: item.id
+  //// Actualizacion de la prediccion /////
 
-    }
-  })
-  
-  const sendPredictions = async () => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3001/api/predictions/create/${user}`,
-        predictions
-      );
-      toast.success("You Successfully create your predictions !");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const updatePredictions = userPredictions?.map((item) => {
+  //   return (
+  //     {
+  //       gameId: gameId._id,
+  //       userId: userId._id,
+  //     },
+  //     {
+  //       predictions: {
+  //         awayTeamScore,
+  //         homeTeamScore,
+  //       },
+  //       status,
+  //     }
+  //   );
+  // });
 
+  // const actualizarPredictions = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:3001/api/predictions/${user}`,
+  //       predictions
+  //     );
+  //     toast.success("You Successfully updated your predictions !");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   /////////// COMIENZO DEL COMPONENTE //////////////////
   return (
@@ -148,20 +115,18 @@ const Predictions = () => {
           labelId="stage-select-label"
           id="stage-select"
           //value={stage}
-          onChange={handleStageChange}
+          //onChange={handleStageChange}
           variant="outlined"
           size="small"
           sx={{ marginTop: "20px" }}
         >
-          {games.map((item, i) => (
-            <MenuItem key={i} value={item}>
-              {item.date}
-            </MenuItem>
+          {games?.map((item, i) => (
+            <MenuItem key={i}>{item.date}</MenuItem>
           ))}
         </Select>
 
         <Button
-          onClick={() => sendPredictions()}
+          //onClick={() => sendPredictions()}
           variant="contained"
           endIcon={<SportsSoccerIcon />}
           sx={{
@@ -174,7 +139,7 @@ const Predictions = () => {
           Guardar Predicciones
         </Button>
         <form
-          onSubmit={sendPredictions}
+          //onSubmit={sendPredictions}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -185,24 +150,24 @@ const Predictions = () => {
             gap: "10px",
           }}
         >
-          {games.map((item) => (
-            <>
-              {item.status == "pending" ? (
-                <Box>
+          <>
+            {games?.map((game) => {
+              return (
+                <div key={game.id}>
+                  <h3>{game.date}</h3>
                   <PredictionCards
-                    item={item}
-                    handleScoreChange={handleScoreChange}
-                    user={user} id={id}
+                    game={game}
+                    //handleScoreChange={handleScoreChange}
+                    user={user}
+                    id={id}
                   />
-                </Box>
-              ) : (
-                ""
-              )}
-            </>
-          ))}
+                </div>
+              );
+            })}
+          </>
         </form>
         <Button
-          onClick={() => sendPredictions()}
+          //onClick={() => sendPredictions()}
           variant="contained"
           endIcon={<SportsSoccerIcon />}
           sx={{
