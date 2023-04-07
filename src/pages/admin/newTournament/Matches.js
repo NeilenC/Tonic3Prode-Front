@@ -55,6 +55,52 @@ const Matches = () => {
     localStorage.setItem("matches", JSON.stringify(newMatches));
   };
 
+  const handleCreateRandomMatches = () => {
+    const startDate =  JSON.parse(localStorage.getItem("generalInfo")).beginning// fecha de inicio
+    const endDate = JSON.parse(localStorage.getItem("generalInfo")).finishing; // fecha de cierre
+    const numMatches = JSON.parse(localStorage.getItem("generalInfo")).numMatches; // cantidad de partidos a crear
+    const availableTeams = JSON.parse(localStorage.getItem("teams")); // equipos
+    const randomMatches = [];
+
+    console.log(startDate,"fecha de inicio")
+
+    for (let i = 0; i < numMatches; i++) {
+      // Seleccionar dos equipos aleatorios
+      const homeTeamIndex = Math.floor(Math.random() * availableTeams.length);
+      const homeTeam = availableTeams[homeTeamIndex];
+      availableTeams.splice(homeTeamIndex, 1);
+
+      const awayTeamIndex = Math.floor(Math.random() * availableTeams.length);
+      const awayTeam = availableTeams[awayTeamIndex];
+      availableTeams.splice(awayTeamIndex, 1);
+
+      // Asignar una fecha entre la fecha de inicio y cierre
+      const daysToAdd = Math.floor(i / 4) + 1;
+      const matchDate = new Date(startDate);
+      matchDate.setDate(matchDate.getDate() + daysToAdd);
+
+      // Asignar un horario de 1900 o 2100
+      const matchTime = i % 2 === 0 ? "19:00" : "21:00";
+
+      // Crear el objeto de partido
+      const newMatch = {
+        date: format(matchDate, "MM/dd/yyyy"),
+        time: matchTime,
+        homeTeam,
+        awayTeam,
+      };
+      
+      randomMatches.push(newMatch);
+    }
+
+    // Agregar los partidos al estado y al local storage
+    setMatches([...matches, ...randomMatches]);
+    localStorage.setItem(
+      "matches",
+      JSON.stringify([...matches, ...randomMatches])
+    );
+  };
+
   return (
     <Box sx={{ width: "100%", minWidth: isMobile ? "400px" : "auto" }}>
       <p style={{ textAlign: "center" }}>
@@ -76,6 +122,15 @@ const Matches = () => {
           sx={{ width: "145px", marginBottom: "10px" }}
         >
           Create Match
+        </Button>
+        <Button
+          variant="contained"
+          onClick={
+            handleCreateRandomMatches
+          }
+          sx={{ width: "200px", marginBottom: "10px", marginLeft: "10px" }}
+        >
+          Create random matches
         </Button>
       </Box>
       <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
