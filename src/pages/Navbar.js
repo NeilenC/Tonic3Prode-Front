@@ -39,6 +39,9 @@ const Navbar = () => {
             .then((res) => {
               setUser(res.data);
             })
+            .catch((err) => {
+              console.log(err)
+            })
         : null;
     }, [uid]);
 
