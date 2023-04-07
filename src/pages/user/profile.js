@@ -34,7 +34,7 @@ const profile = () => {
   //Obtenemos info usuario
   async function getUser(uid) {
     try {
-      const response = await fetch(`http://localhost:3001/api/users/${uid}`);
+      const response = await fetch(`http://localhost:3001/api/users/search/${uid}`);
       const data = await response.json();
       setCellphone(data.cellphone);
       setAddress(data.address);
