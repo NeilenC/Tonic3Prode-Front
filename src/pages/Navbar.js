@@ -14,7 +14,6 @@ import Drawer from "@mui/material/Drawer";
 import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import axios from "axios";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
