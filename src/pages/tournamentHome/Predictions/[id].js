@@ -5,8 +5,8 @@ import Button from "@mui/material/Button";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import PredictionCards from "@/commons/predictionCards";
 import { ConstructionOutlined, CreditScoreSharp } from "@mui/icons-material";
+import PredictionCards from "@/commons/PredictionCards";
 
 
 // COMPONENTE
