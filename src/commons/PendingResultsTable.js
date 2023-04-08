@@ -1,7 +1,4 @@
-import React from "react";
-
-import { useState } from "react";
-
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,11 +8,11 @@ import {
   TableRow,
   Paper,
   TextField,
-  Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
+  Button,
 } from "@mui/material";
 
 import styles from "../styles/admin/ResultsBis.module.css";
@@ -26,32 +23,40 @@ const PendingResultsTable = ({ gamesAdmin }) => {
   const [editedGames, setEditedGames] = useState(new Set());
   const [newGames, setNewGames] = useState([]);
 
-  const handleCellClick = (rowIndex, columnIndex) => {
-    setEditableCell({ rowIndex, columnIndex });
+  const handleCellClick = (gameId, columnIndex) => {
+    setEditableCell({ gameId, columnIndex });
   };
 
-  const handleCellChange = (event, gameId, columnName, team) => {
-    const { value } = event.target;
-    setGames((prevGames) =>
-      prevGames.map((game) =>
-        game._id === gameId
-          ? {
-              ...game,
-              result: [
-                {
-                  ...game.result[0],
-                  [`${team}TeamScore`]: value,
-                },
-              ],
-            }
-          : game
-      )
-    );
-    setEditedGames((prevGames) => prevGames.add(gameId));
+ const handleCellChange = (event, gameId, fieldName) => {
+   const { value } = event.target;
 
-    // Guardar el estado "games" en el Local Storage
-    localStorage.setItem("games", JSON.stringify(games));
-  };
+   const newGamesArray = games.map((game) => {
+     if (game._id === gameId) {
+       return {
+         ...game,
+         result: {
+           ...game.result,
+           [fieldName]: value,
+         },
+       };
+     }
+     return game;
+   });
+
+   setGames(newGamesArray);
+   setEditedGames((prevSet) => prevSet.add(gameId));
+
+   // Guardar el estado del juego modificado en el Local Storage cuando se hace clic en Enter o fuera de la celda
+   const isEnterKey = event.key === "Enter";
+   const isBlurEvent = event.type === "blur";
+   if (isEnterKey || isBlurEvent) {
+     localStorage.setItem(
+       `game_${gameId}`,
+       JSON.stringify(newGamesArray.find((game) => game._id === gameId))
+     );
+   }
+ };
+
 
   const handleSaveChanges = () => {
     // Save changes to the backend
@@ -79,25 +84,8 @@ const PendingResultsTable = ({ gamesAdmin }) => {
     team1Penalties,
     team2Penalties
   ) => {
-    return "hola"
-  }
-  
-  /* {
-    const result = game.result ? game.result[0] : ""; // valor predeterminado es una cadena vacía
-    let winningTeam;
-    if (team1Goals > team2Goals) {
-      winningTeam = "Equipo 1";
-    } else if (team2Goals > team1Goals) {
-      winningTeam = "Equipo 2";
-    } else if (team1Penalties > team2Penalties) {
-      winningTeam = "Equipo 1 (penales)";
-    } else if (team2Penalties > team1Penalties) {
-      winningTeam = "Equipo 2 (penales)";
-    } else {
-      winningTeam = "Pendiente";
-    }
-    return winningTeam;
-  } */;
+    return "hola";
+  };
 
   const rows = [...games, ...newGames];
 
@@ -129,52 +117,66 @@ const PendingResultsTable = ({ gamesAdmin }) => {
               <TableCell>{game.stage}</TableCell>
               <TableCell>{`${game.dayOfTheMonth}/${game.month}`}</TableCell>
               <TableCell>{game.hour}</TableCell>
-              <TableCell>tu vieja</TableCell>
+              <TableCell>{"Pending"}</TableCell>
               <TableCell>{`${game.teams[0].name} (${game.teams[0].shortName})`}</TableCell>
               <TableCell>
                 {editableCell?.rowIndex === game._id &&
-                editableCell?.columnIndex === 5 ? (
+                editableCell?.columnIndex === 8 ? (
                   <TextField
                     size="small"
                     type="number"
-                    defaultValue={game.result[0].homeTeamScore}
+                    defaultValue={game.result.homeTeamScore}
                     onChange={(event) =>
+                      handleCellChange(event, game._id, "homeTeamScore", "home")
+                    }
+                    onBlur={(event) =>
+                      handleCellChange(event, game._id, "homeTeamScore", "home")
+                    }
+                    onKeyDown={(event) =>
+                      event.key === "Enter" &&
                       handleCellChange(event, game._id, "homeTeamScore", "home")
                     }
                   />
                 ) : (
                   <span
-                    onClick={() => handleCellClick(game._id, 5)}
+                    onClick={() => handleCellClick(game._id, 8)}
                     style={{ cursor: "pointer" }}
                     className={`${styles.cell} ${
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result === [] ? null : 1}
+                    {game.result.homeTeamScore}
                   </span>
                 )}
               </TableCell>
               <TableCell>{`${game.teams[1].name} (${game.teams[1].shortName})`}</TableCell>
               <TableCell>
                 {editableCell?.rowIndex === game._id &&
-                editableCell?.columnIndex === 7 ? (
+                editableCell?.columnIndex === 9 ? (
                   <TextField
                     size="small"
                     type="number"
-                    defaultValue={game.result[0].awayTeamScore}
+                    defaultValue={game.result.awayTeamScore}
                     onChange={(event) =>
+                      handleCellChange(event, game._id, "awayTeamScore", "away")
+                    }
+                    onBlur={(event) =>
+                      handleCellChange(event, game._id, "awayTeamScore", "away")
+                    }
+                    onKeyDown={(event) =>
+                      event.key === "Enter" &&
                       handleCellChange(event, game._id, "awayTeamScore", "away")
                     }
                   />
                 ) : (
                   <span
-                    onClick={() => handleCellClick(game._id, 7)}
+                    onClick={() => handleCellClick(game._id, 9)}
                     style={{ cursor: "pointer" }}
                     className={`${styles.cell} ${
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result === [] ? null : 1}
+                    {game.result.awayTeamScore}
                   </span>
                 )}
               </TableCell>
@@ -184,7 +186,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                   <Select
                     labelId="select-label"
                     id="select"
-                    value={game.winning}
+                    value={game.winning ? game.winning : "regular"}
                     onChange={handleCellChange}
                   >
                     <MenuItem value="regular">Regular</MenuItem>
@@ -198,8 +200,25 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                   <TextField
                     size="small"
                     type="number"
-                    defaultValue={game.result[0].homeTeamPenalties}
+                    defaultValue={game.result.homeTeamPenalties}
                     onChange={(event) =>
+                      handleCellChange(
+                        event,
+                        game._id,
+                        "homeTeamPenalties",
+                        "home"
+                      )
+                    }
+                    onBlur={(event) =>
+                      handleCellChange(
+                        event,
+                        game._id,
+                        "homeTeamPenalties",
+                        "home"
+                      )
+                    }
+                    onKeyDown={(event) =>
+                      event.key === "Enter" &&
                       handleCellChange(
                         event,
                         game._id,
@@ -216,7 +235,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                     {game.result === [] ? null : 1}
+                    {game.result.homeTeamPenalties}
                   </span>
                 )}
               </TableCell>
@@ -226,8 +245,25 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                   <TextField
                     size="small"
                     type="number"
-                    defaultValue={game.result[0].awayTeamPenalties}
+                    defaultValue={game.result.awayTeamPenalties}
                     onChange={(event) =>
+                      handleCellChange(
+                        event,
+                        game._id,
+                        "awayTeamPenalties",
+                        "away"
+                      )
+                    }
+                    onBlur={(event) =>
+                      handleCellChange(
+                        event,
+                        game._id,
+                        "awayTeamPenalties",
+                        "away"
+                      )
+                    }
+                    onKeyDown={(event) =>
+                      event.key === "Enter" &&
                       handleCellChange(
                         event,
                         game._id,
@@ -244,7 +280,7 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                       editedGames.has(game._id) ? styles.editedCell : ""
                     }`}
                   >
-                    {game.result === [] ? null : 1}
+                    {game.result.awayTeamPenalties}
                   </span>
                 )}
               </TableCell>
