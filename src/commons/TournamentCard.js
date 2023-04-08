@@ -5,6 +5,8 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { Identity } from "@mui/base";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { toast } from "react-toastify";
 
 const StyledCard = styled(Card)({
   display: "flex",
@@ -27,34 +29,33 @@ const StyledCardContent = styled(CardContent)({
   flex: 1,
 });
 
-const TournamentCard = ({ tournament }) => {
+const TournamentCard = ({ tournament, userId , userUid}) => {
+  const [inscript, setInscript] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState(
     JSON.stringify(localStorage.getItem("uid")) || null
   );
-  const [inscript, setInscript] = useState(false);
 
   useEffect(() => {
-    let uid = user.replace(/"/g, "");
-    console.log("IDDDD", uid);
-    if (tournament.users.includes(uid)) {
+    console.log("user", userId );
+    console.log("users tournament", tournament.users);
+    if (tournament.users.includes(userId)) {
       setInscript(true);
     } else {
       setInscript(false);
     }
+    console.log(inscript);
   }, []);
   console.log("tournament name", tournament.title);
   console.log("tournament users", tournament.users);
   console.log("usuario inscripto", inscript);
 
   const handleAddusertoTournament = async () => {
-    let uid = user.replace(/"/g, "");
-    const response = await axios.post(
-      `http://localhost:3001/api/tournaments/${tournament._id}/user`,
-      {
-        uid: uid,
-      }
+    const response = await axios.put(
+      `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
     );
+    console.log(response.data);
+    toast.success("You have been registered in the tournament!");
   };
 
   // const handleCardClick = () => {
@@ -98,16 +99,16 @@ const TournamentCard = ({ tournament }) => {
           Stage: {tournament.stage}
         </Typography>
         <Divider sx={{ my: 2 }} />
-        {inscript === true ? (
+        {inscript === false ? (
           <Button onClick={handleAddusertoTournament}>
-            Inscirbir en torneo
+            Sing Up Tournament
           </Button>
         ) : (
           <Button
             style={{ textDecoration: "none" }}
             onClick={() => router.push(`/tournamentHome/${tournament._id}`)}
           >
-            Ingresar al torneo
+            View Tournament
           </Button>
         )}
       </StyledCardContent>

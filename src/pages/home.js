@@ -6,6 +6,8 @@ import Link from "next/link";
 
 const home = ({ width }) => {
   const [tournaments, setTournaments] = useState([]);
+  const [uid, setUid] = useState("");
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     async function searchTournaments() {
@@ -16,7 +18,22 @@ const home = ({ width }) => {
       return response.data;
     }
     searchTournaments().then((data) => setTournaments(data));
+    setUid(localStorage.getItem("uid"));
   }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3001/api/users/search/${uid}`
+        );
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUser();
+  }, [uid]);
 
   const isMobile = width === "xs" || width === "sm";
 
@@ -38,7 +55,7 @@ const home = ({ width }) => {
           {tournaments.map((tournament) => {
             return (
               <Grid item key={tournament._id} xs={12} sm={6} md={4}>
-                <TournamentCard tournament={tournament} />
+                <TournamentCard tournament={tournament} userId={user._id} userUid={uid}/>
               </Grid>
             );
           })}
