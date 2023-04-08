@@ -22,7 +22,6 @@ const PendingResultsTable = ({ data }) => {
   const [editedData, setEditedData] = useState({});
   const [newData, setNewData] = useState(data);
   const router = useRouter();
-  console.log(data, "data");
 
   useEffect(() => {
     localStorage.setItem("myTableData", JSON.stringify(newData));
@@ -57,13 +56,11 @@ const PendingResultsTable = ({ data }) => {
       [gameId]: {
         ...prevEdited[gameId],
         hour: value,
-        
       },
     }));
   };
 
   const handleResultEdit = (gameId, field, value) => {
-    console.log("HOLA")
     setEditedData((prevEdited) => ({
       ...prevEdited,
       [gameId]: {
@@ -72,75 +69,93 @@ const PendingResultsTable = ({ data }) => {
           ...prevEdited[gameId]?.result,
           [field]: value,
         },
+        winningTeam: getWinningTeam({
+          ...prevEdited[gameId],
+          result: {
+            ...prevEdited[gameId]?.result,
+            [field]: value,
+          },
+        }),
       },
     }));
   };
 
-const handleSave = (gameId) => {
-  if (editedData[gameId]) {
-    const updatedData = newData.map((game) => {
-      if (game._id === gameId) {
-        const updatedGame = {
-          ...game,
-          result: {
-            ...game.result,
-            ...editedData[gameId]?.result,
-          },
-          hour: editedData[gameId]?.hour ?? game.hour,
-        };
-        if (editedData[gameId].dayOfTheMonth !== undefined) {
-          updatedGame.dayOfTheMonth = editedData[gameId].dayOfTheMonth;
+  const handleSave = (gameId) => {
+    if (editedData[gameId]) {
+      const updatedData = newData.map((game) => {
+        if (game._id === gameId) {
+          const updatedGame = {
+            ...game,
+            result: {
+              ...game.result,
+              ...editedData[gameId]?.result,
+            },
+            hour: editedData[gameId]?.hour ?? game.hour,
+          };
+          if (editedData[gameId].dayOfTheMonth !== undefined) {
+            updatedGame.dayOfTheMonth = editedData[gameId].dayOfTheMonth;
+          }
+          if (editedData[gameId].month !== undefined) {
+            updatedGame.month = editedData[gameId].month;
+          }
+          return updatedGame;
         }
-        if (editedData[gameId].month !== undefined) {
-          updatedGame.month = editedData[gameId].month;
-        }
-        return updatedGame;
-      }
-      return game;
-    });
-    setNewData(updatedData);
-    localStorage.setItem("myTableData", JSON.stringify(updatedData));
-  }
-};
-
-
-const handleSaveAllDates = () => {
-  const uid = localStorage.getItem("uid");
-  const id = router.query.id;
-  const myData = JSON.parse(localStorage.getItem("myTableData"));
-
-  axios
-    .put(`http://localhost:3001/api/games/admin/${id}`, {
-      myData: myData,
-      uid: uid,
-    })
-    .then((response) => {
-      localStorage.removeItem("myTableData");
-      setNewData({});
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-
-  const getWinningTeam = (game) => {
-    if (game.result.WinningType === "penalties") {
-      if (game.result.HomeTeamPenalties > game.result.AwayTeamPenalties) {
-        return game.teams[0].name;
-      } else {
-        return game.teams[1].name;
-      }
-    } else {
-      if (game.result.HomeTeamScore > game.result.AwayTeamScore) {
-        return game.teams[0].name;
-      } else {
-        return game.teams[1].name;
-      }
+        return game;
+      });
+      setNewData(updatedData);
+      localStorage.setItem("myTableData", JSON.stringify(updatedData));
     }
   };
 
+  const handleSaveAllDates = () => {
+    const uid = localStorage.getItem("uid");
+    const id = router.query.id;
+    const myData = JSON.parse(localStorage.getItem("myTableData"));
 
+    axios
+      .put(`http://localhost:3001/api/games/admin/${id}`, {
+        myData: myData,
+        uid: uid,
+      })
+      .then((response) => {
+        localStorage.removeItem("myTableData");
+        setNewData({});
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getWinningTeam = (game) => {
+    let result = "pending";
+     if (game.result.winningType === "penalties") {
+      if (
+        game.result.homeTeamPenalties === undefined ||
+        game.result.awayTeamPenalties === undefined
+      ) {
+        return;
+      } else if (
+        game.result.homeTeamPenalties > game.result.awayTeamPenalties
+      ) {
+        result = "homeTeam";
+      } else {
+        result = "awayTeam";
+      }
+    } else if (game.result.winningType === "regular") {
+      if (
+        game.result.homeTeamScore === undefined ||
+        game.result.awayTeamScore === undefined
+      ) {
+        return;
+      } else if (game.result.homeTeamScore > game.result.awayTeamScore) {
+        result = "homeTeam";
+      } else {
+        result = "awayTeam";
+      }
+    }
+    console.log(result, "result"); 
+    return result;
+  };
 
   return (
     <Box>
@@ -225,50 +240,53 @@ const handleSaveAllDates = () => {
                       labelId="select-label"
                       id="select"
                       value={
-                        editedData[game._id]?.result?.WinningType ??
-                        game.result.WinningType
+                        editedData[game._id]?.result?.winningType ??
+                        game.result.winningType
                       }
                       onChange={(e) =>
                         handleResultEdit(
                           game._id,
-                          "WinningType",
+                          "winningType",
                           e.target.value
                         )
                       }
                       onBlur={() => handleSave(game._id)}
                     >
+                      <MenuItem value="undefined">"-"</MenuItem>
                       <MenuItem value="regular">Regular</MenuItem>
                       <MenuItem value="penalties">Penalties</MenuItem>
                     </Select>
                   </FormControl>
                 </TableCell>
-                <TableCell>{getWinningTeam(game)}</TableCell>
+                <TableCell>
+                  {editedData[game._id]?.result?.winningTeam ?? getWinningTeam(game)}
+                </TableCell>
                 <TableCell>{game.teams[0].name}</TableCell>
                 <TableCell>
                   <TextField
                     type="number"
                     value={
-                      editedData[game._id]?.result?.HomeTeamScore ??
-                      game.result.HomeTeamScore
+                      editedData[game._id]?.result?.homeTeamScore ??
+                      game.result.homeTeamScore
                     }
                     onChange={(e) =>
                       handleResultEdit(
                         game._id,
-                        "HomeTeamScore",
+                        "homeTeamScore",
                         e.target.value
                       )
                     }
                     onBlur={() => handleSave(game._id)}
                     disabled={
-                      editedData[game._id]?.result?.WinningType !==
+                      editedData[game._id]?.result?.winningType !==
                         "penalties" &&
-                      editedData[game._id]?.result?.WinningType !== "regular"
+                      editedData[game._id]?.result?.winningType !== "regular"
                     }
                     sx={{
                       backgroundColor:
-                        editedData[game._id]?.result?.WinningType !==
+                        editedData[game._id]?.result?.winningType !==
                           "penalties" &&
-                        editedData[game._id]?.result?.WinningType !== "regular"
+                        editedData[game._id]?.result?.winningType !== "regular"
                           ? "lightgrey"
                           : "white",
                     }}
@@ -279,27 +297,27 @@ const handleSaveAllDates = () => {
                   <TextField
                     type="number"
                     value={
-                      editedData[game._id]?.result?.AwayTeamScore ??
-                      game.result.AwayTeamScore
+                      editedData[game._id]?.result?.awayTeamScore ??
+                      game.result.awayTeamScore
                     }
                     onChange={(e) =>
                       handleResultEdit(
                         game._id,
-                        "AwayTeamScore",
+                        "awayTeamScore",
                         e.target.value
                       )
                     }
                     onBlur={() => handleSave(game._id)}
                     disabled={
-                      editedData[game._id]?.result?.WinningType !==
+                      editedData[game._id]?.result?.winningType !==
                         "penalties" &&
-                      editedData[game._id]?.result?.WinningType !== "regular"
+                      editedData[game._id]?.result?.winningType !== "regular"
                     }
                     sx={{
                       backgroundColor:
-                        editedData[game._id]?.result?.WinningType !==
+                        editedData[game._id]?.result?.winningType !==
                           "penalties" &&
-                        editedData[game._id]?.result?.WinningType !== "regular"
+                        editedData[game._id]?.result?.winningType !== "regular"
                           ? "lightgrey"
                           : "white",
                     }}
@@ -309,23 +327,23 @@ const handleSaveAllDates = () => {
                   <TextField
                     type="number"
                     value={
-                      editedData[game._id]?.result?.HomeTeamPenalties ??
-                      game.result.HomeTeamPenalties
+                      editedData[game._id]?.result?.homeTeamPenalties ??
+                      game.result.homeTeamPenalties
                     }
                     onChange={(e) =>
                       handleResultEdit(
                         game._id,
-                        "HomeTeamPenalties",
+                        "homeTeamPenalties",
                         e.target.value
                       )
                     }
                     onBlur={() => handleSave(game._id)}
                     disabled={
-                      editedData[game._id]?.result?.WinningType !== "penalties"
+                      editedData[game._id]?.result?.winningType !== "penalties"
                     }
                     sx={{
                       backgroundColor:
-                        editedData[game._id]?.result?.WinningType !==
+                        editedData[game._id]?.result?.winningType !==
                         "penalties"
                           ? "lightgrey"
                           : "white",
@@ -336,23 +354,23 @@ const handleSaveAllDates = () => {
                   <TextField
                     type="number"
                     value={
-                      editedData[game._id]?.result?.AwayTeamPenalties ??
-                      game.result.AwayTeamPenalties
+                      editedData[game._id]?.result?.awayTeamPenalties ??
+                      game.result.awayTeamPenalties
                     }
                     onChange={(e) =>
                       handleResultEdit(
                         game._id,
-                        "AwayTeamPenalties",
+                        "awayTeamPenalties",
                         e.target.value
                       )
                     }
                     onBlur={() => handleSave(game._id)}
                     disabled={
-                      editedData[game._id]?.result?.WinningType !== "penalties"
+                      editedData[game._id]?.result?.winningType !== "penalties"
                     }
                     sx={{
                       backgroundColor:
-                        editedData[game._id]?.result?.WinningType !==
+                        editedData[game._id]?.result?.winningType !==
                         "penalties"
                           ? "lightgrey"
                           : "white",

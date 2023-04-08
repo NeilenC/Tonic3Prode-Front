@@ -88,6 +88,7 @@ const Matches = () => {
         time: matchTime,
         homeTeam,
         awayTeam,
+        stage: JSON.parse(localStorage.getItem("generalInfo")).stage
       };
       
       randomMatches.push(newMatch);
