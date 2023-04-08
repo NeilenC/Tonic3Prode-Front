@@ -10,7 +10,7 @@ import {
   Games,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import Link from "next/link";
+
 
 const Home = ({}) => {
   const router = useRouter();
@@ -96,7 +96,7 @@ const Home = ({}) => {
           router.push(`Predictions/${id}`);
         }}
       >
-      Predictions
+        Predictions
       </Button>
 
       <Button
@@ -104,11 +104,11 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<FixtureIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        // onClick={() => {
-        //   window.location.href = `/fixture`;
-        // }}
+        onClick={() => {
+          router.push(`/fixture`);
+        }}
       >
-        <Link href="/fixture">Fixture</Link>
+        Fixture
       </Button>
 
       <Button
@@ -116,11 +116,11 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<RankingIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        // onClick={() => {
-        //   window.location.href = `/ranking`;
-        // }}
+        onClick={() => {
+          router.push(`/ranking`);
+        }}
       >
-        <Link href="/ranking">Ranking</Link>
+        Ranking
       </Button>
 
       <Button
@@ -133,10 +133,11 @@ const Home = ({}) => {
           fontSize: "20px",
           textDecoration: "none",
         }}
+        onClick={() => {
+          router.push(`/tournament/${id}/prizes`);
+        }}
       >
-        <Link href={`/tournament/${id}/prizes`} passHref>
-          Prizes
-        </Link>
+        Prizes
       </Button>
 
       <Button
@@ -144,11 +145,11 @@ const Home = ({}) => {
         variant="outlined"
         startIcon={<TournamentIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        // onClick={() => {
-        //   window.location.href = `/home`;
-        // }}
+        onClick={() => {
+          router.push(`/home`);
+        }}
       >
-        <Link href="/home">Home</Link>
+      Home
       </Button>
     </Box>
   );

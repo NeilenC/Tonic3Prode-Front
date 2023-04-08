@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { Identity } from "@mui/base";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const StyledCard = styled(Card)({
   display: "flex",
@@ -28,23 +28,24 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const TournamentCard = ({ tournament }) => {
+  const router = useRouter();
   const [user, setUser] = useState(
     JSON.stringify(localStorage.getItem("uid")) || null
   );
   const [inscript, setInscript] = useState(false);
 
   useEffect(() => {
-    let uid = user.replace(/"/g, "")
-    console.log("IDDDD", uid)
+    let uid = user.replace(/"/g, "");
+    console.log("IDDDD", uid);
     if (tournament.users.includes(uid)) {
       setInscript(true);
     } else {
       setInscript(false);
     }
   }, []);
-  console.log("tournament name", tournament.title)
+  console.log("tournament name", tournament.title);
   console.log("tournament users", tournament.users);
-  console.log("usuario inscripto", inscript)
+  console.log("usuario inscripto", inscript);
 
   const handleAddusertoTournament = async () => {
     let uid = user.replace(/"/g, "");
@@ -102,9 +103,12 @@ const TournamentCard = ({ tournament }) => {
             Inscirbir en torneo
           </Button>
         ) : (
-          <Link href={`/tournamentHome/${tournament._id}`}>
-          <Button style={{ textDecoration: 'none' }}>Ingresar al torneo</Button>
-        </Link>
+          <Button
+            style={{ textDecoration: "none" }}
+            onClick={() => router.push(`/tournamentHome/${tournament._id}`)}
+          >
+            Ingresar al torneo
+          </Button>
         )}
       </StyledCardContent>
     </StyledCard>

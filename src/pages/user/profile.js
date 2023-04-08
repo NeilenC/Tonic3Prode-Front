@@ -24,8 +24,12 @@ const profile = () => {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
   const [uid, setUid] = useState("");
+  const [name, setName] = useState("");
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("");
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
@@ -41,6 +45,9 @@ const profile = () => {
         const data = await response.json();
         setCellphone(data.cellphone);
         setAddress(data.address);
+        setName(data.name)
+        setEmail(data.email)
+        setCountry(data.country)
         return data;
       } catch (err) {
         return err;
@@ -91,6 +98,11 @@ const profile = () => {
   };
 
   return (
+    <Box>
+<div>
+ <h1>  {cellphone}</h1>
+</div>
+    
     <Box
       component="form"
       sx={{
@@ -129,6 +141,7 @@ const profile = () => {
           marginTop: "3%",
         }}
       >
+        {address}
         <TextField
           mt="5%"
           label="Dirección"
@@ -188,6 +201,7 @@ const profile = () => {
       >
         Guardar cambios
       </Button>
+    </Box>
     </Box>
   );
 };
