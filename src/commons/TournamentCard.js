@@ -51,11 +51,16 @@ const TournamentCard = ({ tournament, userId , userUid}) => {
   console.log("usuario inscripto", inscript);
 
   const handleAddusertoTournament = async () => {
-    const response = await axios.put(
-      `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
+    try{
+
+      const response = await axios.put(
+        `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
     );
     console.log(response.data);
     toast.success("You have been registered in the tournament!");
+  } catch {
+    console.log(error)
+  }
   };
 
   // const handleCardClick = () => {
@@ -100,7 +105,8 @@ const TournamentCard = ({ tournament, userId , userUid}) => {
         </Typography>
         <Divider sx={{ my: 2 }} />
         {inscript === false ? (
-          <Button onClick={handleAddusertoTournament}>
+          <Button onClick={()=> {handleAddusertoTournament; 
+            router.push(`/tournamentHome/${tournament._id}`)}}>
             Sing Up Tournament
           </Button>
         ) : (
