@@ -6,34 +6,34 @@ import Link from "next/link";
 
 const home = ({ width }) => {
   const [tournaments, setTournaments] = useState([]);
-  const [uid, setUid] = useState("");
+  const [uid, setUid] = useState(null);
   const [user, setUser] = useState("");
 
   useEffect(() => {
+    const uid = localStorage.getItem("uid");
     async function searchTournaments() {
-      const uid = localStorage.getItem("uid");
       const response = await axios.get(
         `http://localhost:3001/api/tournaments/all/${uid}`
       );
       return response.data;
     }
     searchTournaments().then((data) => setTournaments(data));
-    setUid(localStorage.getItem("uid"));
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3001/api/users/search/${uid}`
-        );
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchUser();
-  }, [uid]);
+useEffect(() => {
+  const uid = localStorage.getItem("uid");
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/api/users/search/${uid ? uid : "null"}`
+      );
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  fetchUser();
+}, [uid]);
 
   const isMobile = width === "xs" || width === "sm";
 
@@ -55,7 +55,7 @@ const home = ({ width }) => {
           {tournaments.map((tournament) => {
             return (
               <Grid item key={tournament._id} xs={12} sm={6} md={4}>
-                <TournamentCard tournament={tournament} userId={user._id} userUid={uid}/>
+                <TournamentCard tournament={tournament} user={user}/>
               </Grid>
             );
           })}

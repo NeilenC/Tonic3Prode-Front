@@ -29,43 +29,38 @@ const StyledCardContent = styled(CardContent)({
   flex: 1,
 });
 
-const TournamentCard = ({ tournament, userId , userUid}) => {
+const TournamentCard = ({ tournament, user }) => {
   const [inscript, setInscript] = useState(false);
   const router = useRouter();
-  const [user, setUser] = useState(
-    JSON.stringify(localStorage.getItem("uid")) || null
-  );
 
   useEffect(() => {
-    console.log("user", userId );
-    console.log("users tournament", tournament.users);
-    if (tournament.users.includes(userId)) {
+     console.log("CHEQUEO", tournament.users.includes(user._id));
+    if (tournament.users.includes(user._id)) {
       setInscript(true);
     } else {
       setInscript(false);
     }
-    console.log(inscript);
   }, []);
-  console.log("tournament name", tournament.title);
-  console.log("tournament users", tournament.users);
-  console.log("usuario inscripto", inscript);
 
   const handleAddusertoTournament = async () => {
     try{
-
       const response = await axios.put(
-        `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
-    );
+        `http://localhost:3001/api/tournaments/${tournament._id}/addme`, {userId: user._id, userUid: user.uid});
     console.log(response.data);
     toast.success("You have been registered in the tournament!");
-  } catch {
+    router.push(`/tournamentHome/${tournament._id}`);
+  } catch(error) {
     console.log(error)
   }
   };
 
-  // const handleCardClick = () => {
-  //   window.location.href = `/tournamentHome/${tournament._id}`;
-  // };
+    useEffect(() => {
+      if (tournament.users.includes(user._id)) {
+        setInscript(true);
+      } else {
+        setInscript(false);
+      }
+    }, [handleAddusertoTournament]);
 
   return (
     <StyledCard
@@ -105,9 +100,8 @@ const TournamentCard = ({ tournament, userId , userUid}) => {
         </Typography>
         <Divider sx={{ my: 2 }} />
         {inscript === false ? (
-          <Button onClick={()=> {handleAddusertoTournament; 
-            router.push(`/tournamentHome/${tournament._id}`)}}>
-            Sing Up Tournament
+          <Button onClick={()=>handleAddusertoTournament()}>
+            Sign Up Tournament
           </Button>
         ) : (
           <Button
