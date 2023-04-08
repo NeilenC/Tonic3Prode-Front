@@ -57,6 +57,7 @@ const PendingResultsTable = ({ data }) => {
       [gameId]: {
         ...prevEdited[gameId],
         hour: value,
+        
       },
     }));
   };
