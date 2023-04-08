@@ -49,7 +49,6 @@ const Home = ({}) => {
   }, [id]);
 
   const predictions = games.map((game) => {
-    console.log("LINEA 64", game);
     if (scores) {
       return {
         gameId: game?._id,
