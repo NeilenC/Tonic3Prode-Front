@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { Identity } from "@mui/base";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
@@ -30,6 +31,10 @@ const StyledCardContent = styled(CardContent)({
 
 const TournamentCard = ({ tournament, userId , userUid}) => {
   const [inscript, setInscript] = useState(false);
+  const router = useRouter();
+  const [user, setUser] = useState(
+    JSON.stringify(localStorage.getItem("uid")) || null
+  );
 
   useEffect(() => {
     console.log("user", userId );
@@ -41,13 +46,21 @@ const TournamentCard = ({ tournament, userId , userUid}) => {
     }
     console.log(inscript);
   }, []);
+  console.log("tournament name", tournament.title);
+  console.log("tournament users", tournament.users);
+  console.log("usuario inscripto", inscript);
 
   const handleAddusertoTournament = async () => {
-    const response = await axios.put(
-      `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
+    try{
+
+      const response = await axios.put(
+        `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
     );
     console.log(response.data);
     toast.success("You have been registered in the tournament!");
+  } catch {
+    console.log(error)
+  }
   };
 
   // const handleCardClick = () => {
@@ -92,16 +105,17 @@ const TournamentCard = ({ tournament, userId , userUid}) => {
         </Typography>
         <Divider sx={{ my: 2 }} />
         {inscript === false ? (
-          <Button onClick={handleAddusertoTournament}>
+          <Button onClick={()=> {handleAddusertoTournament; 
+            router.push(`/tournamentHome/${tournament._id}`)}}>
             Sing Up Tournament
           </Button>
         ) : (
-          <Link
-            href={`/tournamentHome/${tournament._id}`}
-          
+          <Button
+            style={{ textDecoration: "none" }}
+            onClick={() => router.push(`/tournamentHome/${tournament._id}`)}
           >
-            <Button >View Tournament</Button>
-          </Link>
+            View Tournament
+          </Button>
         )}
       </StyledCardContent>
     </StyledCard>

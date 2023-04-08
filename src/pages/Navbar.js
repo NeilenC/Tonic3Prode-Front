@@ -13,8 +13,7 @@ import Drawer from "@mui/material/Drawer";
 //import { FormattedMessage } from "react-intl";
 import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
-import { useSelector, useDispatch } from "react-redux";
-import { setUid } from "../../redux/reducers/uid";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
 
@@ -23,6 +22,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 const Navbar = () => {
+  const router = useRouter();
   const [user, setUser] = useState("");
   const [uid, setUid] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -105,15 +105,16 @@ const Navbar = () => {
               onClose={handleClose}
             >
               {user && (
-                <Link href="/user/profilePage">
-                  <MenuItem onClick={handleClose}>Perfil</MenuItem>
-                </Link>
+                <MenuItem
+                  onClick={() => {
+                    handleClose;
+                    router.push("/user/profile");
+                  }}
+                >
+                  Perfil
+                </MenuItem>
               )}
-              {user && (
-                <Link href="/user/editProfile">
-                  <MenuItem onClick={handleClose}>Configuración</MenuItem>
-                </Link>
-              )}
+              {user && <MenuItem onClick={handleClose}>Configuración</MenuItem>}
               {user && (
                 <MenuItem
                   onClick={() => {
@@ -134,18 +135,24 @@ const Navbar = () => {
         onClose={() => setDrawerOpen(false)}
       >
         <div style={{ width: "250px" }}>
-          <Link href="/home">
-            <MenuItem onClick={() => setDrawerOpen(false)}>
-              Tournaments
-            </MenuItem>
-          </Link>
+          <MenuItem
+            onClick={() => {
+              setDrawerOpen(false);
+              router.push(`/home`);
+            }}
+          >
+            Tournaments
+          </MenuItem>
 
           {user.rol === "admin" && (
-            <Link href="/admin">
-              <MenuItem onClick={() => setDrawerOpen(false)}>
-                Admin Panel
-              </MenuItem>
-            </Link>
+            <MenuItem
+              onClick={() => {
+                setDrawerOpen(false);
+                router.push(`/admin`);
+              }}
+            >
+              Admin Panel
+            </MenuItem>
           )}
         </div>
       </Drawer>

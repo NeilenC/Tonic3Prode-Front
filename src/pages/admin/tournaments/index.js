@@ -14,9 +14,11 @@ import { Box } from "@mui/system";
 import customAxios from "../../../../utils/customAxios";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
+
 
 const Tournaments = () => {
+  const router = useRouter();
   const [tournaments, setTournaments] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedTournamentUrl, setSelectedTournamentUrl] = useState(null);
@@ -86,13 +88,11 @@ const Tournaments = () => {
         variant="contained"
         startIcon={<AddIcon />}
         sx={{ margin: "20px" }}
-        // onClick={() => {
-        //   window.location.href = "http://localhost:3000/admin/newTournament";
-        // }}
+        onClick={() => {
+          router.push("/admin/newTournament");
+        }}
       >
-        <Link href="/admin/newTournament">
         Add new tournament
-        </Link>
       </Button>
       <TableContainer sx={{ display: "flex", width: "auto", align: "center" }}>
         <Table>
