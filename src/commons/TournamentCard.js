@@ -28,41 +28,23 @@ const StyledCardContent = styled(CardContent)({
   flex: 1,
 });
 
-const TournamentCard = ({ tournament }) => {
-  const [uid, setUid] = useState("");
-  const [user, setUser] = useState("");
+const TournamentCard = ({ tournament, userId , userUid}) => {
   const [inscript, setInscript] = useState(false);
 
   useEffect(() => {
-    console.log(localStorage.getItem("uid"), "uid")
-    setUid(localStorage.getItem("uid"));
-  }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3001/api/users/search/${uid}`
-        );
-        console.log(uid, "uid");
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-  }, [uid]);
-
-  useEffect(() => {
-    if (tournament.users.includes(user._id)) {
+    console.log("user", userId );
+    console.log("users tournament", tournament.users);
+    if (tournament.users.includes(userId)) {
       setInscript(true);
     } else {
       setInscript(false);
     }
-  }, [user]);
+    console.log(inscript);
+  }, []);
 
   const handleAddusertoTournament = async () => {
     const response = await axios.put(
-      `http://localhost:3001/api/tournaments/${tournament._id}/${user.id}`
+      `http://localhost:3001/api/tournaments/${tournament._id}/${userId}`
     );
     console.log(response.data);
     toast.success("You have been registered in the tournament!");
@@ -111,19 +93,14 @@ const TournamentCard = ({ tournament }) => {
         <Divider sx={{ my: 2 }} />
         {inscript === false ? (
           <Button onClick={handleAddusertoTournament}>
-            Inscirbir en torneo
+            Sing Up Tournament
           </Button>
         ) : (
           <Link
             href={`/tournamentHome/${tournament._id}`}
-            sx={{ textDecoration: "none !important", color: "inherit" }}
+          
           >
-            <Button
-              style={{ textDecoration: "none" }}
-              sx={{ textDecoration: "none !important", color: "inherit" }}
-            >
-              Ingresar al torneo
-            </Button>
+            <Button >View Tournament</Button>
           </Link>
         )}
       </StyledCardContent>
