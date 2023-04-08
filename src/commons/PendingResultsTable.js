@@ -1,184 +1,198 @@
 import React, { useState } from "react";
 import {
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Button,
 } from "@mui/material";
+import { Box } from "@mui/system";
 
-import styles from "../styles/admin/ResultsBis.module.css";
+const PendingResultsTable = ({ data }) => {
+  const [editedData, setEditedData] = useState({});
 
-const PendingResultsTable = ({ gamesAdmin }) => {
-  const [games, setGames] = useState(gamesAdmin);
-  const [editableCell, setEditableCell] = useState(null);
-  const [editedGames, setEditedGames] = useState(new Set());
-  const [newGames, setNewGames] = useState([]);
-
-  const handleCellClick = (gameId, columnIndex) => {
-    setEditableCell({ gameId, columnIndex });
+  const handleDayOfMonthEdit = (gameId, value) => {
+    setEditedData((prevEdited) => ({
+      ...prevEdited,
+      [gameId]: {
+        ...prevEdited[gameId],
+        dayOfTheMonth: value,
+      },
+    }));
   };
 
- const handleCellChange = (event, gameId, fieldName) => {
-   const { value } = event.target;
+  const handleMonthEdit = (gameId, value) => {
+    setEditedData((prevEdited) => ({
+      ...prevEdited,
+      [gameId]: {
+        ...prevEdited[gameId],
+        month: value,
+      },
+    }));
+  };
 
-   const newGamesArray = games.map((game) => {
-     if (game._id === gameId) {
-       return {
-         ...game,
-         result: {
-           ...game.result,
-           [fieldName]: value,
-         },
-       };
-     }
-     return game;
-   });
+  const handleHourEdit = (gameId, value) => {
+    setEditedData((prevEdited) => ({
+      ...prevEdited,
+      [gameId]: {
+        ...prevEdited[gameId],
+        hour: value,
+      },
+    }));
+  };
 
-   setGames(newGamesArray);
-   setEditedGames((prevSet) => prevSet.add(gameId));
+  const handleResultEdit = (gameId, field, value) => {
+    setEditedData((prevEdited) => ({
+      ...prevEdited,
+      [gameId]: {
+        ...prevEdited[gameId],
+        result: {
+          ...prevEdited[gameId]?.result,
+          [field]: value,
+        },
+      },
+    }));
+  };
 
-   // Guardar el estado del juego modificado en el Local Storage cuando se hace clic en Enter o fuera de la celda
-   const isEnterKey = event.key === "Enter";
-   const isBlurEvent = event.type === "blur";
-   if (isEnterKey || isBlurEvent) {
-     localStorage.setItem(
-       `game_${gameId}`,
-       JSON.stringify(newGamesArray.find((game) => game._id === gameId))
-     );
-   }
- };
-
-
-  const handleSaveChanges = () => {
-    // Save changes to the backend
-    console.log("Saving changes to the backend...");
-
-    // Clear the editedGames set and remove the "edited-cell" class from all cells
-    setEditedGames(new Set());
-    const editedCells = document.getElementsByClassName("edited-cell");
-    for (let i = 0; i < editedCells.length; i++) {
-      editedCells[i].classList.remove("edited-cell");
+  const handleSave = (gameId) => {
+    if (editedData[gameId]) {
+      const newData = data.map((game) => {
+        if (game._id === gameId) {
+          const updatedGame = {
+            ...game,
+            result: {
+              ...game.result,
+              ...editedData[gameId]?.result,
+            },
+            hour: editedData[gameId]?.hour ?? game.hour,
+          };
+          if (editedData[gameId].dayOfTheMonth !== undefined) {
+            updatedGame.dayOfTheMonth = editedData[gameId].dayOfTheMonth;
+          }
+          if (editedData[gameId].month !== undefined) {
+            updatedGame.month = editedData[gameId].month;
+          }
+          return updatedGame;
+        }
+        return game;
+      });
+      localStorage.setItem("myTableData", JSON.stringify(newData));
     }
-
-    // Send new games to the backend
-    console.log("Sending new games to the backend...", newGames);
-
-    // Clear the newGames array
-    setNewGames([]);
   };
 
-  const calculateWinner = (
-    team1,
-    team2,
-    team1Goals,
-    team2Goals,
-    team1Penalties,
-    team2Penalties
-  ) => {
-    return "hola";
+  const handleSaveAllDates = () => {
+    const myData = JSON.parse(localStorage.getItem("myTableData"));
+    // Lógica para enviar myData al backend
+    axios
+      .post("/api/results", myData)
+      .then((response) => {
+        localStorage.removeItem("myTableData");
+      })
+      .catch((error) => {
+        // Manejo de errores
+      });
   };
 
-  const rows = [...games, ...newGames];
+  const getWinningTeam = (game) => {
+    return "holis"
+/*     if (game.result.WinningType === "penalties") {
+      if (game.result.HomeTeamPenalties > game.result.AwayTeamPenalties) {
+        return "HomeTeam";
+      } else {
+        return "AwayTeam";
+      }
+    } else {
+      if (game.result.HomeTeamScore > game.result.AwayTeamScore) {
+        return "HomeTeam";
+      } else {
+        return "AwayTeam";
+      }
+    } */
+  };
 
   return (
-    <TableContainer component={Paper}>
+    <Box>
+    <Button onClick={handleSaveAllDates}>Save Dates</Button>
+    <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>ID Game</TableCell>
+            <TableCell>Order</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Stage</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Hour</TableCell>
+            <TableCell>Day</TableCell>
+            <TableCell>Month</TableCell>
+            <TableCell>
+              Hour
+            </TableCell>
+            <TableCell>Winning Type</TableCell>
             <TableCell>Winning Team</TableCell>
             <TableCell>HomeTeam</TableCell>
             <TableCell>Score HomeTeam</TableCell>
             <TableCell>AwayTeam</TableCell>
             <TableCell>Score AwayTeam</TableCell>
-            <TableCell>Winning</TableCell>
             <TableCell>Penalties HomeTeam</TableCell>
             <TableCell>Penalties AwayTeam</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((game) => (
+          {data.map((game) => (
             <TableRow key={game.gameIndex}>
               <TableCell>{game.gameIndex}</TableCell>
               <TableCell>{game.status}</TableCell>
               <TableCell>{game.stage}</TableCell>
-              <TableCell>{`${game.dayOfTheMonth}/${game.month}`}</TableCell>
-              <TableCell>{game.hour}</TableCell>
-              <TableCell>{"Pending"}</TableCell>
-              <TableCell>{`${game.teams[0].name} (${game.teams[0].shortName})`}</TableCell>
               <TableCell>
-                {editableCell?.rowIndex === game._id &&
-                editableCell?.columnIndex === 8 ? (
-                  <TextField
-                    size="small"
-                    type="number"
-                    defaultValue={game.result.homeTeamScore}
-                    onChange={(event) =>
-                      handleCellChange(event, game._id, "homeTeamScore", "home")
-                    }
-                    onBlur={(event) =>
-                      handleCellChange(event, game._id, "homeTeamScore", "home")
-                    }
-                    onKeyDown={(event) =>
-                      event.key === "Enter" &&
-                      handleCellChange(event, game._id, "homeTeamScore", "home")
-                    }
-                  />
-                ) : (
-                  <span
-                    onClick={() => handleCellClick(game._id, 8)}
-                    style={{ cursor: "pointer" }}
-                    className={`${styles.cell} ${
-                      editedGames.has(game._id) ? styles.editedCell : ""
-                    }`}
-                  >
-                    {game.result.homeTeamScore}
-                  </span>
-                )}
+                <TextField
+                  type="number"
+                  value={
+                    editedData[game._id]?.dayOfTheMonth ?? game.dayOfTheMonth
+                  }
+                  onChange={(e) =>
+                    handleDayOfMonthEdit(game._id, e.target.value)
+                  }
+                  onBlur={() => handleSave(game._id)}
+                />
               </TableCell>
-              <TableCell>{`${game.teams[1].name} (${game.teams[1].shortName})`}</TableCell>
               <TableCell>
-                {editableCell?.rowIndex === game._id &&
-                editableCell?.columnIndex === 9 ? (
-                  <TextField
-                    size="small"
-                    type="number"
-                    defaultValue={game.result.awayTeamScore}
-                    onChange={(event) =>
-                      handleCellChange(event, game._id, "awayTeamScore", "away")
-                    }
-                    onBlur={(event) =>
-                      handleCellChange(event, game._id, "awayTeamScore", "away")
-                    }
-                    onKeyDown={(event) =>
-                      event.key === "Enter" &&
-                      handleCellChange(event, game._id, "awayTeamScore", "away")
-                    }
-                  />
-                ) : (
-                  <span
-                    onClick={() => handleCellClick(game._id, 9)}
-                    style={{ cursor: "pointer" }}
-                    className={`${styles.cell} ${
-                      editedGames.has(game._id) ? styles.editedCell : ""
-                    }`}
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel id="month-label">Month</InputLabel>
+                  <Select
+                    labelId="month-label"
+                    id="month-select"
+                    value={editedData[game._id]?.month ?? game.month}
+                    onChange={(e) => handleMonthEdit(game._id, e.target.value)}
+                    onBlur={() => handleSave(game._id)}
                   >
-                    {game.result.awayTeamScore}
-                  </span>
-                )}
+                    <MenuItem value={1}>January</MenuItem>
+                    <MenuItem value={2}>February</MenuItem>
+                    <MenuItem value={3}>March</MenuItem>
+                    <MenuItem value={4}>April</MenuItem>
+                    <MenuItem value={5}>May</MenuItem>
+                    <MenuItem value={6}>June</MenuItem>
+                    <MenuItem value={7}>July</MenuItem>
+                    <MenuItem value={8}>August</MenuItem>
+                    <MenuItem value={9}>September</MenuItem>
+                    <MenuItem value={10}>October</MenuItem>
+                    <MenuItem value={11}>November</MenuItem>
+                    <MenuItem value={12}>December</MenuItem>
+                  </Select>
+                </FormControl>
+              </TableCell>
+              <TableCell>
+                <TextField
+                  type="number"
+                  value={editedData[game._id]?.hour ?? game.hour}
+                  onChange={(e) => handleHourEdit(game._id, e.target.value)}
+                  onBlur={() => handleSave(game._id)}
+                />
               </TableCell>
               <TableCell>
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -186,116 +200,108 @@ const PendingResultsTable = ({ gamesAdmin }) => {
                   <Select
                     labelId="select-label"
                     id="select"
-                    value={game.winning ? game.winning : "regular"}
-                    onChange={handleCellChange}
+                    value={
+                      editedData[game._id]?.result?.WinningType ??
+                      game.result.WinningType
+                    }
+                    onChange={(e) =>
+                      handleResultEdit(game._id, "WinningType", e.target.value)
+                    }
+                    onBlur={() => handleSave(game._id)}
                   >
                     <MenuItem value="regular">Regular</MenuItem>
                     <MenuItem value="penalties">Penalties</MenuItem>
                   </Select>
                 </FormControl>
               </TableCell>
+              <TableCell>{getWinningTeam()}</TableCell>
+              <TableCell>{game.teams[0].name}</TableCell>
               <TableCell>
-                {editableCell?.rowIndex === game._id &&
-                editableCell?.columnIndex === 11 ? (
-                  <TextField
-                    size="small"
-                    type="number"
-                    defaultValue={game.result.homeTeamPenalties}
-                    onChange={(event) =>
-                      handleCellChange(
-                        event,
-                        game._id,
-                        "homeTeamPenalties",
-                        "home"
-                      )
-                    }
-                    onBlur={(event) =>
-                      handleCellChange(
-                        event,
-                        game._id,
-                        "homeTeamPenalties",
-                        "home"
-                      )
-                    }
-                    onKeyDown={(event) =>
-                      event.key === "Enter" &&
-                      handleCellChange(
-                        event,
-                        game._id,
-                        "homeTeamPenalties",
-                        "home"
-                      )
-                    }
-                  />
-                ) : (
-                  <span
-                    onClick={() => handleCellClick(game._id, 11)}
-                    style={{ cursor: "pointer" }}
-                    className={`${styles.cell} ${
-                      editedGames.has(game._id) ? styles.editedCell : ""
-                    }`}
-                  >
-                    {game.result.homeTeamPenalties}
-                  </span>
-                )}
+                <TextField
+                  type="number"
+                  value={
+                    editedData[game._id]?.result?.HomeTeamScore ??
+                    game.result.HomeTeamScore
+                  }
+                  onChange={(e) =>
+                    handleResultEdit(game._id, "HomeTeamScore", e.target.value)
+                  }
+                  onBlur={() => handleSave(game._id)}
+                  disabled={
+                    editedData[game._id]?.result?.WinningType !== "penalties" &&
+                    editedData[game._id]?.result?.WinningType !== "regular"
+                  }
+                  sx={{backgroundColor: editedData[game._id]?.result?.WinningType !== "penalties" && editedData[game._id]?.result?.WinningType !== "regular" ? "lightgrey" : "white"}}
+                />
+              </TableCell>
+              <TableCell>{game.teams[1].name}</TableCell>
+              <TableCell>
+                <TextField
+                  type="number"
+                  value={
+                    editedData[game._id]?.result?.AwayTeamScore ??
+                    game.result.AwayTeamScore
+                  }
+                  onChange={(e) =>
+                    handleResultEdit(game._id, "AwayTeamScore", e.target.value)
+                  }
+                  onBlur={() => handleSave(game._id)}
+                  disabled={
+                    editedData[game._id]?.result?.WinningType !== "penalties" &&
+                    editedData[game._id]?.result?.WinningType !== "regular"
+                  }
+                  sx={{backgroundColor: editedData[game._id]?.result?.WinningType !== "penalties" && editedData[game._id]?.result?.WinningType !== "regular" ? "lightgrey" : "white"}}
+                />
               </TableCell>
               <TableCell>
-                {editableCell?.rowIndex === game._id &&
-                editableCell?.columnIndex === 12 ? (
-                  <TextField
-                    size="small"
-                    type="number"
-                    defaultValue={game.result.awayTeamPenalties}
-                    onChange={(event) =>
-                      handleCellChange(
-                        event,
-                        game._id,
-                        "awayTeamPenalties",
-                        "away"
-                      )
-                    }
-                    onBlur={(event) =>
-                      handleCellChange(
-                        event,
-                        game._id,
-                        "awayTeamPenalties",
-                        "away"
-                      )
-                    }
-                    onKeyDown={(event) =>
-                      event.key === "Enter" &&
-                      handleCellChange(
-                        event,
-                        game._id,
-                        "awayTeamPenalties",
-                        "away"
-                      )
-                    }
-                  />
-                ) : (
-                  <span
-                    onClick={() => handleCellClick(game._id, 12)}
-                    style={{ cursor: "pointer" }}
-                    className={`${styles.cell} ${
-                      editedGames.has(game._id) ? styles.editedCell : ""
-                    }`}
-                  >
-                    {game.result.awayTeamPenalties}
-                  </span>
-                )}
+                <TextField
+                  type="number"
+                  value={
+                    editedData[game._id]?.result?.HomeTeamPenalties ??
+                    game.result.HomeTeamPenalties
+                  }
+                  onChange={(e) =>
+                    handleResultEdit(
+                      game._id,
+                      "HomeTeamPenalties",
+                      e.target.value
+                    )
+                  }
+                  onBlur={() => handleSave(game._id)}
+                  disabled={
+                    editedData[game._id]?.result?.WinningType !== "penalties"
+                  }
+                  sx={{backgroundColor: editedData[game._id]?.result?.WinningType !== "penalties" ? "lightgrey" : "white"}}
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  type="number"
+                  value={
+                    editedData[game._id]?.result?.AwayTeamPenalties ??
+                    game.result.AwayTeamPenalties
+                  }
+                  onChange={(e) =>
+                    handleResultEdit(
+                      game._id,
+                      "AwayTeamPenalties",
+                      e.target.value
+                    )
+                  }
+                  onBlur={() => handleSave(game._id)}
+                  disabled={
+                    editedData[game._id]?.result?.WinningType !== "penalties"
+                  }
+                  sx={{backgroundColor: editedData[game._id]?.result?.WinningType !== "penalties" ? "lightgrey" : "white"}}
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Button
-        variant="contained"
-        onClick={handleSaveChanges}
-        sx={{ marginTop: "10px", marginLeft: "10px" }}
-      >
-        Save changes
-      </Button>
     </TableContainer>
+    </Box>
   );
 };
+
 export default PendingResultsTable;

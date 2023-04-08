@@ -32,9 +32,9 @@ console.log("PENDING GAMES",pendingGames)
   return (
     <Box>
       <h1> Resultados pendientes</h1>
-      {pendingGames.length > 0 && <PendingResultsTable gamesAdmin={pendingGames}/>}
+      {pendingGames.length > 0 && <PendingResultsTable data={pendingGames}/>}
       <h1> Resultados previos</h1>
-      {completedGames.length > 0 && <PendingResultsTable gamesAdmin={completedGames}/>}
+      {completedGames.length > 0 && <PendingResultsTable data={completedGames}/>}
     </Box>
   )
 };
