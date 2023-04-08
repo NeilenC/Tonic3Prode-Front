@@ -6,7 +6,7 @@ import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/predictionCards";
-import { ConstructionOutlined } from "@mui/icons-material";
+import { ConstructionOutlined, CreditScoreSharp } from "@mui/icons-material";
 
 // COMPONENTE
 const Predictions = () => {
@@ -15,7 +15,7 @@ const Predictions = () => {
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
- 
+
   ////////////////// (FUNCIONA) //////////////////////
   const handleScoreChange = (_id, team, score) => {
     setScores((prevState) => ({
@@ -26,7 +26,7 @@ const Predictions = () => {
       },
     }));
   };
-
+  // console.log("VERIFICANDO QUE SE GUARDE EN SCORE", scores);
   //////////// ID DEL TORNEO /////////////////
   useEffect(() => {
     if (router.query.id) {
@@ -72,38 +72,45 @@ const Predictions = () => {
     setUser(localStorage.getItem("uid"));
   }, []);
 
-
-  ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
-
   //// Actualizacion de la prediccion /////
 
-  // const updatePredictions = userPredictions?.map((item) => {
-  //   return (
-  //     {
-  //       gameId: gameId._id,
-  //       userId: userId._id,
-  //     },
-  //     {
-  //       predictions: {
-  //         awayTeamScore,
-  //         homeTeamScore,
-  //       },
-  //       status,
-  //     }
-  //   );
-  // });
+  let newPredictions = games?.map((game) => {
+    console.log("Puntuaciones a enviar",scores)
+    if (scores) {
+      return {
+        userId: user,
+        gameId: game?._id,
+        prediction: {
+          homeTeamScore:
+            scores[game._id]?.homeTeamScore != ""
+              ? parseInt(scores[game._id]?.homeTeamScore)
+              : scores[game._id]?.homeTeamScore,
+          awayTeamScore:
+            scores[game._id]?.awayTeamScore != ""
+              ? parseInt(scores[game._id]?.awayTeamScore)
+              : scores[game._id]?.awayTeamScore,
+        },
+        status:
+          scores[game._id]?.homeTeamScore && scores[game._id]?.awayTeamScore != ''
+            ? "pre_match"
+            : "pending",
+      };
+    }
+  });
 
-  // const actualizarPredictions = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:3001/api/predictions/${user}`,
-  //       predictions
-  //     );
-  //     toast.success("You Successfully updated your predictions !");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const updatePredictions = async () => {
+    console.log("ENTRO EN UPDATE");
+    try {
+      const response = await axios.put(
+        `http://localhost:3001/api/predictions/${user}`,
+        newPredictions
+      );
+      //toast.success("You Successfully updated your predictions !");
+      alert("You Successfully updated your predictions !");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /////////// COMIENZO DEL COMPONENTE //////////////////
   return (
@@ -126,7 +133,7 @@ const Predictions = () => {
         </Select>
 
         <Button
-          //onClick={() => sendPredictions()}
+          onClick={() => updatePredictions()}
           variant="contained"
           endIcon={<SportsSoccerIcon />}
           sx={{
@@ -139,7 +146,7 @@ const Predictions = () => {
           Guardar Predicciones
         </Button>
         <form
-          //onSubmit={sendPredictions}
+          onSubmit={updatePredictions}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -157,7 +164,7 @@ const Predictions = () => {
                   <h3>{game.date}</h3>
                   <PredictionCards
                     game={game}
-                    //handleScoreChange={handleScoreChange}
+                    handleScoreChange={handleScoreChange}
                     user={user}
                     id={id}
                   />
@@ -167,7 +174,7 @@ const Predictions = () => {
           </>
         </form>
         <Button
-          //onClick={() => sendPredictions()}
+          onClick={() => updatePredictions()}
           variant="contained"
           endIcon={<SportsSoccerIcon />}
           sx={{

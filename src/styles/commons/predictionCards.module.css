@@ -18,7 +18,9 @@
   background-color: #f3f0f0;
   appearance: textfield;
   -webkit-appearance: none;
+  -webkit-appearance: textfield !important;
   margin: 0;
+  -moz-appearance: textfield !important;
 }
 
 @media (max-width: 768px) {

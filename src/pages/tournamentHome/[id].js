@@ -69,8 +69,6 @@ const Home = ({}) => {
         `http://localhost:3001/api/predictions/create/${user}`,
         predictions
       );
-      //toast.success("You Successfully create your predictions !");
-      alert("You Successfully create your predictions !");
     } catch (error) {
       console.error(error);
     }
