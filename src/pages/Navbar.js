@@ -15,6 +15,8 @@ import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { Typography } from "@mui/material";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -27,6 +29,14 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const userInfo = useSelector((state) => state.userInfo);
+  const [username, setUserName] = useState("");
+
+  useEffect(() => {
+    if (userInfo) {
+      setUserName(userInfo.username);
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
@@ -73,7 +83,7 @@ const Navbar = () => {
           >
             {user && <MenuIcon />}
           </IconButton>
-          <Button color="inherit">GAMBET</Button>
+          <Button  sx={{ color:"inherit", justifyContent:"center"}}>GAMBET</Button>
           <div>
             {user && (
               <IconButton
@@ -84,6 +94,9 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
+                <Typography variant="subtitle1">
+                  <div> Bienvenido! {username} &nbsp;&nbsp;&nbsp; </div>
+                </Typography>
                 <Avatar alt="User avatar" />
               </IconButton>
             )}
@@ -107,13 +120,22 @@ const Navbar = () => {
                 <MenuItem
                   onClick={() => {
                     handleClose;
-                    router.push("/user/profile");
+                    router.push("/user/profilePage");
                   }}
                 >
                   Perfil
                 </MenuItem>
               )}
-              {user && <MenuItem onClick={handleClose}>Configuración</MenuItem>}
+              {user && (
+                <MenuItem
+                  onClick={() => {
+                    handleClose;
+                    router.push("/user/editProfile");
+                  }}
+                >
+                  Configuración
+                </MenuItem>
+              )}
               {user && (
                 <MenuItem
                   onClick={() => {
