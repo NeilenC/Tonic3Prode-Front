@@ -96,3 +96,9 @@ export const formattedTime = (date) => new Intl.DateTimeFormat(
     minute: "numeric",
   }
 ).format(date);
+
+export const validateInput = (input) => {
+  const regex = /^[a-zA-Z0-9\s]*$/; 
+  const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/; 
+  return regex.test(input) && !specialChars.test(input);
+};
