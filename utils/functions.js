@@ -78,3 +78,21 @@ export const changeHour = (hour) => {
   let minutes = hour % 100;
   return hours + ":" + (minutes < 10 ? "0" : "") + minutes;
 };
+
+export const formattedDate = (date) => new Intl.DateTimeFormat(
+  navigator.language,
+  {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }
+).format(date);
+
+export const formattedTime = (date) => new Intl.DateTimeFormat(
+  navigator.language,
+  {
+    hour: "numeric",
+    minute: "numeric",
+  }
+).format(date);
