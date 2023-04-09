@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
-import { makeStyles } from "@material-ui/core/styles";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Snackbar from "@mui/material/Snackbar";
+import SnackbarContent from "@mui/material/SnackbarContent";
+import { createStyles } from "@mui/styles";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = createStyles((theme) => ({
   success: {
     backgroundColor: theme.palette.success.main,
   },
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const profile = () => {
+const Profile = () => {
 
   const userInfo = useSelector((state) => state.userInfo);
 
@@ -42,7 +42,6 @@ const profile = () => {
     setAddress(userInfo.address);
     setUserName(userInfo.username);
   }, []);
-
 
   const handleSave = async () => {
     if (userInfo) {
@@ -85,7 +84,6 @@ const profile = () => {
 
   return (
     <Box>
-      <div>{username}</div>
       <Box
         component="form"
         sx={{
@@ -206,4 +204,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profile;
