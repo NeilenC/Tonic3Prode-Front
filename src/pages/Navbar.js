@@ -95,7 +95,7 @@ const Navbar = () => {
                 color="inherit"
               >
                 <Typography variant="subtitle1">
-                  <div> Bienvenido! {username} &nbsp;&nbsp;&nbsp; </div>
+                  <div> {username} &nbsp;&nbsp;&nbsp; </div>
                 </Typography>
                 <Avatar alt="User avatar" />
               </IconButton>
