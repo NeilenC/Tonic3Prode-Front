@@ -14,7 +14,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   const [awayScore, setAwayScore] = useState("");
 
   const handleAddHome = () => {
-    let homeTeamScore = gamePredictions[0].prediction.homeTeamScore;
+    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
     if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
       setHomeScore(0);
     } else if (homeScore >= 0) {
@@ -24,7 +24,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   };
 
   const handleRemoveHome = () => {
-    let homeTeamScore = gamePredictions[0].prediction.homeTeamScore;
+    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
     if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
       setHomeScore(0);
     } else if (homeScore >= 1) {
@@ -34,7 +34,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   };
 
   const handleAddAway = () => {
-    let awayTeamScore = gamePredictions[0].prediction.awayTeamScore;
+    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
     if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
       setAwayScore(0);
     } else if (awayScore >= 0) {
@@ -44,7 +44,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   };
 
   const handleRemoveAway = () => {
-    let awayTeamScore = gamePredictions[0].prediction.awayTeamScore;
+    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
     if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
       setAwayScore(0);
     } else if (awayScore >= 1) {
@@ -74,10 +74,18 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   }, [game]);
 
   ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
+
+  useEffect(() => {
+    const gamePredictions = userPredictions?.filter(
+      (prediction) => prediction.gameId._id === game._id
+    );
+    setHomeScore(gamePredictions[0]?.prediction.homeTeamScore);
+    setAwayScore(gamePredictions[0]?.prediction.awayTeamScore);
+  }, [userPredictions]);
+
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
-  // console.log("GAMEPREDICTIONS =======>", gamePredictions);
 
   useEffect(() => {
     if (gamePredictions[0] && gamePredictions) {
@@ -94,8 +102,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-  console.log("=========>GAME PREDICTIONS", gamePredictions[0]);
-
   /////////////////////////COMPONENTE/////////////////////////////////
 
   return (
@@ -107,7 +113,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
         className={stylesCard.customCard}
       >
         <div className={stylesCard.cardColumn}>
-          <Typography>{changeHour(game.hour)}</Typography>
           {game.result[0] ? (
             <Box
               sx={{
@@ -156,11 +161,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
               style: { appearance: "none" },
             }}
             className={styles.input}
-            value={
-              typeof gamePredictions[0]?.prediction.homeTeamScore == "number"
-                ? gamePredictions[0]?.prediction.homeTeamScore
-                : homeScore
-            } /// Si la existe la prediccion que la muestre, si no que muestre el "" de homeScore (Revisar)
+            value={homeScore}
             onChange={(e) => setHomeScore(e.target.value)}
           />
           {gamePredictions[0]?.status != "close" ? (
@@ -188,11 +189,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
               style: { appearance: "none" },
             }}
             className={styles.input}
-            value={
-              typeof gamePredictions[0]?.prediction.awayTeamScore == "number"
-                ? gamePredictions[0]?.prediction.awayTeamScore
-                : awayScore
-            }
+            value={awayScore}
             onChange={(e) => setAwayScore(e.target.value)}
             sx={{
               mx: 3,
