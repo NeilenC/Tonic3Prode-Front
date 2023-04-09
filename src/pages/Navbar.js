@@ -65,7 +65,6 @@ const Navbar = () => {
   const handleLogOut = () => {
     localStorage.removeItem("uid");
     setUser("");
-    window.location.href = "http://localhost:3000/";
     logOut(auth);
   };
 
@@ -141,6 +140,7 @@ const Navbar = () => {
                   onClick={() => {
                     handleClose();
                     handleLogOut();
+                    router.push("/");
                   }}
                 >
                   Logout

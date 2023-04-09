@@ -9,20 +9,21 @@ import { useEffect } from 'react';
 
 
 export default function Home() {
-  const router = useRouter()
-  const userInfo = useSelector((state) => state.userInfo);
+  // const router = useRouter()
+  // const userInfo = useSelector((state) => state.userInfo);
 
-  useEffect(() => {
-    if (userInfo) {
-      router.push('/home');
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     router.push("/home");
+  //   }
+  // }, [userInfo, router]);
 
   return (
     <>
-      {!userInfo ? (
+      {/* {!userInfo ? (
         <SignUp />
-      ) : null}
+      ) : null} */}
+        <SignUp />
     </>
   )
 }

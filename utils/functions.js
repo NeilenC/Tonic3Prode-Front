@@ -27,7 +27,7 @@ export const signUpGoogle = async (auth, dispatch) => {
        console.log("COUNTRY", country);
 
     // Validar que el usuario esté en un país permitido
-    if (country !== "Argentina" || country !== "Brazil" || country !== "United States") {
+    if (country === "Argentina" || country === "Brazil" || country === "United States") {
       toast.success(`Congratulations, since your are from ${country}, you can log into our app!`);
       const users = await axios.get("http://localhost:3001/api/users");
       localStorage.setItem("uid", userFirebase.uid);
