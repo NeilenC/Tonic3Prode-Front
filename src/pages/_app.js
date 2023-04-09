@@ -1,10 +1,11 @@
 import "@/styles/globals.css";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "../../redux/store";
 import LanguageProvider from "@/languages/LanguageProvider";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./Navbar";
-import { onPageLoad } from "../../utils/verificationIP"; 
+import { onPageLoad } from "../../utils/verificationIP";
+import UserProvider from "../../redux/UserProvider"; // Setea en Redux los datos del usuario
 
 export default function App({ Component, pageProps }) {
   return (
@@ -14,8 +15,10 @@ export default function App({ Component, pageProps }) {
       </div>
       <LanguageProvider>
         <Provider store={store}>
-          <Navbar />
-          <Component {...pageProps} />
+          <UserProvider> 
+            <Navbar />
+            <Component {...pageProps} />
+          </UserProvider>
         </Provider>
       </LanguageProvider>
     </>

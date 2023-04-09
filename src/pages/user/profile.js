@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   success: {
@@ -21,46 +22,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const profile = () => {
+
+  const userInfo = useSelector((state) => state.userInfo);
+
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
-  const [uid, setUid] = useState("");
-  const [name, setName] = useState("");
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [country, setCountry] = useState("");
+  const [username, setUserName] = useState("");
+  const [uid, setUid] = useState("");
+
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
   }, []);
 
-  //Obtenemos info usuario
-  async function getUser(uid) {
-    if (uid !== "undefined") {
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/users/search/${uid}`
-        );
-        const data = await response.json();
-        setCellphone(data.cellphone);
-        setAddress(data.address);
-        setName(data.name)
-        setEmail(data.email)
-        setCountry(data.country)
-        return data;
-      } catch (err) {
-        return err;
-      }
-    }
-  }
-
   useEffect(() => {
-    getUser();
-  }, [uid]);
+    setCellphone(userInfo.cellphone);
+    setAddress(userInfo.address);
+    setUserName(userInfo.username);
+  }, []);
+
 
   const handleSave = async () => {
-    if (uid !== "undefined") {
+    if (userInfo) {
       try {
         const response = await fetch(
           `http://localhost:3001/api/users/update/${uid}`,
@@ -70,6 +55,7 @@ const profile = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              username,
               cellphone,
               address,
             }),
@@ -99,109 +85,123 @@ const profile = () => {
 
   return (
     <Box>
-<div>
- <h1>  {cellphone}</h1>
-</div>
-    
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { m: 1, width: "25ch" },
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        border: "0.5vh solid grey",
-        maxWidth: "50%",
-        margin: "auto",
-        p: "2% 1.5% 2% 1.5% ",
-        mt: "2%",
-      }}
-      noValidate
-      autoComplete="on"
-    >
-      <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
-        Modificar datos de usuario:
-      </Typography>
-
-      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-        <SnackbarContent
-          className={useStyles.success}
-          message={
-            <span className={useStyles.message}>
-              <CheckCircleIcon className={useStyles.icon} />
-            </span>
-          }
-        />
-      </Snackbar>
-      <div
-        style={{
+      <div>{username}</div>
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
           display: "flex",
           flexDirection: "column",
-          marginBottom: "3%",
-          marginTop: "3%",
+          alignItems: "center",
+          border: "0.5vh solid grey",
+          maxWidth: "50%",
+          margin: "auto",
+          p: "2% 1.5% 2% 1.5% ",
+          mt: "2%",
         }}
+        noValidate
+        autoComplete="on"
       >
-        {address}
+        <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
+          Modificar datos:
+        </Typography>
+
+
         <TextField
           mt="5%"
-          label="Dirección"
+          label="User name"
           variant="outlined"
           margin="normal"
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={(e) => setAddress(e.target.value)}
+          onChange={(e) => setUserName(e.target.value)}
         />
-        <ReactInputMask
-          mask="+99-999-99999999"
-          maskChar=""
-          onChange={(e) => setCellphone(e.target.value)}
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "3%",
+            marginTop: "3%",
+          }}
         >
-          {() => (
-            <TextField
-              id="Cellphone"
-              type="text"
-              label="Numero celular"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder="+54-911-12345678"
-              required={true}
-            />
-          )}
-        </ReactInputMask>
-      </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
-          Deseo recibir notificaciones
-        </Typography>
-        <Checkbox
-          checked={checked}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-      </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Typography
-          component="p"
-          variant="p"
-          color="#454546"
-          marginTop="3%"
-          marginLeft="1.5%"
+          <TextField
+            mt="5%"
+            label="Dirección"
+            variant="outlined"
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          <ReactInputMask
+            mask="+99-999-99999999"
+            maskChar=""
+            onChange={(e) => setCellphone(e.target.value)}
+          >
+            {() => (
+              <TextField
+                id="Cellphone"
+                type="text"
+                label="Numero celular"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                placeholder="+54-911-12345678"
+                required={true}
+              />
+            )}
+          </ReactInputMask>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="#454546"
+            marginTop="3%"
+          >
+            Deseo recibir notificaciones
+          </Typography>
+          <Checkbox
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            component="p"
+            variant="p"
+            color="#454546"
+            marginTop="3%"
+            marginLeft="1.5%"
+          >
+            Cambiar idioma:
+          </Typography>
+          <SetIdiomas />
+        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleSave}
         >
-          Cambiar idioma:
-        </Typography>
-        <SetIdiomas />
-      </div>
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={handleSave}
-      >
-        Guardar cambios
-      </Button>
-    </Box>
+          Guardar cambios
+        </Button>
+        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+          <SnackbarContent
+            className={useStyles.success}
+            message={
+              <span className={useStyles.message}>
+                <CheckCircleIcon className={useStyles.icon} />
+              </span>
+            }
+          />
+        </Snackbar>
+
+      </Box>
     </Box>
   );
 };
