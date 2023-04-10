@@ -22,7 +22,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Profile = () => {
-
   const userInfo = useSelector((state) => state.userInfo);
 
   const [open, setOpen] = useState(false);
@@ -31,7 +30,6 @@ const Profile = () => {
   const [address, setAddress] = useState("");
   const [username, setUserName] = useState("");
   const [uid, setUid] = useState("");
-
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
@@ -87,15 +85,19 @@ const Profile = () => {
       <Box
         component="form"
         sx={{
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
           display: "flex",
           flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          border: "0.5vh solid grey",
-          maxWidth: "50%",
-          margin: "auto",
-          p: "2% 1.5% 2% 1.5% ",
-          mt: "2%",
+          border: "1px solid grey",
+          padding: "10%",
+          borderRadius: "5px ",
+          maxWidth: "95%",
+          margin: " 5% auto",
+          backgroundColor: "#F7F7F7",
+          padding: "2rem",
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+          overflow: "hidden",
         }}
         noValidate
         autoComplete="on"
@@ -103,7 +105,6 @@ const Profile = () => {
         <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
           Modificar datos:
         </Typography>
-
 
         <TextField
           mt="5%"
@@ -114,15 +115,11 @@ const Profile = () => {
             shrink: true,
           }}
           onChange={(e) => setUserName(e.target.value)}
+          my={2}
         />
 
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: "3%",
-            marginTop: "3%",
-          }}
+         
         >
           <TextField
             mt="5%"
@@ -134,6 +131,8 @@ const Profile = () => {
             }}
             onChange={(e) => setAddress(e.target.value)}
           />
+        </div>
+        <div>
           <ReactInputMask
             mask="+99-999-99999999"
             maskChar=""
@@ -141,6 +140,7 @@ const Profile = () => {
           >
             {() => (
               <TextField
+                mt="5%"
                 id="Cellphone"
                 type="text"
                 label="Numero celular"
@@ -149,6 +149,7 @@ const Profile = () => {
                 }}
                 placeholder="+54-911-12345678"
                 required={true}
+
               />
             )}
           </ReactInputMask>
@@ -198,7 +199,6 @@ const Profile = () => {
             }
           />
         </Snackbar>
-
       </Box>
     </Box>
   );
