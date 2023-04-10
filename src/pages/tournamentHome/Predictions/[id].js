@@ -10,8 +10,7 @@ import {
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import PredictionCards from "@/commons/predictionCards";
-
+import PredictionCards from "@/commons/PredictionCards";
 
 // COMPONENTE
 const Predictions = () => {
@@ -116,11 +115,12 @@ const Predictions = () => {
     }
   };
   console.log(games);
+  
   /////////// COMIENZO DEL COMPONENTE //////////////////
   return (
     <>
       <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{ display: "flex", justifyContent: "center", margin: "auto", flexDirection: "column", alignItems: "center" }}
       >
         <Button
           onClick={() => updatePredictions()}
@@ -135,17 +135,8 @@ const Predictions = () => {
         >
           Guardar Predicciones
         </Button>
-        <form
+        <Box
           onSubmit={updatePredictions}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            maxWidth: "800px",
-            flexWrap: "wrap",
-            gap: "10px",
-          }}
         >
           <>
             {games
@@ -172,20 +163,19 @@ const Predictions = () => {
                 const hour = formattedTime(date);
                 return (
                   <div key={game.id}>
-                    <h5>
-                      {gameDate} - {hour}
-                    </h5>
                     <PredictionCards
                       game={game}
                       handleScoreChange={handleScoreChange}
                       user={user}
                       id={id}
+                      gameDate={gameDate}
+                      hour={hour}
                     />
                   </div>
                 );
               })}
           </>
-        </form>
+        </Box>
         <Button
           onClick={() => updatePredictions()}
           variant="contained"
