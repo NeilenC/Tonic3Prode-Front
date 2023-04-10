@@ -10,7 +10,7 @@ import {
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import PredictionCards from "@/commons/predictionCards";
+import PredictionCards from "@/commons/PredictionCards";
 
 
 // COMPONENTE
@@ -149,7 +149,7 @@ const Predictions = () => {
         >
           <>
             {games
-              ?.sort(
+        /*       ?.sort(
                 (a, b) =>
                   new Date(
                     `${a.month}/${
@@ -161,19 +161,19 @@ const Predictions = () => {
                       b.dayOfTheMonth
                     }/${new Date().getFullYear()} ${b.hour}`
                   )
-              )
+              ) */
               .map((game) => {
-                const date = new Date(
+   /*              const date = new Date(
                   `${game.month}/${
                     game.dayOfTheMonth
                   }/${new Date().getFullYear()} ${changeHour(game.hour)}`
                 );
                 const gameDate = formattedDate(date);
-                const hour = formattedTime(date);
+                const hour = formattedTime(date); */
                 return (
                   <div key={game.id}>
                     <h5>
-                      {gameDate} - {hour}
+{/*                       {gameDate} - {hour} */}
                     </h5>
                     <PredictionCards
                       game={game}
