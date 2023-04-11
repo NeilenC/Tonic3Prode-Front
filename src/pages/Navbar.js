@@ -93,10 +93,18 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                <Typography variant="subtitle1">
-                  <div> {username} &nbsp;&nbsp;&nbsp; </div>
-                </Typography>
+                {/* <div style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}>
+
                 <Avatar alt="User avatar" />
+                <Typography variant="subtitle1">
+                   {username}
+                </Typography>
+                </div> */}
+                 <Avatar alt="User avatar" />
               </IconButton>
             )}
 

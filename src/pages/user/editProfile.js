@@ -102,7 +102,7 @@ const Profile = () => {
         noValidate
         autoComplete="on"
       >
-        <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
+        <Typography component="h1" variant="h5" color="#454546" marginTop="3%">
           Modificar datos:
         </Typography>
 
@@ -119,7 +119,7 @@ const Profile = () => {
         />
 
         <div
-         
+         sx={{p:"30%"}}
         >
           <TextField
             mt="5%"
