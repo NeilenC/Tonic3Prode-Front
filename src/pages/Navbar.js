@@ -93,9 +93,9 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                <Typography variant="subtitle1">
+                {/* <Typography variant="subtitle1">
                   <div> {username} &nbsp;&nbsp;&nbsp; </div>
-                </Typography>
+                </Typography> */}
                 <Avatar alt="User avatar" />
               </IconButton>
             )}
@@ -125,7 +125,7 @@ const Navbar = () => {
                   Perfil
                 </MenuItem>
               )}
-              {user && (
+              {/* {user && (
                 <MenuItem
                   onClick={() => {
                     handleClose;
@@ -134,7 +134,7 @@ const Navbar = () => {
                 >
                   Configuración
                 </MenuItem>
-              )}
+              )} */}
               {user && (
                 <MenuItem
                   onClick={() => {
