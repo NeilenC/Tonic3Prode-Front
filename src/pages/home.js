@@ -35,6 +35,20 @@ useEffect(() => {
   fetchUser();
 }, [uid]);
 
+const handleSubmitRanking = async (tournamentId) => {
+  try {  
+    const uid = localStorage.getItem("uid");
+    console.log(tournamentId)
+    const response = await axios.post(
+      `http://localhost:3001/api/rankings/register/${tournamentId}/${uid}`
+    );
+    console.log(response);
+  } catch(err) {
+    console.log(err);
+  }
+};
+                 
+
   const isMobile = width === "xs" || width === "sm";
 
   return (
@@ -54,8 +68,15 @@ useEffect(() => {
         >
           {tournaments.map((tournament) => {
             return (
-              <Grid item key={tournament._id} xs={12} sm={6} md={4}>
-                <TournamentCard tournament={tournament} user={user}/>
+              <Grid
+                onClick={() => handleSubmitRanking(tournament._id)}
+                item
+                key={tournament._id}
+                xs={12}
+                sm={6}
+                md={4}
+              >
+                <TournamentCard tournament={tournament} user={user} />
               </Grid>
             );
           })}
