@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Select, MenuItem, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import {
   changeHour,
@@ -12,8 +12,6 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
 
-
-// COMPONENTE
 const Predictions = () => {
   const router = useRouter();
   const [games, setGames] = useState([]);
@@ -21,7 +19,6 @@ const Predictions = () => {
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
 
-  ////////////////// (FUNCIONA) //////////////////////
   const handleScoreChange = (_id, team, score) => {
     setScores((prevState) => ({
       ...prevState,
@@ -51,6 +48,7 @@ const Predictions = () => {
           const games = allgames.data.filter(
             (item) => item.status === "pending"
           );
+
           setGames(games);
         })
         .catch((error) => {
@@ -80,7 +78,6 @@ const Predictions = () => {
   //// Actualizacion de la prediccion /////
 
   let newPredictions = games?.map((game) => {
-    console.log("Puntuaciones a enviar", scores);
     if (scores) {
       return {
         userId: user,
@@ -96,8 +93,8 @@ const Predictions = () => {
               : scores[game._id]?.awayTeamScore,
         },
         status:
-          scores[game._id]?.homeTeamScore != "" && // Hay que arreglar esto
-          scores[game._id]?.awayTeamScore != ""
+          typeof scores[game._id]?.homeTeamScore == "number" &&
+          typeof scores[game._id]?.awayTeamScore == "number"
             ? "pre_match"
             : "pending",
       };
@@ -115,8 +112,7 @@ const Predictions = () => {
       console.log(error);
     }
   };
-  console.log(games);
-  /////////// COMIENZO DEL COMPONENTE //////////////////
+
   return (
     <>
       <Box
@@ -148,42 +144,19 @@ const Predictions = () => {
           }}
         >
           <>
-            {games
-        /*       ?.sort(
-                (a, b) =>
-                  new Date(
-                    `${a.month}/${
-                      a.dayOfTheMonth
-                    }/${new Date().getFullYear()} ${a.hour}`
-                  ) -
-                  new Date(
-                    `${b.month}/${
-                      b.dayOfTheMonth
-                    }/${new Date().getFullYear()} ${b.hour}`
-                  )
-              ) */
-              .map((game) => {
-   /*              const date = new Date(
-                  `${game.month}/${
-                    game.dayOfTheMonth
-                  }/${new Date().getFullYear()} ${changeHour(game.hour)}`
-                );
-                const gameDate = formattedDate(date);
-                const hour = formattedTime(date); */
-                return (
-                  <div key={game.id}>
-                    <h5>
-{/*                       {gameDate} - {hour} */}
-                    </h5>
-                    <PredictionCards
-                      game={game}
-                      handleScoreChange={handleScoreChange}
-                      user={user}
-                      id={id}
-                    />
-                  </div>
-                );
-              })}
+            {games?.map((game) => {
+              return (
+                <div key={game._id}>
+                  <h5>{/*                       {gameDate} - {hour} */}</h5>
+                  <PredictionCards
+                    game={game}
+                    handleScoreChange={handleScoreChange}
+                    user={user}
+                    id={id}
+                  />
+                </div>
+              );
+            })}
           </>
         </form>
         <Button

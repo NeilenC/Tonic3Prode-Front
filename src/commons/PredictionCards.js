@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
-import { Box, Typography, Button, TextField, InputBase } from "@mui/material";
+import { Box, Typography, InputBase } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
@@ -13,8 +13,9 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
 
+
   const handleAddHome = () => {
-    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
+    let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
     if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
       setHomeScore(0);
     } else if (homeScore >= 0) {
@@ -24,7 +25,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   };
 
   const handleRemoveHome = () => {
-    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
+    let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
     if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
       setHomeScore(0);
     } else if (homeScore >= 1) {
@@ -34,7 +35,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   };
 
   const handleAddAway = () => {
-    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
+    let awayTeamScore = gamePredictions[0]?.prediction?.awayTeamScore;
     if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
       setAwayScore(0);
     } else if (awayScore >= 0) {
@@ -44,7 +45,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   };
 
   const handleRemoveAway = () => {
-    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
+    let awayTeamScore = gamePredictions[0]?.prediction?.awayTeamScore;
     if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
       setAwayScore(0);
     } else if (awayScore >= 1) {
@@ -53,7 +54,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
     }
   };
 
-  // //////// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///////
   useEffect(() => {
     const getUserPredictions = async () => {
       try {
@@ -65,6 +65,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
         const filterPredictios = predictionsData.filter(
           (prediction) => prediction.gameId.tournaments == id
         );
+
         setUserPredictios(filterPredictios);
       } catch (error) {
         console.error(error);
@@ -73,14 +74,12 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
     getUserPredictions();
   }, [game]);
 
-  ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
-
   useEffect(() => {
     const gamePredictions = userPredictions?.filter(
       (prediction) => prediction.gameId._id === game._id
     );
-    setHomeScore(gamePredictions[0]?.prediction.homeTeamScore);
-    setAwayScore(gamePredictions[0]?.prediction.awayTeamScore);
+    setHomeScore(gamePredictions[0]?.prediction?.homeTeamScore);
+    setAwayScore(gamePredictions[0]?.prediction?.awayTeamScore);
   }, [userPredictions]);
 
   const gamePredictions = userPredictions?.filter(
@@ -90,30 +89,32 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   useEffect(() => {
     if (gamePredictions[0] && gamePredictions) {
       handleScoreChange(
-        gamePredictions[0]?.gameId._id,
+        gamePredictions[0]?.gameId?._id,
         "homeTeamScore",
         homeScore
       );
       handleScoreChange(
-        gamePredictions[0]?.gameId._id,
+        gamePredictions[0]?.gameId?._id,
         "awayTeamScore",
         awayScore
       );
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-  /////////////////////////COMPONENTE/////////////////////////////////
+
+console.log()
+
 
   return (
     <>
       <Box
-        key={gamePredictions[0]?.gameId._id}
+        key={game?._id}
         sx={{ display: "flex", alignItems: "center", my: 2 }}
         s
         className={stylesCard.customCard}
       >
         <div className={stylesCard.cardColumn}>
-          {game.result[0] ? (
+          {game?.result[0] ? (
             <Box
               sx={{
                 flexDirection: "column",
@@ -127,8 +128,8 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
                 Result:
               </Typography>
               <Box>
-                {game.result[0]?.homeTeamScore} -{" "}
-                {game.result[0]?.awayTeamScore}
+                {game?.result[0]?.homeTeamScore} -{" "}
+                {game?.result[0]?.awayTeamScore}
               </Box>
             </Box>
           ) : (
@@ -137,14 +138,24 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
           <div className={stylesCard.cardColumn}>
             <div className={stylesCard.teamLogoWrapper}>
               <img
-                src={gamePredictions[0]?.prediction.homeTeam.logo_url}
-                alt={gamePredictions[0]?.prediction.homeTeam.name}
+                src={
+                  game?.teams[0]?.logo_url
+                    ? game?.teams[0]?.logo_url
+                    : game?.teams[0][0]?.logo_url
+                }
+                alt={
+                  game?.teams[0]?.name
+                    ? game?.teams[0]?.name
+                    : game?.teams[0][0]?.name
+                }
                 className={stylesCard.teamLogo}
               />
             </div>
           </div>
           <div className={stylesCard.titleWrapper}>
-            {gamePredictions[0]?.prediction.homeTeam.shortName}
+            {game?.teams[0]?.shortName
+              ? game?.teams[0]?.shortName
+              : game?.teams[0][0]?.shortName}
           </div>
           {gamePredictions[0]?.status != "close" ? (
             <IconButton aria-label="increment" onClick={handleAddHome}>
@@ -206,13 +217,23 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
             ""
           )}
           <div className={stylesCard.titleWrapper}>
-            {gamePredictions[0]?.prediction.awayTeam.shortName}
+            {game?.teams[1]?.shortName
+              ? game?.teams[1]?.shortName
+              : game?.teams[1][0]?.shortName}
           </div>
           <div className={stylesCard.cardColumn}>
             <div className={stylesCard.teamLogoWrapper}>
               <img
-                src={gamePredictions[0]?.prediction.awayTeam.logo_url}
-                alt={gamePredictions[0]?.prediction.awayTeam.name}
+                src={
+                  game?.teams[1]?.logo_url
+                    ? game?.teams[1]?.logo_url
+                    : game?.teams[1][0]?.logo_url
+                }
+                alt={
+                  game?.teams[1]?.name
+                    ? game?.teams[1]?.name
+                    : game?.teams[1][0]?.name
+                }
                 className={stylesCard.teamLogo}
               />
             </div>
