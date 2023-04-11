@@ -8,9 +8,9 @@ import {
   EmojiEvents as PrizesIcon,
   Sports as TournamentIcon,
   Games,
+  ConstructionOutlined,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
-
 
 const Home = ({}) => {
   const router = useRouter();
@@ -34,6 +34,7 @@ const Home = ({}) => {
       axios
         .get(`http://localhost:3001/api/games/search/${id}/${user}`)
         .then((allgames) => {
+          console.log("JUEGOS QUE LLEGAN DEL USER", allgames.data);
           return allgames;
         })
         .then((allgames) => {
@@ -53,8 +54,12 @@ const Home = ({}) => {
       return {
         gameId: game?._id,
         prediction: {
-          homeTeam: game?.teams[0].name,
-          awayTeam: game?.teams[1].name,
+          homeTeam: game?.teams[0].name
+            ? game?.teams[0].name
+            : game?.teams[0][0]?.name, //game?.teams[0].name
+          awayTeam: game?.teams[1].name
+            ? game?.teams[1].name
+            : game?.teams[1][0]?.name, //game?/teams[1].name
           homeTeamScore: "",
           awayTeamScore: "",
         },
@@ -146,7 +151,7 @@ const Home = ({}) => {
           router.push(`/home`);
         }}
       >
-      Home
+        Home
       </Button>
     </Box>
   );
