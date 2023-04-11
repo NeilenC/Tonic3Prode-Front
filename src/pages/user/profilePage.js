@@ -2,6 +2,7 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import SportsRoundedIcon from '@mui/icons-material/SportsRounded';
 
 const profilePage = () => {
   const userInfo = useSelector((state) => state.userInfo);
@@ -28,48 +29,73 @@ const profilePage = () => {
         justifyContent: "center",
         alignItems: "center",
         border: "1px solid grey",
-        padding: "20px",
+        padding: "10%",
         borderRadius: "5px ",
-        width: "90%",
-        maxWidth: "700px",
+        maxWidth: "95%",
         margin: " 5% auto",
+        backgroundColor: "#F7F7F7",
+        padding: "2rem",
+        boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+        overflow: "hidden", 
       }}
     >
-      <Grid container spacing={3} alignItems="center">
-        <Grid item xs={12} md={6}>
+       <Grid item xs={12} md={6}
+        container
+        spacing={3}
+        alignItems="center"
+        sx={{
+          flexDirection: "column",
+        }}
+      >
+  
           <Typography
             variant="h5"
-            sx={{ textAlign: { xs: "center", md: "left" }, mb: 1 }}
+            component="div"
+            align="center"
+            sx={{
+              marginBottom: "1rem",
+              color: "#555555",
+            }}
           >
-            <div>Nombre de usuario: </div>
-            {username}
+           <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> Nombre de usuario:</p>  {username}
           </Typography>
           <Typography
             variant="h5"
-            sx={{ textAlign: { xs: "center", md: "left" }, mb: 1 }}
+            component="div"
+            align="center"
+            sx={{
+              marginBottom: "1rem",
+              color: "#555555",
+            }}
           >
-            <div> E-mail: </div>
-            {email}
+           <p style={{ color: "#1976d2" }}> <SportsRoundedIcon/> E-mail:</p> {email}
+          </Typography>
+     
+          <Typography
+            variant="h5"
+            component="div"
+            align="center"
+            sx={{
+              marginBottom: "1rem",
+              color: "#555555",
+            }}
+          >
+            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> Dirección:</p> {address}
+          </Typography>
+          <Typography
+            variant="h5"
+            component="div"
+            align="center"
+            sx={{
+              marginBottom: "1rem",
+              color: "#555555",
+            }}
+          >
+            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> Teléfono:</p> {cellphone}
           </Typography>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography
-            variant="h5"
-            sx={{ textAlign: { xs: "center", md: "left" }, mb: 1 }}
-          >
-            <div>Dirección: </div>
-            {address}
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{ textAlign: { xs: "center", md: "left" }, mb: 1 }}
-          >
-            <div> Teléfono de contacto: </div> {cellphone}
-          </Typography>
-        </Grid>
-      </Grid>
-
-      <Link href="/user/profile">
+     
+      <Link href="/user/editProfile">
         <Button sx={{ mt: 3, alignSelf: "flex-end" }}>
           <Typography
             variant="body1"
@@ -78,6 +104,10 @@ const profilePage = () => {
             Cambiar datos de usuario
           </Typography>
         </Button>
+      </Link>
+      <Link href="/home">
+      <Button  sx={{ mt: 3, alignSelf: "flex-end", color:"inherit", justifyContent:"center"}}
+          >Volver</Button>
       </Link>
     </Box>
   );
