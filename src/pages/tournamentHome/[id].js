@@ -100,19 +100,6 @@ const Home = ({}) => {
       >
         Predictions
       </Button>
-
-      <Button
-        size="xl"
-        variant="outlined"
-        startIcon={<FixtureIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        onClick={() => {
-          router.push(`/fixture`);
-        }}
-      >
-        Fixture
-      </Button>
-
       <Button
         size="xl"
         variant="outlined"

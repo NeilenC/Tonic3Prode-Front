@@ -2,13 +2,22 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
-import { Box, Typography, InputBase } from "@mui/material";
+
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  InputBase,
+  Card,
+} from "@mui/material";
+
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
 import stylesCard from "../styles/matches/ResultCard.module.css";
 
-const PredictionCards = ({ game, handleScoreChange, user, id }) => {
+const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
@@ -106,57 +115,46 @@ console.log()
 
 
   return (
-    <>
-      <Box
-        key={game?._id}
-        sx={{ display: "flex", alignItems: "center", my: 2 }}
-        s
-        className={stylesCard.customCard}
-      >
-        <div className={stylesCard.cardColumn}>
-          {game?.result[0] ? (
-            <Box
-              sx={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography
-                sx={{ textAlign: "center", justifyContent: "center" }}
-              >
-                Result:
-              </Typography>
-              <Box>
-                {game?.result[0]?.homeTeamScore} -{" "}
-                {game?.result[0]?.awayTeamScore}
-              </Box>
+
+    <Card
+      key={gamePredictions[0]?.gameId._id}
+      sx={{ display: "flex", alignItems: "center", my: 2 }}
+      className={stylesCard.customCard}
+    >
+      <Box className={stylesCard.cardColumn}>
+        {game.result[0] ? (
+          <Box
+            sx={{
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography sx={{ textAlign: "center", justifyContent: "center" }}>
+              Result:
+            </Typography>
+            <Box>
+              {game.result[0]?.homeTeamScore} - {game.result[0]?.awayTeamScore}
             </Box>
-          ) : (
-            ""
-          )}
-          <div className={stylesCard.cardColumn}>
-            <div className={stylesCard.teamLogoWrapper}>
-              <img
-                src={
-                  game?.teams[0]?.logo_url
-                    ? game?.teams[0]?.logo_url
-                    : game?.teams[0][0]?.logo_url
-                }
-                alt={
-                  game?.teams[0]?.name
-                    ? game?.teams[0]?.name
-                    : game?.teams[0][0]?.name
-                }
-                className={stylesCard.teamLogo}
-              />
-            </div>
-          </div>
-          <div className={stylesCard.titleWrapper}>
-            {game?.teams[0]?.shortName
-              ? game?.teams[0]?.shortName
-              : game?.teams[0][0]?.shortName}
-          </div>
+          </Box>
+        ) : (
+          ""
+        )}
+        <Box className={stylesCard.teamLogoWrapper}>
+          <img
+            src={gamePredictions[0]?.prediction.homeTeam.logo_url}
+            alt={gamePredictions[0]?.prediction.homeTeam.name}
+            className={stylesCard.teamLogo}
+          />
+        </Box>
+        <Box sx={{ margin: "0px 5px" }}>
+          {gamePredictions[0]?.prediction.homeTeam.shortName}
+        </Box>
+        <Box
+          className={stylesCard.cardColumn}
+          sx={{ display: "flex", flexDirection: "column" }}
+        >
+
           {gamePredictions[0]?.status != "close" ? (
             <IconButton aria-label="increment" onClick={handleAddHome}>
               <Add />
@@ -168,8 +166,7 @@ console.log()
             inputProps={{
               "aria-label": "score",
               min: "0",
-              type: "number",
-              style: { appearance: "none" },
+              style: { appearance: "none", textAlign: "center" },
             }}
             className={styles.input}
             value={homeScore}
@@ -182,9 +179,14 @@ console.log()
           ) : (
             ""
           )}
-        </div>
-        <span> Vs </span>
-        <div className={stylesCard.cardColumn}>
+        </Box>
+      </Box>
+      <Typography sx={{ textAlign: "center" }}> Vs </Typography>
+      <Box className={stylesCard.cardColumn}>
+        <Box
+          className={stylesCard.cardColumn}
+          sx={{ display: "flex", flexDirection: "column" }}
+        >
           {gamePredictions[0]?.status != "close" ? (
             <IconButton aria-label="increment" onClick={handleAddAway}>
               <Add />
@@ -196,18 +198,12 @@ console.log()
             inputProps={{
               "aria-label": "score",
               min: "0",
-              type: "number",
-              style: { appearance: "none" },
+              style: { appearance: "none", textAlign: "center" },
+              readOnly: true,
             }}
             className={styles.input}
             value={awayScore}
             onChange={(e) => setAwayScore(e.target.value)}
-            sx={{
-              mx: 3,
-              textAlign: "center",
-              width: "10%",
-              height: "1.5%",
-            }}
           />
           {gamePredictions[0]?.status != "close" ? (
             <IconButton aria-label="decrement" onClick={handleRemoveAway}>
@@ -216,31 +212,20 @@ console.log()
           ) : (
             ""
           )}
-          <div className={stylesCard.titleWrapper}>
-            {game?.teams[1]?.shortName
-              ? game?.teams[1]?.shortName
-              : game?.teams[1][0]?.shortName}
-          </div>
-          <div className={stylesCard.cardColumn}>
-            <div className={stylesCard.teamLogoWrapper}>
-              <img
-                src={
-                  game?.teams[1]?.logo_url
-                    ? game?.teams[1]?.logo_url
-                    : game?.teams[1][0]?.logo_url
-                }
-                alt={
-                  game?.teams[1]?.name
-                    ? game?.teams[1]?.name
-                    : game?.teams[1][0]?.name
-                }
-                className={stylesCard.teamLogo}
-              />
-            </div>
-          </div>
-        </div>
+        </Box>
+        <Box sx={{ margin: "0px 5px" }}>
+          {gamePredictions[0]?.prediction.awayTeam.shortName}
+        </Box>
+        <Box className={stylesCard.teamLogoWrapper}>
+          <img
+            src={gamePredictions[0]?.prediction.awayTeam.logo_url}
+            alt={gamePredictions[0]?.prediction.awayTeam.name}
+            className={stylesCard.teamLogo}
+          />
+        </Box>
+
       </Box>
-    </>
+    </Card>
   );
 };
 
