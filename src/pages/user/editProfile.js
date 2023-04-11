@@ -3,13 +3,11 @@ import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
 import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
 import { useSelector } from "react-redux";
-
-
-
+import { useIntl, FormattedMessage } from "react-intl";
 
 const Profile = () => {
-
   const userInfo = useSelector((state) => state.userInfo);
+  const intl = useIntl();
 
   const [checked, setChecked] = useState(true);
   const [cellphone, setCellphone] = useState("");
@@ -29,7 +27,7 @@ const Profile = () => {
     }
   }, [userInfo]);
 
-  console.log("USERNAME", username)
+  console.log("USERNAME", username);
 
   const handleSave = async () => {
     if (userInfo) {
@@ -50,7 +48,7 @@ const Profile = () => {
         );
         const data = await response.json();
         if (response.status === 200) {
-          alert("Los cambios se han realizado con exito")
+          alert("Los cambios se han realizado con exito");
         }
         return data;
       } catch (error) {
@@ -62,7 +60,6 @@ const Profile = () => {
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-
 
   return (
     <Box>
@@ -87,12 +84,12 @@ const Profile = () => {
         autoComplete="on"
       >
         <Typography component="h1" variant="h5" color="#454546" marginTop="3%">
-          Modificar datos:
+          <div> {intl.formatMessage({ id: "data" })}</div>
         </Typography>
 
         <TextField
           mt="5%"
-          label="User name"
+          label={intl.formatMessage({ id: "username" })}
           variant="outlined"
           margin="normal"
           InputLabelProps={{
@@ -101,12 +98,10 @@ const Profile = () => {
           onChange={(e) => setUserName(e.target.value)}
         />
 
-        <div
-         sx={{p:"30%"}}
-        >
+        <div sx={{ p: "30%" }}>
           <TextField
             mt="5%"
-            label="Dirección"
+            label={intl.formatMessage({ id: "address" })}
             variant="outlined"
             margin="normal"
             InputLabelProps={{
@@ -126,13 +121,12 @@ const Profile = () => {
                 mt="5%"
                 id="Cellphone"
                 type="text"
-                label="Numero celular"
+                label={intl.formatMessage({ id: "cell" })}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 placeholder="+54-911-12345678"
                 required={true}
-
               />
             )}
           </ReactInputMask>
@@ -144,7 +138,7 @@ const Profile = () => {
             color="#454546"
             marginTop="3%"
           >
-            Deseo recibir notificaciones
+            <FormattedMessage id="notifications" />
           </Typography>
           <Checkbox
             checked={checked}
@@ -160,7 +154,7 @@ const Profile = () => {
             marginTop="3%"
             marginLeft="1.5%"
           >
-            Cambiar idioma:
+            {intl.formatMessage({ id: "language" })}
           </Typography>
           <SetIdiomas />
         </div>
@@ -170,9 +164,8 @@ const Profile = () => {
           sx={{ mt: 3, mb: 2 }}
           onClick={handleSave}
         >
-          Guardar cambios
+          <FormattedMessage id="save" />
         </Button>
-       
       </Box>
     </Box>
   );

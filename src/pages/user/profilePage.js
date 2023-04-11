@@ -3,9 +3,11 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SportsRoundedIcon from '@mui/icons-material/SportsRounded';
+import {useIntl} from "react-intl"
 
 const profilePage = () => {
   const userInfo = useSelector((state) => state.userInfo);
+  const intl = useIntl()
 
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
@@ -57,7 +59,7 @@ const profilePage = () => {
               color: "#555555",
             }}
           >
-           <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> Nombre de usuario:</p>  {username}
+           <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> {intl.formatMessage({ id: "username" })}</p>  {username}
           </Typography>
           <Typography
             variant="h5"
@@ -68,7 +70,9 @@ const profilePage = () => {
               color: "#555555",
             }}
           >
-           <p style={{ color: "#1976d2" }}> <SportsRoundedIcon/> E-mail:</p> {email}
+           <p style={{ color: "#1976d2" }}> <SportsRoundedIcon/>
+           E-mail:
+           </p> {email}
           </Typography>
      
           <Typography
@@ -80,7 +84,7 @@ const profilePage = () => {
               color: "#555555",
             }}
           >
-            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> Dirección:</p> {address}
+            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> {intl.formatMessage({ id: "address" })}</p> {address}
           </Typography>
           <Typography
             variant="h5"
@@ -91,7 +95,7 @@ const profilePage = () => {
               color: "#555555",
             }}
           >
-            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> Teléfono:</p> {cellphone}
+            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> {intl.formatMessage({ id: "cell" })}</p> {cellphone}
           </Typography>
         </Grid>
      
@@ -101,13 +105,13 @@ const profilePage = () => {
             variant="body1"
             sx={{ textDecoration: "none", color: "inherit" }}
           >
-            Cambiar datos de usuario
+          {intl.formatMessage({ id: "modify" })}
           </Typography>
         </Button>
       </Link>
       <Link href="/home">
       <Button  sx={{ mt: 3, alignSelf: "flex-end", color:"inherit", justifyContent:"center"}}
-          >Volver</Button>
+          >{intl.formatMessage({ id: "back" })}</Button>
       </Link>
     </Box>
   );

@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import Spanish from "./es.json";
 import English from "./en.json";
 import Portugues from "./pt.json";
-import { injectIntl, IntlProvider, IntlShape,  ReactIntlErrorCode } from "react-intl";
+import {  IntlProvider } from "react-intl";
 export const LanguageContext = createContext();
 
 const LanguageProvider = ({ children }) => {
@@ -29,11 +29,15 @@ const LanguageProvider = ({ children }) => {
     }
   }, [locale]);
 
-// console.log("LANGUAGE", language)
+  function ErrorFunction(error, message) {
+    console.warn(`Error al obtener el mensaje ${message}: ${error.message}`);
+    return message;
+  }
+
 
   return (
     <LanguageContext.Provider value={{locale, setLocale}}>
-      <IntlProvider locale={locale} messages={language}>
+      <IntlProvider onError={ErrorFunction} locale={locale} messages={language}>
         {children}
       </IntlProvider>
     </LanguageContext.Provider>
