@@ -114,7 +114,7 @@ const Home = ({}) => {
         startIcon={<RankingIcon />}
         sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
         onClick={() => {
-          router.push(`/ranking`);
+          router.push(`/ranking/${id}`);
         }}
       >
         Ranking
