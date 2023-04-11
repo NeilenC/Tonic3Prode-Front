@@ -105,6 +105,10 @@ const profilePage = () => {
           </Typography>
         </Button>
       </Link>
+      <Link href="/home">
+      <Button  sx={{ mt: 3, alignSelf: "flex-end", color:"inherit", justifyContent:"center"}}
+          >Volver</Button>
+      </Link>
     </Box>
   );
 };

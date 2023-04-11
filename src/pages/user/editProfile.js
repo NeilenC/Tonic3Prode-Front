@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
-import Snackbar from "@mui/material/Snackbar";
-import SnackbarContent from "@mui/material/SnackbarContent";
-import { createStyles } from "@mui/styles";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
 import { useSelector } from "react-redux";
 
-const useStyles = createStyles((theme) => ({
-  success: {
-    backgroundColor: theme.palette.success.main,
-  },
-  message: {
-    display: "flex",
-    alignItems: "center",
-  },
-  icon: {
-    marginRight: theme.spacing(1),
-  },
-}));
+
+
 
 const Profile = () => {
+
   const userInfo = useSelector((state) => state.userInfo);
 
-  const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
@@ -36,10 +22,14 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    setCellphone(userInfo.cellphone);
-    setAddress(userInfo.address);
-    setUserName(userInfo.username);
-  }, []);
+    if (userInfo) {
+      setCellphone(userInfo.cellphone);
+      setAddress(userInfo.address);
+      setUserName(userInfo.username);
+    }
+  }, [userInfo]);
+
+  console.log("USERNAME", username)
 
   const handleSave = async () => {
     if (userInfo) {
@@ -60,7 +50,7 @@ const Profile = () => {
         );
         const data = await response.json();
         if (response.status === 200) {
-          setOpen(true);
+          alert("Los cambios se han realizado con exito")
         }
         return data;
       } catch (error) {
@@ -73,12 +63,6 @@ const Profile = () => {
     setChecked(event.target.checked);
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
 
   return (
     <Box>
@@ -115,7 +99,6 @@ const Profile = () => {
             shrink: true,
           }}
           onChange={(e) => setUserName(e.target.value)}
-          my={2}
         />
 
         <div
@@ -189,16 +172,7 @@ const Profile = () => {
         >
           Guardar cambios
         </Button>
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-          <SnackbarContent
-            className={useStyles.success}
-            message={
-              <span className={useStyles.message}>
-                <CheckCircleIcon className={useStyles.icon} />
-              </span>
-            }
-          />
-        </Snackbar>
+       
       </Box>
     </Box>
   );
