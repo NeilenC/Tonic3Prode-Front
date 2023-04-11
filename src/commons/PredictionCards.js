@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
+
 import {
   Box,
   Typography,
@@ -10,6 +11,7 @@ import {
   InputBase,
   Card,
 } from "@mui/material";
+
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
@@ -20,8 +22,9 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
 
+
   const handleAddHome = () => {
-    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
+    let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
     if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
       setHomeScore(0);
     } else if (homeScore >= 0) {
@@ -31,7 +34,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   };
 
   const handleRemoveHome = () => {
-    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
+    let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
     if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
       setHomeScore(0);
     } else if (homeScore >= 1) {
@@ -41,7 +44,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   };
 
   const handleAddAway = () => {
-    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
+    let awayTeamScore = gamePredictions[0]?.prediction?.awayTeamScore;
     if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
       setAwayScore(0);
     } else if (awayScore >= 0) {
@@ -51,7 +54,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   };
 
   const handleRemoveAway = () => {
-    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
+    let awayTeamScore = gamePredictions[0]?.prediction?.awayTeamScore;
     if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
       setAwayScore(0);
     } else if (awayScore >= 1) {
@@ -60,7 +63,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
     }
   };
 
-  // //////// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///////
   useEffect(() => {
     const getUserPredictions = async () => {
       try {
@@ -72,6 +74,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
         const filterPredictios = predictionsData.filter(
           (prediction) => prediction.gameId.tournaments == id
         );
+
         setUserPredictios(filterPredictios);
       } catch (error) {
         console.error(error);
@@ -80,14 +83,12 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
     getUserPredictions();
   }, [game]);
 
-  ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
-
   useEffect(() => {
     const gamePredictions = userPredictions?.filter(
       (prediction) => prediction.gameId._id === game._id
     );
-    setHomeScore(gamePredictions[0]?.prediction.homeTeamScore);
-    setAwayScore(gamePredictions[0]?.prediction.awayTeamScore);
+    setHomeScore(gamePredictions[0]?.prediction?.homeTeamScore);
+    setAwayScore(gamePredictions[0]?.prediction?.awayTeamScore);
   }, [userPredictions]);
 
   const gamePredictions = userPredictions?.filter(
@@ -97,21 +98,24 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   useEffect(() => {
     if (gamePredictions[0] && gamePredictions) {
       handleScoreChange(
-        gamePredictions[0]?.gameId._id,
+        gamePredictions[0]?.gameId?._id,
         "homeTeamScore",
         homeScore
       );
       handleScoreChange(
-        gamePredictions[0]?.gameId._id,
+        gamePredictions[0]?.gameId?._id,
         "awayTeamScore",
         awayScore
       );
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-  /////////////////////////COMPONENTE/////////////////////////////////
+
+console.log()
+
 
   return (
+
     <Card
       key={gamePredictions[0]?.gameId._id}
       sx={{ display: "flex", alignItems: "center", my: 2 }}
@@ -150,6 +154,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           className={stylesCard.cardColumn}
           sx={{ display: "flex", flexDirection: "column" }}
         >
+
           {gamePredictions[0]?.status != "close" ? (
             <IconButton aria-label="increment" onClick={handleAddHome}>
               <Add />
@@ -218,6 +223,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
             className={stylesCard.teamLogo}
           />
         </Box>
+
       </Box>
     </Card>
   );

@@ -1,47 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
-import Snackbar from "@mui/material/Snackbar";
-import SnackbarContent from "@mui/material/SnackbarContent";
-import { createStyles } from "@mui/styles";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
 import { useSelector } from "react-redux";
 
-const useStyles = createStyles((theme) => ({
-  success: {
-    backgroundColor: theme.palette.success.main,
-  },
-  message: {
-    display: "flex",
-    alignItems: "center",
-  },
-  icon: {
-    marginRight: theme.spacing(1),
-  },
-}));
+
+
 
 const Profile = () => {
 
   const userInfo = useSelector((state) => state.userInfo);
 
-  const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
   const [username, setUserName] = useState("");
   const [uid, setUid] = useState("");
 
-
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
   }, []);
 
   useEffect(() => {
-    setCellphone(userInfo.cellphone);
-    setAddress(userInfo.address);
-    setUserName(userInfo.username);
-  }, []);
+    if (userInfo) {
+      setCellphone(userInfo.cellphone);
+      setAddress(userInfo.address);
+      setUserName(userInfo.username);
+    }
+  }, [userInfo]);
+
+  console.log("USERNAME", username)
 
   const handleSave = async () => {
     if (userInfo) {
@@ -62,7 +50,7 @@ const Profile = () => {
         );
         const data = await response.json();
         if (response.status === 200) {
-          setOpen(true);
+          alert("Los cambios se han realizado con exito")
         }
         return data;
       } catch (error) {
@@ -75,35 +63,32 @@ const Profile = () => {
     setChecked(event.target.checked);
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
 
   return (
     <Box>
       <Box
         component="form"
         sx={{
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
           display: "flex",
           flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          border: "0.5vh solid grey",
-          maxWidth: "50%",
-          margin: "auto",
-          p: "2% 1.5% 2% 1.5% ",
-          mt: "2%",
+          border: "1px solid grey",
+          padding: "10%",
+          borderRadius: "5px ",
+          maxWidth: "95%",
+          margin: " 5% auto",
+          backgroundColor: "#F7F7F7",
+          padding: "2rem",
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+          overflow: "hidden",
         }}
         noValidate
         autoComplete="on"
       >
-        <Typography component="h1" variant="h6" color="#454546" marginTop="3%">
+        <Typography component="h1" variant="h5" color="#454546" marginTop="3%">
           Modificar datos:
         </Typography>
-
 
         <TextField
           mt="5%"
@@ -117,12 +102,7 @@ const Profile = () => {
         />
 
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: "3%",
-            marginTop: "3%",
-          }}
+         sx={{p:"30%"}}
         >
           <TextField
             mt="5%"
@@ -134,6 +114,8 @@ const Profile = () => {
             }}
             onChange={(e) => setAddress(e.target.value)}
           />
+        </div>
+        <div>
           <ReactInputMask
             mask="+99-999-99999999"
             maskChar=""
@@ -141,6 +123,7 @@ const Profile = () => {
           >
             {() => (
               <TextField
+                mt="5%"
                 id="Cellphone"
                 type="text"
                 label="Numero celular"
@@ -149,6 +132,7 @@ const Profile = () => {
                 }}
                 placeholder="+54-911-12345678"
                 required={true}
+
               />
             )}
           </ReactInputMask>
@@ -188,17 +172,7 @@ const Profile = () => {
         >
           Guardar cambios
         </Button>
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-          <SnackbarContent
-            className={useStyles.success}
-            message={
-              <span className={useStyles.message}>
-                <CheckCircleIcon className={useStyles.icon} />
-              </span>
-            }
-          />
-        </Snackbar>
-
+       
       </Box>
     </Box>
   );

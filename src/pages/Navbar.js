@@ -97,6 +97,7 @@ const Navbar = () => {
                   <div> {username} &nbsp;&nbsp;&nbsp; </div>
                 </Typography> */}
                 <Avatar alt="User avatar" />
+
               </IconButton>
             )}
 
