@@ -31,6 +31,7 @@
     "react-countdown": "^2.3.5",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
+    "react-image-filter": "^0.1.2",
     "react-input-mask": "^2.0.4",
     "react-intl": "^6.3.2",
     "react-material-ui-carousel": "^3.4.2",

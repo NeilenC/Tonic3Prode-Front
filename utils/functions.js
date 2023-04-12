@@ -79,7 +79,7 @@ export const changeHour = (hour) => {
   return hours + ":" + (minutes < 10 ? "0" : "") + minutes;
 };
 
-export const formattedDate = (date) => new Intl.DateTimeFormat(
+/* export const formattedDate = (date) => new Intl.DateTimeFormat(
   navigator.language,
   {
     weekday: "long",
@@ -87,18 +87,12 @@ export const formattedDate = (date) => new Intl.DateTimeFormat(
     month: "long",
     day: "numeric",
   }
-).format(date);
+).format(date); */
 
-export const formattedTime = (date) => new Intl.DateTimeFormat(
+/* export const formattedTime = (date) => new Intl.DateTimeFormat(
   navigator.language,
   {
     hour: "numeric",
     minute: "numeric",
   }
-).format(date);
-
-export const validateInput = (input) => {
-  const regex = /^[a-zA-Z0-9\s]*$/; 
-  const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/; 
-  return regex.test(input) && !specialChars.test(input);
-};
+).format(date); */
