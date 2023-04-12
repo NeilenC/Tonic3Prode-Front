@@ -25,9 +25,17 @@
     "members": "Members",
     "teams": "Teams",
     "countries": "Country",
-    
+
+    "data":"Modify user data",
     "notifications" :"I want to receive notifications",
     "save":"Save changes",
-    "cell": "Numero telefónico"
+    "cell": "Username",
+    "address": "Address",
+    "username": "Username",
+    "language": "Change language",
+    "modify": "Change user data",
+    "back": "Back"
+
+
 
     }

@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { LanguageContext } from "@/languages/LanguageProvider";
 
 const SetIdiomas = () => {
   const { locale, setLocale } = useContext(LanguageContext);
 
-
+  
   const handleLocaleChange = (e) => {
     setLocale(e.target.value);
+    localStorage.setItem("locale", e.target.value)
   };
+  
 
   const languages = [
     { value: null, label: "-" },
@@ -16,7 +18,6 @@ const SetIdiomas = () => {
     { value: "es", label: "Español" },
     { value: "pt", label: "Portugues" },
   ];
-
 
   return (
     <div>

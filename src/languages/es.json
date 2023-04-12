@@ -8,7 +8,6 @@
     "panel": "Panel Administrador",
     
     "profile": "Perfil",
-    "config": "Configuración",
     "logout": "Cerrar sesión",
     
     "state": "Estado",
@@ -24,9 +23,18 @@
     "teams": "Equipos",
     "countries": "País",
     
+    "data":"Modificar datos",
     "notifications" :"Deseo recibir notificaciones",
     "save":"Guardar cambios",
-    "cell": "Phone number"
+    "cell": "Telefono celular",
+    "address": "Dirección",
+    "username": "Nombre usuario",
+    "language": "Cambiar idioma",
+    "modify": "Cambiar datos de usuario",
+    "back": "Volver"
+
+
+
 
 
     

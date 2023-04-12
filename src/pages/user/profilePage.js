@@ -2,12 +2,12 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import SportsRoundedIcon from '@mui/icons-material/SportsRounded';
-import {useIntl} from "react-intl"
+import SportsRoundedIcon from "@mui/icons-material/SportsRounded";
+import { useIntl } from "react-intl";
 
 const profilePage = () => {
   const userInfo = useSelector((state) => state.userInfo);
-  const intl = useIntl()
+  const intl = useIntl();
 
   const [cellphone, setCellphone] = useState("");
   const [address, setAddress] = useState("");
@@ -38,10 +38,13 @@ const profilePage = () => {
         backgroundColor: "#F7F7F7",
         padding: "2rem",
         boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
-        overflow: "hidden", 
+        overflow: "hidden",
       }}
     >
-       <Grid item xs={12} md={6}
+      <Grid
+        item
+        xs={12}
+        md={6}
         container
         spacing={3}
         alignItems="center"
@@ -49,69 +52,88 @@ const profilePage = () => {
           flexDirection: "column",
         }}
       >
-  
-          <Typography
-            variant="h5"
-            component="div"
-            align="center"
-            sx={{
-              marginBottom: "1rem",
-              color: "#555555",
-            }}
-          >
-           <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> {intl.formatMessage({ id: "username" })}</p>  {username}
-          </Typography>
-          <Typography
-            variant="h5"
-            component="div"
-            align="center"
-            sx={{
-              marginBottom: "1rem",
-              color: "#555555",
-            }}
-          >
-           <p style={{ color: "#1976d2" }}> <SportsRoundedIcon/>
-           E-mail:
-           </p> {email}
-          </Typography>
-     
-          <Typography
-            variant="h5"
-            component="div"
-            align="center"
-            sx={{
-              marginBottom: "1rem",
-              color: "#555555",
-            }}
-          >
-            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> {intl.formatMessage({ id: "address" })}</p> {address}
-          </Typography>
-          <Typography
-            variant="h5"
-            component="div"
-            align="center"
-            sx={{
-              marginBottom: "1rem",
-              color: "#555555",
-            }}
-          >
-            <p style={{ color: "#1976d2" }}><SportsRoundedIcon/> {intl.formatMessage({ id: "cell" })}</p> {cellphone}
-          </Typography>
-        </Grid>
-     
+        <Typography
+          variant="h5"
+          component="div"
+          align="center"
+          sx={{
+            marginBottom: "1rem",
+            color: "#555555",
+          }}
+        >
+          <p style={{ color: "#1976d2" }}>
+            <SportsRoundedIcon /> {intl.formatMessage({ id: "username" })}
+          </p>{" "}
+          {username}
+        </Typography>
+        <Typography
+          variant="h5"
+          component="div"
+          align="center"
+          sx={{
+            marginBottom: "1rem",
+            color: "#555555",
+          }}
+        >
+          <p style={{ color: "#1976d2" }}>
+            {" "}
+            <SportsRoundedIcon />
+            E-mail:
+          </p>{" "}
+          {email}
+        </Typography>
+
+        <Typography
+          variant="h5"
+          component="div"
+          align="center"
+          sx={{
+            marginBottom: "1rem",
+            color: "#555555",
+          }}
+        >
+          <p style={{ color: "#1976d2" }}>
+            <SportsRoundedIcon /> {intl.formatMessage({ id: "address" })}
+          </p>{" "}
+          {address}
+        </Typography>
+        <Typography
+          variant="h5"
+          component="div"
+          align="center"
+          sx={{
+            marginBottom: "1rem",
+            color: "#555555",
+          }}
+        >
+          <p style={{ color: "#1976d2" }}>
+            <SportsRoundedIcon /> {intl.formatMessage({ id: "cell" })}
+          </p>{" "}
+          {cellphone}
+        </Typography>
+      </Grid>
+
       <Link href="/user/editProfile">
         <Button sx={{ mt: 3, alignSelf: "flex-end" }}>
           <Typography
             variant="body1"
             sx={{ textDecoration: "none", color: "inherit" }}
           >
-          {intl.formatMessage({ id: "modify" })}
+            {intl.formatMessage({ id: "modify" })}
           </Typography>
         </Button>
       </Link>
       <Link href="/home">
-      <Button  sx={{ mt: 3, alignSelf: "flex-end", color:"inherit", justifyContent:"center"}}
-          >{intl.formatMessage({ id: "back" })}</Button>
+        <Button
+          sx={{
+            mt: 3,
+            alignSelf: "flex-end",
+            color: "inherit",
+            justifyContent: "center",
+          }}
+        >
+          {intl.formatMessage({ id: "back" })}
+        </Button>
       </Link>
     </Box>
   );

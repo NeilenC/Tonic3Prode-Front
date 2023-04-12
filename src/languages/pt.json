@@ -25,10 +25,18 @@
     "teams": "Equipes",
     "countries": "País",
     
+    "data": "Modificar dados do usuário",
     "info": "Informações gerais",
     "notifications" :"Quero receber notificações",
     "save":"Guardar mudanças",
-    "cell": "Número de celular"
+    "cell": "Número de celular",
+    "address": "Endereço",
+    "username": "Nome de usuário",
+    "language": "Mudar idioma",
+    "modify": "Alterar dados do usuário",
+    "back": "Retornar"
+
+
 
 
     }

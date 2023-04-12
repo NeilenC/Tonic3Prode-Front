@@ -4,6 +4,8 @@ import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
 import { useSelector } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
+import { validateInput } from "../../../utils/functions";
+import Link from "next/link";
 
 const Profile = () => {
   const userInfo = useSelector((state) => state.userInfo);
@@ -27,10 +29,8 @@ const Profile = () => {
     }
   }, [userInfo]);
 
-  console.log("USERNAME", username);
-
   const handleSave = async () => {
-    if (userInfo) {
+    if (userInfo && validateInput(address) != false) {
       try {
         const response = await fetch(
           `http://localhost:3001/api/users/update/${uid}`,
@@ -48,11 +48,11 @@ const Profile = () => {
         );
         const data = await response.json();
         if (response.status === 200) {
-          alert("Los cambios se han realizado con exito");
+          alert("The changes have been made successfully");
         }
         return data;
-      } catch (error) {
-        return error;
+      } catch {
+        alert("Please check that there are no special characters");
       }
     }
   };
@@ -166,6 +166,18 @@ const Profile = () => {
         >
           <FormattedMessage id="save" />
         </Button>
+        <Link href="/home">
+          <Button
+            sx={{
+              mt: 3,
+              alignSelf: "flex-end",
+              color: "inherit",
+              justifyContent: "center",
+            }}
+          >
+            {intl.formatMessage({ id: "back" })}
+          </Button>
+        </Link>
       </Box>
     </Box>
   );
