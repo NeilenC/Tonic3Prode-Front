@@ -8,21 +8,15 @@ import {
   useMediaQuery,
   Divider,
 } from "@mui/material";
-import { IconButton } from "@mui/material";
 import styles from "../styles/commons/predictionCards.module.css";
 import ImageFilter from "react-image-filter/lib/ImageFilter";
 
-
-const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order }) => {
-  console.log("game", game)
+const UserResultCard = ({ game, user, id, currentDate, order }) => {
 
   const [userPredictions, setUserPredictios] = useState([]);
-  const [homeScore, setHomeScore] = useState("");
-  const [awayScore, setAwayScore] = useState("");
-  const [status, setStatus] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  // TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL 
+  //// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///
   useEffect(() => {
     const getUserPredictions = async () => {
       try {
@@ -42,42 +36,31 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
     getUserPredictions();
   }, [game]);
 
-  ////Comparando el id del game que pertecene a una prediccion, con el id del game que pasan por item ////
-
-  useEffect(() => {
-    const gamePredictions = userPredictions?.filter(
-      (prediction) => prediction.gameId._id === game._id
-    );
-    setHomeScore(gamePredictions[0]?.prediction.homeTeamScore);
-    setAwayScore(gamePredictions[0]?.prediction.awayTeamScore);
-  }, [userPredictions]);
-
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
+  
 
+  ////// Sirve para cambiar el color de la imagen segun si es ganador o perdedor ////
+  // const filterStyles = {
+  //   filter:
+  //     game?.result?.winningTeam !== game?.teams[0].name
+  //       ? "grayscale opacity(0.4)"
+  //       : "none",
+  // };
 
-  useEffect(() => {
-    setStatus(gamePredictions[0]?.status);
-    if (gamePredictions[0] && gamePredictions) {
-      handleScoreChange(
-        gamePredictions[0]?.gameId._id,
-        "homeTeamScore",
-        homeScore
-      );
-      handleScoreChange(
-        gamePredictions[0]?.gameId._id,
-        "awayTeamScore",
-        awayScore
-      );
-    }
-  }, [gamePredictions[0], homeScore, awayScore]);
+  // const filterStyles2 = {
+  //   filter:
+  //     game?.result?.winningTeam !== game?.teams[1].name
+  //       ? "grayscale opacity(0.4)"
+  //       : "none",
+  // };
 
   /////////////////////////COMPONENTE/////////////////////////////////
 
   return (
     <Card
-      key={gamePredictions[0]?.gameId._id}
+      key={game?._id}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -86,8 +69,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
         borderRadius: "15px",
         width: isMobile ? "100%" : "450px",
         maxWidth: "100%",
-        backgroundColor: status !== "pending" ? "#e0e0e0" : "#f5f5f5",
-        boxShadow: status === "pending" ? "3px 3px 3px rgba(0,0,0,0.3)" : "",
+        backgroundColor: "#f5f5f5",
       }}
     >
       <Box
@@ -100,7 +82,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
           justifyContent: "center",
           textAlign: "center",
           color: "white",
-          backgroundColor: status === "pending" ? "#3777d1" : "#5b5b5b",
+          backgroundColor: "#5b5b5b",
         }}
       >
         <Typography sx={{ marginRight: "10px" }}>
@@ -124,15 +106,15 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
             {/* //AGREGAR CONDICIONALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL DE PERDEDOR A LOS LOGOS*/}
 
             <ImageFilter
-              image={gamePredictions[0]?.prediction.homeTeam.logo_url}
-              filter={"grayscale"}
-              alt={gamePredictions[0]?.prediction.homeTeam.name}
+              image={game?.teams[0]?.logo_url}
+              alt={game?.teams[0]?.name}
               className={styles.teamLogo}
+              filter={"grayscale"}
               style={{ opacity: 0.4 }}
             />
           </Box>
           <Box sx={{ marginRight: "10px", textAlign: "center" }}>
-            {gamePredictions[0]?.prediction.homeTeam.shortName}
+            {game?.teams[0]?.shortName}
           </Box>
           <Box
             sx={{
@@ -148,8 +130,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
                 style: { appearance: "none", textAlign: "center" },
               }}
               className={styles.input}
-              value={homeScore}
-              onChange={(e) => setHomeScore(e.target.value)}
+              value={gamePredictions[0]?.prediction?.homeTeamScore}
             />
           </Box>
         </Box>
@@ -171,17 +152,14 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
                 readOnly: true,
               }}
               className={styles.input}
-              value={awayScore}
-              onChange={(e) => setAwayScore(e.target.value)}
+              value={gamePredictions[0]?.prediction?.awayTeamScore}
             />
           </Box>
-          <Box sx={{ marginLeft: "10px" }}>
-            {gamePredictions[0]?.prediction.awayTeam.shortName}
-          </Box>
+          <Box sx={{ marginLeft: "10px" }}>{game?.teams[1]?.shortName}</Box>
           <Box className={styles.teamLogoWrapper}>
-            <img
-              src={gamePredictions[0]?.prediction.awayTeam.logo_url}
-              alt={gamePredictions[0]?.prediction.awayTeam.name}
+            <ImageFilter
+              image={game?.teams[1]?.logo_url}
+              alt={game?.teams[1]?.name}
               className={styles.teamLogo}
             />
           </Box>
@@ -204,7 +182,9 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
             color: "#1976d3",
           }}
         >
-          Result: 2 - 3 (4 - 5)
+          {game?.result?.winningType === "regular"
+            ? `Results: ${game?.result?.homeTeamScore} - ${game?.result?.awayTeamScore}`
+            : `Results: ${game?.result?.homeTeamScore} - ${game?.result?.awayTeamScore} (${game?.result?.homeTeamPenalties} - ${game?.result?.awayTeamPenalties})`}
         </Typography>
         <Typography
           sx={{
@@ -215,7 +195,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order 
             margin: "10px",
           }}
         >
-          Puntos: 3
+          Points: 3
         </Typography>
       </Box>
     </Card>
