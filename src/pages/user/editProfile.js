@@ -128,7 +128,6 @@ const Profile = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-              
                 required={true}
               />
             )}

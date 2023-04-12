@@ -2,11 +2,14 @@
     "welcome": "Bem-vindo",
     "matches": "Partidas futuras",
     
-    "predictions": "Minhas previsõess",
-    "ranking": "Classificação de pontos",
+    "ranking": "classificação",
+    "predictions": "previsõess",
+    "prizes" : "prêmios",
     "fixture": "Fixtures",
     "torneo": "Torneio",
     "panel": "Painel de administração",
+    "register": "Inscreva-se no torneio",
+
     
     "profile": "Perfil",
     "config": "Contexto",

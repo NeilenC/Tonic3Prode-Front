@@ -23,7 +23,6 @@ const LanguageProvider = ({ children }) => {
     const localStorageLang = localStorage.getItem("locale", locale);
     if (localStorageLang) {
       selectedLanguage = localStorageLang; 
-      console.log(selectedLanguage, "SELECTEDLANG");
     }
 
     if (selectedLanguage.includes("en")) {
@@ -41,15 +40,7 @@ const LanguageProvider = ({ children }) => {
     console.warn(`Error al obtener el mensaje ${message}: ${error.message}`);
     return message;
   }
-  // function ErrorFunction(error, message) {
-  //   if (error.code === "MISSING_TRANSLATION") {
-  //     console.warn(`No se pudo encontrar el mensaje "${message}" para el idioma seleccionado.`);
-  //     return message;
-  //   } else {
-  //     console.warn(`Error al obtener el mensaje "${message}": ${error.message}`);
-  //     return message;
-  //   }
-  // }
+  
   return (
     <LanguageContext.Provider value={{ locale, setLocale }}>
       <IntlProvider onError={ErrorFunction} locale={locale} messages={language}>
