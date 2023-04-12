@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-import { format } from "date-fns";
-import { changeHour } from "../../utils/functions";
 import CustomCountdown from "@/pages/tournamentHome/Predictions/Countdown";
 
 import {
   Box,
   Typography,
-  Button,
-  TextField,
   InputBase,
   Card,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
-
 
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
@@ -29,32 +23,17 @@ const PredictionCards = ({
   order,
   currentDate,
 }) => {
-  const [userPredictions, setUserPredictios] = useState([]);
+  const [userPredictions, setUserPredictions] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
   const [status, setStatus] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  // ------- PENDIENTE ------- //
-  // const [disableInput, setDisableInput] = useState(false);
-  // const disableInputIfCountdownLessThanTwoHours = () => {
-  //   const dates = game?.date?.split(/[- :]/);
-  //   if (!dates) {
-  //     return;
-  //   }
-  //   const year = parseInt(dates[0]);
-  //   const month = parseInt(dates[1]) - 1;
-  //   const day = parseInt(dates[2]);
-  //   const hour = parseInt(dates[3]);
-  //   const minute = parseInt(dates[4]);
-
-  //   const countdownTime =
-  //     new Date(year, month, day, hour, minute).getTime() - Date.now();
-  //   if (countdownTime < 7200000) {
-  //     setDisableInput(true);
-  //   }
-  // };
-  // ------- PENDIENTE ------- //
+  // ------- BLOQUEO DE CARGA DE DATOS ------- //
+  const [disableScoreInputs, setDisableScoreInputs] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timeUp, setTimeUp] = useState(false);
+  
 
   const handleAddHome = () => {
     let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
@@ -108,7 +87,7 @@ const PredictionCards = ({
           (prediction) => prediction.gameId.tournaments == id
         );
 
-        setUserPredictios(filterPredictios);
+        setUserPredictions(filterPredictios);
       } catch (error) {
         console.error(error);
       }
@@ -144,8 +123,6 @@ const PredictionCards = ({
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-  console.log();
-
   return (
     <Card
       key={gamePredictions[0]?.gameId._id}
@@ -174,8 +151,16 @@ const PredictionCards = ({
           backgroundColor: status === "pending" ? "#3777d1" : "#5b5b5b",
         }}
       >
-        <Typography sx={{ marginRight: "10px" }}>{currentDate[order]}</Typography>
-        <CustomCountdown dates={dates} order={order} />
+        <Typography sx={{ marginRight: "10px" }}>
+          {currentDate[order]}
+        </Typography>
+        <CustomCountdown
+          dates={dates}
+          order={order}
+          setTimeUp={setTimeUp}
+          setTimeRemaining={setTimeRemaining}
+          setDisableScoreInputs={setDisableScoreInputs}
+        />
       </Box>
       <Box
         sx={{
@@ -207,8 +192,12 @@ const PredictionCards = ({
               marginRight: "15px",
             }}
           >
-            <IconButton aria-label="increment" onClick={handleAddHome}>
-              <Add />
+            <IconButton
+              aria-label="increment"
+              onClick={handleAddHome}
+              disabled={disableScoreInputs}
+            >
+              <Add disabled={disableScoreInputs} />
             </IconButton>
             <InputBase
               inputProps={{
@@ -219,13 +208,18 @@ const PredictionCards = ({
               className={styles.input}
               value={homeScore}
               onChange={(e) => setHomeScore(e.target.value)}
+              disabled={disableScoreInputs}
             />
-            <IconButton aria-label="decrement" onClick={handleRemoveHome}>
-              <Remove />
+            <IconButton
+              aria-label="decrement"
+              onClick={handleRemoveHome}
+              disabled={disableScoreInputs}
+            >
+              <Remove disabled={disableScoreInputs} />
             </IconButton>
           </Box>
         </Box>
-        <Typography sx={{ textAlign: "center" }}> Vs </Typography>
+        <Typography sx={{ textAlign: "center" }}> Vs. </Typography>
         <Box
           sx={{
             display: "flex",
@@ -235,8 +229,12 @@ const PredictionCards = ({
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <IconButton aria-label="increment" onClick={handleAddAway}>
-              <Add />
+            <IconButton
+              aria-label="increment"
+              onClick={handleAddAway}
+              disabled={disableScoreInputs}
+            >
+              <Add disabled={disableScoreInputs} />
             </IconButton>
             <InputBase
               inputProps={{
@@ -248,9 +246,14 @@ const PredictionCards = ({
               className={styles.input}
               value={awayScore}
               onChange={(e) => setAwayScore(e.target.value)}
+              disabled={disableScoreInputs}
             />
-            <IconButton aria-label="decrement" onClick={handleRemoveAway}>
-              <Remove />
+            <IconButton
+              aria-label="decrement"
+              onClick={handleRemoveAway}
+              disabled={disableScoreInputs}
+            >
+              <Remove disabled={disableScoreInputs} />
             </IconButton>
           </Box>
           <Box sx={{ marginLeft: "10px" }}>
