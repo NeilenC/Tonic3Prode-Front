@@ -193,18 +193,18 @@ const Predictions = () => {
           {actualComponent && components[actualComponent]}
         </Box>
         {actualComponent === "predictions" ? (
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flexDirection: "column"}}>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
                 flexWrap: "wrap",
-                justifyContent: "center",
+                justifyContent: "center",    
               }}
             >
               <Typography sx={{ textAlign: "center" }}>
-                Partidos Sin Predicción
+                Sin Predicción
               </Typography>
               <Paper
                 sx={{
@@ -215,7 +215,7 @@ const Predictions = () => {
                 }}
               ></Paper>
               <Typography sx={{ textAlign: "center" }}>
-                Partidos Con Predicción
+                Con Predicción
               </Typography>
               <Paper
                 sx={{
