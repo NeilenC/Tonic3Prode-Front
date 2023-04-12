@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
+import Countdown from "@/pages/tournamentHome/Predictions/Countdown";
 
 import {
   Box,
@@ -17,11 +18,38 @@ import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
 import stylesCard from "../styles/matches/ResultCard.module.css";
 
-const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
+const PredictionCards = ({
+  game,
+  handleScoreChange,
+  user,
+  id,
+  dates,
+  order,
+}) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
 
+  // ------- PENDIENTE ------- //
+  const [disableInput, setDisableInput] = useState(false);
+  const disableInputIfCountdownLessThanTwoHours = () => {
+    const dates = game?.date?.split(/[- :]/);
+    if (!dates) {
+      return;
+    }
+    const year = parseInt(dates[0]);
+    const month = parseInt(dates[1]) - 1;
+    const day = parseInt(dates[2]);
+    const hour = parseInt(dates[3]);
+    const minute = parseInt(dates[4]);
+
+    const countdownTime =
+      new Date(year, month, day, hour, minute).getTime() - Date.now();
+    if (countdownTime < 7200000) {
+      setDisableInput(true);
+    }
+  };
+  // ------- PENDIENTE ------- //
 
   const handleAddHome = () => {
     let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
@@ -110,122 +138,124 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-
-console.log()
-
+  console.log();
 
   return (
-
-    <Card
-      key={gamePredictions[0]?.gameId._id}
-      sx={{ display: "flex", alignItems: "center", my: 2 }}
-      className={stylesCard.customCard}
-    >
-      <Box className={stylesCard.cardColumn}>
-        {game.result[0] ? (
-          <Box
-            sx={{
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography sx={{ textAlign: "center", justifyContent: "center" }}>
-              Result:
-            </Typography>
-            <Box>
-              {game.result[0]?.homeTeamScore} - {game.result[0]?.awayTeamScore}
+    <>
+      {" "}
+      <Countdown dates={dates} order={order} />
+      <Card
+        key={gamePredictions[0]?.gameId._id}
+        sx={{ display: "flex", alignItems: "center", my: 2 }}
+        className={stylesCard.customCard}
+      >
+        <Box className={stylesCard.cardColumn}>
+          {game.result[0] ? (
+            <Box
+              sx={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                sx={{ textAlign: "center", justifyContent: "center" }}
+              >
+                Result:
+              </Typography>
+              <Box>
+                {game.result[0]?.homeTeamScore} -{" "}
+                {game.result[0]?.awayTeamScore}
+              </Box>
             </Box>
+          ) : (
+            ""
+          )}
+          <Box className={stylesCard.teamLogoWrapper}>
+            <img
+              src={gamePredictions[0]?.prediction.homeTeam.logo_url}
+              alt={gamePredictions[0]?.prediction.homeTeam.name}
+              className={stylesCard.teamLogo}
+            />
           </Box>
-        ) : (
-          ""
-        )}
-        <Box className={stylesCard.teamLogoWrapper}>
-          <img
-            src={gamePredictions[0]?.prediction.homeTeam.logo_url}
-            alt={gamePredictions[0]?.prediction.homeTeam.name}
-            className={stylesCard.teamLogo}
-          />
+          <Box sx={{ margin: "0px 5px" }}>
+            {gamePredictions[0]?.prediction.homeTeam.shortName}
+          </Box>
+          <Box
+            className={stylesCard.cardColumn}
+            sx={{ display: "flex", flexDirection: "column" }}
+          >
+            {gamePredictions[0]?.status != "close" ? (
+              <IconButton aria-label="increment" onClick={handleAddHome}>
+                <Add />
+              </IconButton>
+            ) : (
+              ""
+            )}
+            <InputBase
+              inputProps={{
+                "aria-label": "score",
+                min: "0",
+                style: { appearance: "none", textAlign: "center" },
+              }}
+              className={styles.input}
+              value={homeScore}
+              onChange={(e) => setHomeScore(e.target.value)}
+            />
+            {gamePredictions[0]?.status != "close" ? (
+              <IconButton aria-label="decrement" onClick={handleRemoveHome}>
+                <Remove />
+              </IconButton>
+            ) : (
+              ""
+            )}
+          </Box>
         </Box>
-        <Box sx={{ margin: "0px 5px" }}>
-          {gamePredictions[0]?.prediction.homeTeam.shortName}
+        <Typography sx={{ textAlign: "center" }}> Vs </Typography>
+        <Box className={stylesCard.cardColumn}>
+          <Box
+            className={stylesCard.cardColumn}
+            sx={{ display: "flex", flexDirection: "column" }}
+          >
+            {gamePredictions[0]?.status != "close" ? (
+              <IconButton aria-label="increment" onClick={handleAddAway}>
+                <Add />
+              </IconButton>
+            ) : (
+              ""
+            )}
+            <InputBase
+              inputProps={{
+                "aria-label": "score",
+                min: "0",
+                style: { appearance: "none", textAlign: "center" },
+                readOnly: true,
+              }}
+              className={styles.input}
+              value={awayScore}
+              onChange={(e) => setAwayScore(e.target.value)}
+            />
+            {gamePredictions[0]?.status != "close" ? (
+              <IconButton aria-label="decrement" onClick={handleRemoveAway}>
+                <Remove />
+              </IconButton>
+            ) : (
+              ""
+            )}
+          </Box>
+          <Box sx={{ margin: "0px 5px" }}>
+            {gamePredictions[0]?.prediction.awayTeam.shortName}
+          </Box>
+          <Box className={stylesCard.teamLogoWrapper}>
+            <img
+              src={gamePredictions[0]?.prediction.awayTeam.logo_url}
+              alt={gamePredictions[0]?.prediction.awayTeam.name}
+              className={stylesCard.teamLogo}
+            />
+          </Box>
         </Box>
-        <Box
-          className={stylesCard.cardColumn}
-          sx={{ display: "flex", flexDirection: "column" }}
-        >
-
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="increment" onClick={handleAddHome}>
-              <Add />
-            </IconButton>
-          ) : (
-            ""
-          )}
-          <InputBase
-            inputProps={{
-              "aria-label": "score",
-              min: "0",
-              style: { appearance: "none", textAlign: "center" },
-            }}
-            className={styles.input}
-            value={homeScore}
-            onChange={(e) => setHomeScore(e.target.value)}
-          />
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="decrement" onClick={handleRemoveHome}>
-              <Remove />
-            </IconButton>
-          ) : (
-            ""
-          )}
-        </Box>
-      </Box>
-      <Typography sx={{ textAlign: "center" }}> Vs </Typography>
-      <Box className={stylesCard.cardColumn}>
-        <Box
-          className={stylesCard.cardColumn}
-          sx={{ display: "flex", flexDirection: "column" }}
-        >
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="increment" onClick={handleAddAway}>
-              <Add />
-            </IconButton>
-          ) : (
-            ""
-          )}
-          <InputBase
-            inputProps={{
-              "aria-label": "score",
-              min: "0",
-              style: { appearance: "none", textAlign: "center" },
-              readOnly: true,
-            }}
-            className={styles.input}
-            value={awayScore}
-            onChange={(e) => setAwayScore(e.target.value)}
-          />
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="decrement" onClick={handleRemoveAway}>
-              <Remove />
-            </IconButton>
-          ) : (
-            ""
-          )}
-        </Box>
-        <Box sx={{ margin: "0px 5px" }}>
-          {gamePredictions[0]?.prediction.awayTeam.shortName}
-        </Box>
-        <Box className={stylesCard.teamLogoWrapper}>
-          <img
-            src={gamePredictions[0]?.prediction.awayTeam.logo_url}
-            alt={gamePredictions[0]?.prediction.awayTeam.name}
-            className={stylesCard.teamLogo}
-          />
-        </Box>
-
-      </Box>
-    </Card>
+      </Card>
+    </>
   );
 };
 
