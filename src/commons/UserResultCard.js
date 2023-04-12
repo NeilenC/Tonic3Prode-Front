@@ -13,14 +13,16 @@ import styles from "../styles/commons/predictionCards.module.css";
 import ImageFilter from "react-image-filter/lib/ImageFilter";
 
 
-const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
+const UserResultCard = ({ game, handleScoreChange, user, id, currentDate, order }) => {
+  console.log("game", game)
+
   const [userPredictions, setUserPredictios] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
   const [status, setStatus] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  // //////// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///////
+  // TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL 
   useEffect(() => {
     const getUserPredictions = async () => {
       try {
@@ -53,6 +55,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
+
 
   useEffect(() => {
     setStatus(gamePredictions[0]?.status);
@@ -101,7 +104,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
         }}
       >
         <Typography sx={{ marginRight: "10px" }}>
-          Sab 20 ene, 2023 - 20:00 hs
+          {currentDate[order]}
         </Typography>
       </Box>
       <Box
@@ -118,7 +121,6 @@ const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
           sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
         >
           <Box className={styles.teamLogoWrapper}>
-
             {/* //AGREGAR CONDICIONALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL DE PERDEDOR A LOS LOGOS*/}
 
             <ImageFilter
@@ -199,10 +201,10 @@ const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
       >
         <Typography
           sx={{
-            color:"#1976d3"
+            color: "#1976d3",
           }}
         >
-          Result: 2 - 3 (4 - 5) 
+          Result: 2 - 3 (4 - 5)
         </Typography>
         <Typography
           sx={{
@@ -210,7 +212,7 @@ const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
             backgroundColor: "#1976d3",
             width: "100px",
             borderRadius: "5px",
-            margin:"10px",
+            margin: "10px",
           }}
         >
           Puntos: 3

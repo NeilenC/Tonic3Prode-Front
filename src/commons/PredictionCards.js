@@ -27,33 +27,33 @@ const PredictionCards = ({
   id,
   dates,
   order,
+  currentDate,
 }) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
-  
 
   // ------- PENDIENTE ------- //
-  const [disableInput, setDisableInput] = useState(false);
-  const disableInputIfCountdownLessThanTwoHours = () => {
-    const dates = game?.date?.split(/[- :]/);
-    if (!dates) {
-      return;
-    }
-    const year = parseInt(dates[0]);
-    const month = parseInt(dates[1]) - 1;
-    const day = parseInt(dates[2]);
-    const hour = parseInt(dates[3]);
-    const minute = parseInt(dates[4]);
+  // const [disableInput, setDisableInput] = useState(false);
+  // const disableInputIfCountdownLessThanTwoHours = () => {
+  //   const dates = game?.date?.split(/[- :]/);
+  //   if (!dates) {
+  //     return;
+  //   }
+  //   const year = parseInt(dates[0]);
+  //   const month = parseInt(dates[1]) - 1;
+  //   const day = parseInt(dates[2]);
+  //   const hour = parseInt(dates[3]);
+  //   const minute = parseInt(dates[4]);
 
-    const countdownTime =
-      new Date(year, month, day, hour, minute).getTime() - Date.now();
-    if (countdownTime < 7200000) {
-      setDisableInput(true);
-    }
-  };
+  //   const countdownTime =
+  //     new Date(year, month, day, hour, minute).getTime() - Date.now();
+  //   if (countdownTime < 7200000) {
+  //     setDisableInput(true);
+  //   }
+  // };
   // ------- PENDIENTE ------- //
 
   const handleAddHome = () => {
@@ -129,7 +129,7 @@ const PredictionCards = ({
   );
 
   useEffect(() => {
-    setStatus(gamePredictions[0]?.status)
+    setStatus(gamePredictions[0]?.status);
     if (gamePredictions[0] && gamePredictions) {
       handleScoreChange(
         gamePredictions[0]?.gameId?._id,
@@ -158,7 +158,7 @@ const PredictionCards = ({
         width: isMobile ? "100%" : "450px",
         maxWidth: "100%",
         backgroundColor: status !== "pending" ? "#e0e0e0" : "#f5f5f5",
-        boxShadow: status === "pending" ? "3px 3px 3px rgba(0,0,0,0.3)" : ""
+        boxShadow: status === "pending" ? "3px 3px 3px rgba(0,0,0,0.3)" : "",
       }}
     >
       <Box
@@ -174,7 +174,7 @@ const PredictionCards = ({
           backgroundColor: status === "pending" ? "#3777d1" : "#5b5b5b",
         }}
       >
-        <Typography sx={{marginRight: "10px"}}>Sab 20 ene, 2023 - 20:00 hs</Typography>
+        <Typography sx={{ marginRight: "10px" }}>{currentDate[order]}</Typography>
         <CustomCountdown dates={dates} order={order} />
       </Box>
       <Box

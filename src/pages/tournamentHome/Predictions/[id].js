@@ -180,11 +180,11 @@ const Predictions = () => {
   };
 
   const components = {
-    predictions: "predictions",
-    results: "results",
+    predictions: "",
+    results: "",
   };
 
-  /////////// COMIENZO DEL COMPONENTE //////////////////
+  /// COMIENZO DEL COMPONENTE ///
 
   return (
     <>
@@ -225,17 +225,60 @@ const Predictions = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            width: "100%",
-            maxWidth: "800px",
-            flexWrap: "wrap",
-            gap: "10px",
+            alignItems: "center",
+            marginTop: "20px",
           }}
         >
-          <>
+          {actualComponent && components[actualComponent]}
+        </Box>
+      </Box>
+      {actualComponent === "predictions" ? (
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            <Typography sx={{ textAlign: "center" }}>Sin Predicción</Typography>
+            <Paper
+              sx={{
+                backgroundColor: "#1976d3",
+                p: 1.5,
+                margin: "10px",
+                borderRadius: "5px",
+              }}
+            ></Paper>
+            <Typography sx={{ textAlign: "center" }}>Con Predicción</Typography>
+            <Paper
+              sx={{
+                backgroundColor: "#e0e0e0",
+                p: 1.5,
+                margin: "10px",
+                borderRadius: "5px",
+              }}
+            ></Paper>
+          </Box>
+          <Button
+            onClick={() => updatePredictions()}
+            variant="contained"
+            endIcon={<SportsSoccerIcon />}
+            sx={{
+              textAlign: "center",
+              width: "auto",
+              height: "1.5%",
+              margin: "20px 0 20px 0",
+            }}
+          >
+            Guardar Predicciones
+          </Button>
+          <Box onSubmit={updatePredictions}>
             {games.map((game, i) => {
               return (
                 <div key={game.id}>
-                  <div>{formatedDate[i]}</div>
                   <PredictionCards
                     game={game}
                     handleScoreChange={handleScoreChange}
@@ -243,127 +286,55 @@ const Predictions = () => {
                     id={id}
                     dates={dates}
                     order={i}
+                    currentDate={formatedDate}
                   />
                 </div>
               );
             })}
-          </>
-        </form>
-        <Button
-          onClick={() => updatePredictions()}
-          variant="contained"
-          endIcon={<SportsSoccerIcon />}
+          </Box>
+        </Box>
+      ) : (
+        <Box
           sx={{
-            textAlign: "center",
-            width: "auto",
-            height: "1.5%",
-            margin: "15px",
+            display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            marginTop: "20px",
           }}
         >
-          {actualComponent && components[actualComponent]}
+          <FormControl fullWidth>
+            <InputLabel id="select-option-label">Stage</InputLabel>
+            <Select
+              labelId="select-option-label"
+              id="select-option"
+              value={selectedOption}
+              onChange={handleOptionChange}
+            >
+              <MenuItem value={0}>All</MenuItem>
+              <MenuItem value={32}>32</MenuItem>
+              <MenuItem value={16}>16</MenuItem>
+              <MenuItem value={8}>8</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+            </Select>
+          </FormControl>
+          <Box onSubmit={updatePredictions}>
+            {closedGames.map((game, i) => {
+              return (
+                <div key={game.id}>
+                  <UserResultCard
+                    game={game}
+                    handleScoreChange={handleScoreChange}
+                    user={user}
+                    id={id}
+                    currentDate={formatedDate}
+                    order={i}
+                  />
+                </div>
+              );
+            })}
+          </Box>
         </Box>
-        {actualComponent === "predictions" ? (
-          <Box sx={{ display: "flex", flexDirection: "column"}}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                flexWrap: "wrap",
-                justifyContent: "center",    
-              }}
-            >
-              <Typography sx={{ textAlign: "center" }}>
-                Sin Predicción
-              </Typography>
-              <Paper
-                sx={{
-                  backgroundColor: "#1976d3",
-                  p: 1.5,
-                  margin: "10px",
-                  borderRadius: "5px",
-                }}
-              ></Paper>
-              <Typography sx={{ textAlign: "center" }}>
-                Con Predicción
-              </Typography>
-              <Paper
-                sx={{
-                  backgroundColor: "#e0e0e0",
-                  p: 1.5,
-                  margin: "10px",
-                  borderRadius: "5px",
-                }}
-              ></Paper>
-            </Box>
-            <Button
-              onClick={() => updatePredictions()}
-              variant="contained"
-              endIcon={<SportsSoccerIcon />}
-              sx={{
-                textAlign: "center",
-                width: "auto",
-                height: "1.5%",
-                margin: "20px 0 20px 0",
-              }}
-            >
-              Guardar Predicciones
-            </Button>
-            <Box onSubmit={updatePredictions}>
-              {games.map((game) => {
-                return (
-                  <div key={game.id}>
-                    <PredictionCards
-                      game={game}
-                      handleScoreChange={handleScoreChange}
-                      user={user}
-                      id={id}
-                    />
-                  </div>
-                );
-              })}
-            </Box>
-          </Box>
-        ) : (
-          <Box sx={{display: "flex", flexDirection: "column", alignItems:"center"}}>
-            <FormControl fullWidth>
-              <InputLabel id="select-option-label">
-                Stage
-              </InputLabel>
-              <Select
-                labelId="select-option-label"
-                id="select-option"
-                value={selectedOption}
-                onChange={handleOptionChange}
-              >
-                <MenuItem value={0}>All</MenuItem>
-                <MenuItem value={32}>32</MenuItem>
-                <MenuItem value={16}>16</MenuItem>
-                <MenuItem value={8}>8</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-              </Select>
-            </FormControl>
-            <Box onSubmit={updatePredictions}>
-              {closedGames.map((game) => {
-                return (
-                  <div key={game.id}>
-                    <UserResultCard
-                      game={game}
-                      handleScoreChange={handleScoreChange}
-                      user={user}
-                      id={id}
-                    />
-                  </div>
-                );
-              })}
-            </Box>
-          </Box>
-        )}
-
-      </Box>
+      )}
     </>
   );
 };
