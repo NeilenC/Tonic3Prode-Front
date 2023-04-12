@@ -22,6 +22,7 @@ const UserProvider = ({children}) => {
         console.log("DATA USER", data);
         dispatch(
           setUserInfo({
+            uid: data.uid,
             username: data.username,
             cellphone: data.cellphone,
             address: data.address,

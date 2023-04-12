@@ -10,6 +10,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+
 import Button from "@mui/material/Button";
 import {
   changeHour,
@@ -36,7 +37,6 @@ const Predictions = () => {
     setSelectedOption(event.target.value);
   };
 
-  ////////////////// (FUNCIONA) //////////////////////
   const handleScoreChange = (_id, team, score) => {
     setScores((prevState) => ({
       ...prevState,
@@ -66,6 +66,7 @@ const Predictions = () => {
           const games = allgames.data.filter(
             (item) => item.status === "pending"
           );
+
           setGames(games);
           const closedGames = allgames.data.filter(
             (item) => item.status === "closed"
@@ -115,10 +116,10 @@ const Predictions = () => {
                 : scores[game._id]?.awayTeamScore,
           },
           status:
-            scores[game._id]?.homeTeamScore != "" && // Hay que arreglar esto
-            scores[game._id]?.awayTeamScore != ""
-              ? "pre_match"
-              : "pending",
+          typeof scores[game._id]?.homeTeamScore == "number" &&
+          typeof scores[game._id]?.awayTeamScore == "number"
+            ? "pre_match"
+            : "pending",
         };
       }
     });
@@ -147,6 +148,7 @@ const Predictions = () => {
   };
 
   /////////// COMIENZO DEL COMPONENTE //////////////////
+
   return (
     <>
       <Box
@@ -290,6 +292,7 @@ const Predictions = () => {
             </Box>
           </Box>
         )}
+
       </Box>
     </>
   );

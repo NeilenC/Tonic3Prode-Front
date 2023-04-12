@@ -65,7 +65,6 @@ const Navbar = () => {
   const handleLogOut = () => {
     localStorage.removeItem("uid");
     setUser("");
-    window.location.href = "http://localhost:3000/";
     logOut(auth);
   };
 
@@ -94,10 +93,11 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                <Typography variant="subtitle1">
-                  <div> Bienvenido! {username} &nbsp;&nbsp;&nbsp; </div>
-                </Typography>
+                {/* <Typography variant="subtitle1">
+                  <div> {username} &nbsp;&nbsp;&nbsp; </div>
+                </Typography> */}
                 <Avatar alt="User avatar" />
+
               </IconButton>
             )}
 
@@ -126,7 +126,7 @@ const Navbar = () => {
                   Perfil
                 </MenuItem>
               )}
-              {user && (
+              {/* {user && (
                 <MenuItem
                   onClick={() => {
                     handleClose;
@@ -135,12 +135,13 @@ const Navbar = () => {
                 >
                   Configuración
                 </MenuItem>
-              )}
+              )} */}
               {user && (
                 <MenuItem
                   onClick={() => {
                     handleClose();
                     handleLogOut();
+                    router.push("/");
                   }}
                 >
                   Logout
