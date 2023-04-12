@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { changeHour } from "../../utils/functions";
-import Countdown from "@/pages/tournamentHome/Predictions/Countdown";
+import CustomCountdown from "@/pages/tournamentHome/Predictions/Countdown";
 
 import {
   Box,
@@ -143,7 +143,7 @@ const PredictionCards = ({
   return (
     <>
       {" "}
-      <Countdown dates={dates} order={order} />
+      <CustomCountdown dates={dates} order={order} />
       <Card
         key={gamePredictions[0]?.gameId._id}
         sx={{ display: "flex", alignItems: "center", my: 2 }}
