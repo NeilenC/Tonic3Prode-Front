@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Select, MenuItem, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Select,
+  MenuItem,
+  TextField,
+  Typography,
+  Paper,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import {
   changeHour,
@@ -11,14 +20,21 @@ import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
+import UserResultCard from "@/commons/UserResultCard";
 
 // COMPONENTE
 const Predictions = () => {
   const router = useRouter();
   const [games, setGames] = useState([]);
+  const [closedGames, setClosedGames] = useState([]);
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
+  const [selectedOption, setSelectedOption] = useState(0);
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   ////////////////// (FUNCIONA) //////////////////////
   const handleScoreChange = (_id, team, score) => {
@@ -51,6 +67,10 @@ const Predictions = () => {
             (item) => item.status === "pending"
           );
           setGames(games);
+          const closedGames = allgames.data.filter(
+            (item) => item.status === "closed"
+          );
+          setClosedGames(closedGames);
         })
         .catch((error) => {
           console.error(error);
@@ -78,32 +98,31 @@ const Predictions = () => {
 
   //// Actualizacion de la prediccion /////
 
-  let newPredictions = games?.map((game) => {
-    console.log("Puntuaciones a enviar", scores);
-    if (scores) {
-      return {
-        userId: user,
-        gameId: game?._id,
-        prediction: {
-          homeTeamScore:
-            scores[game._id]?.homeTeamScore != ""
-              ? parseInt(scores[game._id]?.homeTeamScore)
-              : scores[game._id]?.homeTeamScore,
-          awayTeamScore:
-            scores[game._id]?.awayTeamScore != ""
-              ? parseInt(scores[game._id]?.awayTeamScore)
-              : scores[game._id]?.awayTeamScore,
-        },
-        status:
-          scores[game._id]?.homeTeamScore != "" && // Hay que arreglar esto
-          scores[game._id]?.awayTeamScore != ""
-            ? "pre_match"
-            : "pending",
-      };
-    }
-  });
-
   const updatePredictions = async () => {
+    let newPredictions = games?.map((game) => {
+      if (scores) {
+        return {
+          userId: user,
+          gameId: game?._id,
+          prediction: {
+            homeTeamScore:
+              scores[game._id]?.homeTeamScore != ""
+                ? parseInt(scores[game._id]?.homeTeamScore)
+                : scores[game._id]?.homeTeamScore,
+            awayTeamScore:
+              scores[game._id]?.awayTeamScore != ""
+                ? parseInt(scores[game._id]?.awayTeamScore)
+                : scores[game._id]?.awayTeamScore,
+          },
+          status:
+            scores[game._id]?.homeTeamScore != "" && // Hay que arreglar esto
+            scores[game._id]?.awayTeamScore != ""
+              ? "pre_match"
+              : "pending",
+        };
+      }
+    });
+
     try {
       const response = await axios.put(
         `http://localhost:3001/api/predictions/${user}`,
@@ -113,54 +132,115 @@ const Predictions = () => {
     } catch (error) {
       console.log(error);
     }
+    window.location.href = `http://localhost:3000/tournamentHome/Predictions/${id}`;
   };
-  console.log(games);
-  
+
+  const [actualComponent, setActualComponent] = useState("predictions");
+
+  const changeActualComponent = (componente) => {
+    setActualComponent(componente);
+  };
+
+  const components = {
+    predictions: "predictions",
+    results: "results",
+  };
+
   /////////// COMIENZO DEL COMPONENTE //////////////////
   return (
     <>
       <Box
-        sx={{ display: "flex", justifyContent: "center", margin: "auto", flexDirection: "column", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "auto",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        <Button
-          onClick={() => updatePredictions()}
-          variant="contained"
-          endIcon={<SportsSoccerIcon />}
+        <Box
           sx={{
-            textAlign: "center",
-            width: "auto",
-            height: "1.5%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             margin: "10px",
+            alignItems: "center",
+            marginTop: "20px",
+            flexDirection: { xs: "column", md: "row" },
           }}
         >
-          Guardar Predicciones
-        </Button>
+          <Button
+            sx={{ marginRight: "10px" }}
+            onClick={() => changeActualComponent("predictions")}
+          >
+            Predictions
+          </Button>
+          <Button
+            sx={{ marginRight: "10px" }}
+            onClick={() => changeActualComponent("results")}
+          >
+            Results
+          </Button>
+        </Box>
         <Box
-          onSubmit={updatePredictions}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "20px",
+          }}
         >
-          <>
-            {games
-              ?.sort(
-                (a, b) =>
-                  new Date(
-                    `${a.month}/${
-                      a.dayOfTheMonth
-                    }/${new Date().getFullYear()} ${a.hour}`
-                  ) -
-                  new Date(
-                    `${b.month}/${
-                      b.dayOfTheMonth
-                    }/${new Date().getFullYear()} ${b.hour}`
-                  )
-              )
-              .map((game) => {
-                const date = new Date(
-                  `${game.month}/${
-                    game.dayOfTheMonth
-                  }/${new Date().getFullYear()} ${changeHour(game.hour)}`
-                );
-                const gameDate = formattedDate(date);
-                const hour = formattedTime(date);
+          {actualComponent && components[actualComponent]}
+        </Box>
+        {actualComponent === "predictions" ? (
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <Typography sx={{ textAlign: "center" }}>
+                Partidos Sin Predicción
+              </Typography>
+              <Paper
+                sx={{
+                  backgroundColor: "#1976d3",
+                  p: 1.5,
+                  margin: "10px",
+                  borderRadius: "5px",
+                }}
+              ></Paper>
+              <Typography sx={{ textAlign: "center" }}>
+                Partidos Con Predicción
+              </Typography>
+              <Paper
+                sx={{
+                  backgroundColor: "#e0e0e0",
+                  p: 1.5,
+                  margin: "10px",
+                  borderRadius: "5px",
+                }}
+              ></Paper>
+            </Box>
+            <Button
+              onClick={() => updatePredictions()}
+              variant="contained"
+              endIcon={<SportsSoccerIcon />}
+              sx={{
+                textAlign: "center",
+                width: "auto",
+                height: "1.5%",
+                margin: "20px 0 20px 0",
+              }}
+            >
+              Guardar Predicciones
+            </Button>
+            <Box onSubmit={updatePredictions}>
+              {games.map((game) => {
                 return (
                   <div key={game.id}>
                     <PredictionCards
@@ -168,27 +248,48 @@ const Predictions = () => {
                       handleScoreChange={handleScoreChange}
                       user={user}
                       id={id}
-                      gameDate={gameDate}
-                      hour={hour}
                     />
                   </div>
                 );
               })}
-          </>
-        </Box>
-        <Button
-          onClick={() => updatePredictions()}
-          variant="contained"
-          endIcon={<SportsSoccerIcon />}
-          sx={{
-            textAlign: "center",
-            width: "auto",
-            height: "1.5%",
-            margin: "15px",
-          }}
-        >
-          Guardar Predicciones
-        </Button>
+            </Box>
+          </Box>
+        ) : (
+          <Box sx={{display: "flex", flexDirection: "column", alignItems:"center"}}>
+            <FormControl fullWidth>
+              <InputLabel id="select-option-label">
+                Stage
+              </InputLabel>
+              <Select
+                labelId="select-option-label"
+                id="select-option"
+                value={selectedOption}
+                onChange={handleOptionChange}
+              >
+                <MenuItem value={0}>All</MenuItem>
+                <MenuItem value={32}>32</MenuItem>
+                <MenuItem value={16}>16</MenuItem>
+                <MenuItem value={8}>8</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+              </Select>
+            </FormControl>
+            <Box onSubmit={updatePredictions}>
+              {closedGames.map((game) => {
+                return (
+                  <div key={game.id}>
+                    <UserResultCard
+                      game={game}
+                      handleScoreChange={handleScoreChange}
+                      user={user}
+                      id={id}
+                    />
+                  </div>
+                );
+              })}
+            </Box>
+          </Box>
+        )}
       </Box>
     </>
   );

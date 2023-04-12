@@ -1,57 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Typography, InputBase, Card, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Typography,
+  InputBase,
+  Card,
+  useMediaQuery,
+  Divider,
+} from "@mui/material";
 import { IconButton } from "@mui/material";
-import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
+import ImageFilter from "react-image-filter/lib/ImageFilter";
 
-const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
+
+const UserResultCard = ({ game, handleScoreChange, user, id, date, hour }) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
-  
-
-  const handleAddHome = () => {
-    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
-    if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
-      setHomeScore(0);
-    } else if (homeScore >= 0) {
-      let newHomeTeamScore = homeScore + 1;
-      setHomeScore(newHomeTeamScore);
-    }
-  };
-
-  const handleRemoveHome = () => {
-    let homeTeamScore = gamePredictions[0]?.prediction.homeTeamScore;
-    if (typeof homeTeamScore == "string" && typeof homeScore == "string") {
-      setHomeScore(0);
-    } else if (homeScore >= 1) {
-      let newHomeTeamScore = homeScore - 1;
-      setHomeScore(newHomeTeamScore);
-    }
-  };
-
-  const handleAddAway = () => {
-    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
-    if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
-      setAwayScore(0);
-    } else if (awayScore >= 0) {
-      let newAwayTeamScore = awayScore + 1;
-      setAwayScore(newAwayTeamScore);
-    }
-  };
-
-  const handleRemoveAway = () => {
-    let awayTeamScore = gamePredictions[0]?.prediction.awayTeamScore;
-    if (typeof awayTeamScore == "string" && typeof awayScore == "string") {
-      setAwayScore(0);
-    } else if (awayScore >= 1) {
-      let newAwayTeamScore = awayScore - 1;
-      setAwayScore(newAwayTeamScore);
-    }
-  };
 
   // //////// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///////
   useEffect(() => {
@@ -88,7 +55,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   );
 
   useEffect(() => {
-    setStatus(gamePredictions[0]?.status)
+    setStatus(gamePredictions[0]?.status);
     if (gamePredictions[0] && gamePredictions) {
       handleScoreChange(
         gamePredictions[0]?.gameId._id,
@@ -117,7 +84,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
         width: isMobile ? "100%" : "450px",
         maxWidth: "100%",
         backgroundColor: status !== "pending" ? "#e0e0e0" : "#f5f5f5",
-        boxShadow: status === "pending" ? "3px 3px 3px rgba(0,0,0,0.3)" : ""
+        boxShadow: status === "pending" ? "3px 3px 3px rgba(0,0,0,0.3)" : "",
       }}
     >
       <Box
@@ -125,7 +92,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          height: "60px",
+          height: "30px",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
@@ -133,8 +100,9 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           backgroundColor: status === "pending" ? "#3777d1" : "#5b5b5b",
         }}
       >
-        <Typography sx={{marginRight: "10px"}}>Sab 20 ene, 2023 - 20:00 hs</Typography>
-        <Typography> Dias 02 Horas 15 Segundos 30</Typography>
+        <Typography sx={{ marginRight: "10px" }}>
+          Sab 20 ene, 2023 - 20:00 hs
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -142,7 +110,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          p: 2,
+          p: 1,
           width: "100%",
         }}
       >
@@ -150,10 +118,15 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
         >
           <Box className={styles.teamLogoWrapper}>
-            <img
-              src={gamePredictions[0]?.prediction.homeTeam.logo_url}
+
+            {/* //AGREGAR CONDICIONALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL DE PERDEDOR A LOS LOGOS*/}
+
+            <ImageFilter
+              image={gamePredictions[0]?.prediction.homeTeam.logo_url}
+              filter={"grayscale"}
               alt={gamePredictions[0]?.prediction.homeTeam.name}
               className={styles.teamLogo}
+              style={{ opacity: 0.4 }}
             />
           </Box>
           <Box sx={{ marginRight: "10px", textAlign: "center" }}>
@@ -166,9 +139,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
               marginRight: "15px",
             }}
           >
-            <IconButton aria-label="increment" onClick={handleAddHome}>
-              <Add />
-            </IconButton>
             <InputBase
               inputProps={{
                 "aria-label": "score",
@@ -179,9 +149,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
               value={homeScore}
               onChange={(e) => setHomeScore(e.target.value)}
             />
-            <IconButton aria-label="decrement" onClick={handleRemoveHome}>
-              <Remove />
-            </IconButton>
           </Box>
         </Box>
         <Typography sx={{ textAlign: "center" }}> Vs </Typography>
@@ -194,9 +161,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <IconButton aria-label="increment" onClick={handleAddAway}>
-              <Add />
-            </IconButton>
             <InputBase
               inputProps={{
                 "aria-label": "score",
@@ -208,9 +172,6 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
               value={awayScore}
               onChange={(e) => setAwayScore(e.target.value)}
             />
-            <IconButton aria-label="decrement" onClick={handleRemoveAway}>
-              <Remove />
-            </IconButton>
           </Box>
           <Box sx={{ marginLeft: "10px" }}>
             {gamePredictions[0]?.prediction.awayTeam.shortName}
@@ -224,8 +185,39 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
           </Box>
         </Box>
       </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "65px",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          color: "white",
+        }}
+      >
+        <Typography
+          sx={{
+            color:"#1976d3"
+          }}
+        >
+          Result: 2 - 3 (4 - 5) 
+        </Typography>
+        <Typography
+          sx={{
+            color: "white",
+            backgroundColor: "#1976d3",
+            width: "100px",
+            borderRadius: "5px",
+            margin:"10px",
+          }}
+        >
+          Puntos: 3
+        </Typography>
+      </Box>
     </Card>
   );
 };
 
-export default PredictionCards;
+export default UserResultCard;
