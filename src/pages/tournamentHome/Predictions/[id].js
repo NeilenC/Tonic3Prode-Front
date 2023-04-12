@@ -11,17 +11,15 @@ import {
   InputLabel,
 } from "@mui/material";
 
+
 import Button from "@mui/material/Button";
-import {
-  changeHour,
-  formattedDate,
-  formattedTime,
-} from "../../../../utils/functions";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
+import Countdown from "./Countdown";
 import UserResultCard from "@/commons/UserResultCard";
+
 
 // COMPONENTE
 const Predictions = () => {
@@ -31,30 +29,48 @@ const Predictions = () => {
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [dates, setDate] = useState([]);
+  const [formatedDate, setFormatedDate] = useState([]);
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const [selectedOption, setSelectedOption] = useState(0);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
-  const handleScoreChange = (_id, team, score) => {
-    setScores((prevState) => ({
-      ...prevState,
-      [_id]: {
-        ...prevState[_id],
-        [team]: score,
-      },
-    }));
-  };
+  const newFormattedDates = [];
 
-  //////////// ID DEL TORNEO /////////////////
+  // SE OBTIENE EL SCORE DEL LS
+  // SE TRAE EL UID DEL USER DESDE EL LS
+  useEffect(() => {
+    const storedScores = localStorage.getItem("scores");
+    if (storedScores) {
+      setScores(JSON.parse(storedScores));
+    }
+    setUser(localStorage.getItem("uid"));
+  }, []);
+
   useEffect(() => {
     if (router.query.id) {
       setId(router.query.id);
     }
   }, [router.query.id]);
 
-  //////////// SE TRAEN LOS PARTIDOS DEL TORNEO SELECCIONADO /////////////////
+  // SE TRAEN LOS PARTIDOS DEL TORNEO SELECCIONADO Y SE FILTRAN LOS PENDIENTES
   useEffect(() => {
     if (id) {
       axios
@@ -66,7 +82,7 @@ const Predictions = () => {
           const games = allgames.data.filter(
             (item) => item.status === "pending"
           );
-
+          localStorage.setItem("games", JSON.stringify(games));
           setGames(games);
           const closedGames = allgames.data.filter(
             (item) => item.status === "closed"
@@ -79,26 +95,47 @@ const Predictions = () => {
     }
   }, [id]);
 
-  ////////// SE OBTIENE EL SCORE DEL LS //////////////
-  useEffect(() => {
-    const storedScores = localStorage.getItem("scores");
-    if (storedScores) {
-      setScores(JSON.parse(storedScores));
-    }
-  }, []);
-
-  ///////// SE AGREGA EL SCORE EN EL LS ////////////
+  // SE AGREGA EL SCORE EN EL LS
   useEffect(() => {
     localStorage.setItem("scores", JSON.stringify(scores));
   }, [scores]);
 
-  ///////////////////// SE TRAE EL UID DEL USER DESDE EL LS /////////////
   useEffect(() => {
-    setUser(localStorage.getItem("uid"));
-  }, []);
+    const newDates = [];
 
-  //// Actualizacion de la prediccion /////
+    games.forEach((game, i) => {
+      const year = new Date().getFullYear();
+      const month = game.month - 1;
+      const day = game.dayOfTheMonth;
+      const hour = Math.floor(game.hour / 100);
+      const minute = game.hour % 100;
+      const date = new Date(year, month, day, hour, minute);
 
+     const amPm = hour >= 12 ? "PM" : "AM";
+     const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+     const formattedDate = `${
+       monthNames[month]
+     } ${day}, ${year} at ${formattedHour}:${minute
+       .toString()
+       .padStart(2, "0")} ${amPm}`;
+
+      newDates[i] = date;
+      newFormattedDates[i] = formattedDate.toLocaleString();
+    });
+
+    setDate(newDates);
+    setFormatedDate(newFormattedDates);
+  }, [games]);
+
+  const handleScoreChange = (_id, team, score) => {
+    setScores((prevState) => ({
+      ...prevState,
+      [_id]: {
+        ...prevState[_id],
+        [team]: score,
+      },
+    }));
+  };
   const updatePredictions = async () => {
     let newPredictions = games?.map((game) => {
       if (scores) {
@@ -188,6 +225,39 @@ const Predictions = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
+            width: "100%",
+            maxWidth: "800px",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
+          <>
+            {games.map((game, i) => {
+              return (
+                <div key={game.id}>
+                  <div>{formatedDate[i]}</div>
+                  <PredictionCards
+                    game={game}
+                    handleScoreChange={handleScoreChange}
+                    user={user}
+                    id={id}
+                    dates={dates}
+                    order={i}
+                  />
+                </div>
+              );
+            })}
+          </>
+        </form>
+        <Button
+          onClick={() => updatePredictions()}
+          variant="contained"
+          endIcon={<SportsSoccerIcon />}
+          sx={{
+            textAlign: "center",
+            width: "auto",
+            height: "1.5%",
+            margin: "15px",
             alignItems: "center",
             marginTop: "20px",
           }}

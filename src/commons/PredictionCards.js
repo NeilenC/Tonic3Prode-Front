@@ -1,12 +1,33 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Typography, InputBase, Card, useMediaQuery } from "@mui/material";
+
+import { format } from "date-fns";
+import { changeHour } from "../../utils/functions";
+import CustomCountdown from "@/pages/tournamentHome/Predictions/Countdown";
+
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  InputBase,
+  Card,
+  useMediaQuery
+} from "@mui/material";
+
 
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
 
-const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
+const PredictionCards = ({
+  game,
+  handleScoreChange,
+  user,
+  id,
+  dates,
+  order,
+}) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
@@ -14,6 +35,26 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   
 
+  // ------- PENDIENTE ------- //
+  const [disableInput, setDisableInput] = useState(false);
+  const disableInputIfCountdownLessThanTwoHours = () => {
+    const dates = game?.date?.split(/[- :]/);
+    if (!dates) {
+      return;
+    }
+    const year = parseInt(dates[0]);
+    const month = parseInt(dates[1]) - 1;
+    const day = parseInt(dates[2]);
+    const hour = parseInt(dates[3]);
+    const minute = parseInt(dates[4]);
+
+    const countdownTime =
+      new Date(year, month, day, hour, minute).getTime() - Date.now();
+    if (countdownTime < 7200000) {
+      setDisableInput(true);
+    }
+  };
+  // ------- PENDIENTE ------- //
 
   const handleAddHome = () => {
     let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
@@ -103,9 +144,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id, date, hour }) => {
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-
-console.log()
-
+  console.log();
 
   return (
     <Card
@@ -136,7 +175,7 @@ console.log()
         }}
       >
         <Typography sx={{marginRight: "10px"}}>Sab 20 ene, 2023 - 20:00 hs</Typography>
-        <Typography> Dias 02 Horas 15 Segundos 30</Typography>
+        <CustomCountdown dates={dates} order={order} />
       </Box>
       <Box
         sx={{
