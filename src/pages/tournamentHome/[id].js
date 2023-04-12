@@ -34,7 +34,6 @@ const Home = ({}) => {
       axios
         .get(`http://localhost:3001/api/games/search/${id}/${user}`)
         .then((allgames) => {
-          console.log("JUEGOS QUE LLEGAN DEL USER", allgames.data);
           return allgames;
         })
         .then((allgames) => {

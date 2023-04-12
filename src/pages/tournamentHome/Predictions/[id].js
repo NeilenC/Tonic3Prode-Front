@@ -11,7 +11,6 @@ import {
   InputLabel,
 } from "@mui/material";
 
-
 import Button from "@mui/material/Button";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
@@ -19,7 +18,6 @@ import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
 import Countdown from "./Countdown";
 import UserResultCard from "@/commons/UserResultCard";
-
 
 // COMPONENTE
 const Predictions = () => {
@@ -95,6 +93,8 @@ const Predictions = () => {
     }
   }, [id]);
 
+ 
+
   // SE AGREGA EL SCORE EN EL LS
   useEffect(() => {
     localStorage.setItem("scores", JSON.stringify(scores));
@@ -111,13 +111,13 @@ const Predictions = () => {
       const minute = game.hour % 100;
       const date = new Date(year, month, day, hour, minute);
 
-     const amPm = hour >= 12 ? "PM" : "AM";
-     const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-     const formattedDate = `${
-       monthNames[month]
-     } ${day}, ${year} at ${formattedHour}:${minute
-       .toString()
-       .padStart(2, "0")} ${amPm}`;
+      const amPm = hour >= 12 ? "PM" : "AM";
+      const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+      const formattedDate = `${
+        monthNames[month]
+      } ${day}, ${year} at ${formattedHour}:${minute
+        .toString()
+        .padStart(2, "0")} ${amPm}`;
 
       newDates[i] = date;
       newFormattedDates[i] = formattedDate.toLocaleString();
@@ -153,10 +153,10 @@ const Predictions = () => {
                 : scores[game._id]?.awayTeamScore,
           },
           status:
-          typeof scores[game._id]?.homeTeamScore == "number" &&
-          typeof scores[game._id]?.awayTeamScore == "number"
-            ? "pre_match"
-            : "pending",
+            typeof scores[game._id]?.homeTeamScore == "number" &&
+            typeof scores[game._id]?.awayTeamScore == "number"
+              ? "pre_match"
+              : "pending",
         };
       }
     });
@@ -276,7 +276,7 @@ const Predictions = () => {
             Guardar Predicciones
           </Button>
           <Box onSubmit={updatePredictions}>
-            {games.map((game, i) => {
+            {games?.map((game, i) => {
               return (
                 <div key={game.id}>
                   <PredictionCards
@@ -318,7 +318,7 @@ const Predictions = () => {
             </Select>
           </FormControl>
           <Box onSubmit={updatePredictions}>
-            {closedGames.map((game, i) => {
+            {closedGames?.map((game, i) => {
               return (
                 <div key={game.id}>
                   <UserResultCard
