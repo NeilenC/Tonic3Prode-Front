@@ -14,7 +14,7 @@ const LanguageProvider = ({ children }) => {
     if (typeof window !== "undefined") {
       setLocale(navigator.language);
     } else {
-      setLocale("es");
+      setLocale("es-MX");
     }
   }, []);
 
@@ -35,42 +35,21 @@ const LanguageProvider = ({ children }) => {
     }
   }, [locale]);
 
-  // useEffect(() => {
-  //   let selectedLanguage = locale;
-  //   const localStorageLang = localStorage.getItem("locale", locale);
-  //   if (localStorageLang) {
-  //     selectedLanguage = localStorageLang;
-  //     console.log(selectedLanguage, "SELECTEDLANG");
 
-  //   } else {
-  //     if (selectedLanguage.includes("en")) {
-  //       setLanguage(English);
-  //     } else if (selectedLanguage.includes("pt")) {
-  //       setLanguage(Portugues);
-  //     } else if (selectedLanguage.includes("es")) {
-  //       setLanguage(Spanish);
-  //     }
-  //   }
-  // }, [locale]);
 
   function ErrorFunction(error, message) {
     console.warn(`Error al obtener el mensaje ${message}: ${error.message}`);
     return message;
   }
-
-  // const handleLocaleChange = (e) => {
-  //   const selectedLocale = e.target.value;
-  //   setLocale(selectedLocale);
-  //   localStorage.setItem("locale", selectedLocale); // almacena el valor en el localStorage
-  // };
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") { // Verifica si se está ejecutando en el navegador
-  //     const storedLocale = localStorage.getItem("locale");
-  //     setLocale(storedLocale || "es");
+  // function ErrorFunction(error, message) {
+  //   if (error.code === "MISSING_TRANSLATION") {
+  //     console.warn(`No se pudo encontrar el mensaje "${message}" para el idioma seleccionado.`);
+  //     return message;
+  //   } else {
+  //     console.warn(`Error al obtener el mensaje "${message}": ${error.message}`);
+  //     return message;
   //   }
-  // }, []);
-
+  // }
   return (
     <LanguageContext.Provider value={{ locale, setLocale }}>
       <IntlProvider onError={ErrorFunction} locale={locale} messages={language}>

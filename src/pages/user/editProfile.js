@@ -89,7 +89,7 @@ const Profile = () => {
 
         <TextField
           mt="5%"
-          label={intl.formatMessage({ id: "username" })}
+          label={intl.formatMessage({ id: "username" ,defaultMessage: "Username" })}
           variant="outlined"
           margin="normal"
           InputLabelProps={{
@@ -101,7 +101,7 @@ const Profile = () => {
         <div sx={{ p: "30%" }}>
           <TextField
             mt="5%"
-            label={intl.formatMessage({ id: "address" })}
+            label={intl.formatMessage({ id: "address",defaultMessage: "Address" })}
             variant="outlined"
             margin="normal"
             InputLabelProps={{
