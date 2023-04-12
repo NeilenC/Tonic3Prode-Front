@@ -52,11 +52,14 @@ const Profile = () => {
         }
         return data;
       } catch {
-        alert("Please check that there are no special characters");
+        alert("There was an error while updating the user information");
+        throw new Error("Invalid input");
       }
+    } else {
+      alert("Please check that there are no special characters");
+      throw new Error("Invalid input");
     }
   };
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -125,7 +128,7 @@ const Profile = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                placeholder="+54-911-12345678"
+              
                 required={true}
               />
             )}
