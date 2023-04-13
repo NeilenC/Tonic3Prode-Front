@@ -11,6 +11,7 @@ import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
+import { useIntl } from "react-intl";
 
 const Predictions = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const Predictions = () => {
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
+  const intl = useIntl();
 
   const handleScoreChange = (_id, team, score) => {
     setScores((prevState) => ({
@@ -129,7 +131,7 @@ const Predictions = () => {
             margin: "10px",
           }}
         >
-          Guardar Predicciones
+          {intl.formatMessage({ id: "savepred" })}
         </Button>
         <form
           onSubmit={updatePredictions}
@@ -170,7 +172,7 @@ const Predictions = () => {
             margin: "15px",
           }}
         >
-          Guardar Predicciones
+          {intl.formatMessage({ id: "savepred" })}
         </Button>
       </Box>
     </>
