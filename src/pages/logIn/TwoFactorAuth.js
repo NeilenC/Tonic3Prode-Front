@@ -16,8 +16,7 @@ const generateQRCode = async (secret) => {
   const otpauthUrl = `otpauth://totp/Gambet?secret=${secret}`;
   console.log(otpauthUrl, "otpauthUrl")
   try {
-    const imageUrl = await qrcode.toDataURL(otpauthUrl);
-    console.log(imageUrl, "imageUrl")
+    const imageUrl = await qrcode.toDataURL(otpauthUrl)
     setQRCodeImage(imageUrl);
   } catch (err) {
     console.error(err);
@@ -28,10 +27,13 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   const uid = localStorage.getItem("uid");
   try {
-    const response = await axios.post('/verify-2fa', {
-      uid: uid,
-      token: verificationCode,
-    });
+    const response = await axios.post(
+      "http://localhost:3001/api/users/2FA/verify",
+      {
+        uid: uid,
+        token: verificationCode,
+      }
+    );
     toast.success(response.data.message);
     window.location.href = "http://localhost:3000/home";
   } catch (error) {
