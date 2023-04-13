@@ -16,7 +16,7 @@ import { logOut } from "../../utils/functions";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Typography } from "@mui/material";
+import Link from "next/link";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -84,7 +84,9 @@ const Navbar = () => {
           >
             {user && <MenuIcon />}
           </IconButton>
+          <Link href="/home">
           <Button  sx={{ color:"inherit", justifyContent:"center"}}>GAMBET</Button>
+          </Link>
           <div>
             {user && (
               <IconButton
@@ -95,17 +97,6 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                {/* <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center"
-      }}>
-
-                <Avatar alt="User avatar" />
-                <Typography variant="subtitle1">
-                   {username}
-                </Typography>
-                </div> */}
                  <Avatar alt="User avatar" />
               </IconButton>
             )}

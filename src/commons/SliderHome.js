@@ -10,7 +10,8 @@ import weekDays from "../fakeData/weekDays";
 export default function Slider() {
   const carouselProps = {
     animation: "slide",
-    timeout: 10000, // ajustamos el tiempo de espera entre cada slide
+    autoPlay: false
+
   };
 
   const sortedMatches = matches.sort(
