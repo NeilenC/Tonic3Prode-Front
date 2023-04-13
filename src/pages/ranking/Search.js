@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import SearchCamp  from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
 import UserCard from "@/commons/UserCard";
+import { useIntl } from "react-intl";
 
 const Search = () => {
   const [searchResults, setSearchResults] = useState("");
+const intl = useIntl()
 
   const handleBusqueda = (event) => {
     setSearchResults(event.target.value);
@@ -35,7 +37,8 @@ const Search = () => {
           id="userSearch"
           label="Search"
           variant="outlined"
-          placeholder="Search User"
+          placeholder= {intl.formatMessage({ id: "search" })}
+
           value={searchResults}
           onChange={handleBusqueda}
           style={{
