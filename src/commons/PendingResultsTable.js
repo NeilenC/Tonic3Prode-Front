@@ -107,12 +107,26 @@ const PendingResultsTable = ({ data }) => {
     }
   };
 
-  const handleSaveAllDates = () => {
+  const handleSaveAllDates = async () => {
     const uid = localStorage.getItem("uid");
     const id = router.query.id;
     const myData = JSON.parse(localStorage.getItem("myTableData"));
+    
+    // update de fechas
+    await axios
+      .put(`http://localhost:3001/api/games/admin/edit/dates`, {
+        myData: myData,
+        uid: uid,
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    axios
+    // update de resultados  
+    await axios
       .put(`http://localhost:3001/api/games/admin/${id}`, {
         myData: myData,
         uid: uid,

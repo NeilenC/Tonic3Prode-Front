@@ -1,18 +1,39 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { format } from "date-fns";
-import { changeHour } from "../../utils/functions";
-import { Box, Typography, InputBase } from "@mui/material";
+import CustomCountdown from "@/pages/tournamentHome/Predictions/Countdown";
+
+import {
+  Box,
+  Typography,
+  InputBase,
+  Card,
+  useMediaQuery,
+} from "@mui/material";
+
 import { IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import styles from "../styles/commons/predictionCards.module.css";
-import stylesCard from "../styles/matches/ResultCard.module.css";
 
-const PredictionCards = ({ game, handleScoreChange, user, id }) => {
-  const [userPredictions, setUserPredictios] = useState([]);
+const PredictionCards = ({
+  game,
+  handleScoreChange,
+  user,
+  id,
+  dates,
+  order,
+  currentDate,
+}) => {
+  const [userPredictions, setUserPredictions] = useState([]);
   const [homeScore, setHomeScore] = useState("");
   const [awayScore, setAwayScore] = useState("");
+  const [status, setStatus] = useState("");
+  const isMobile = useMediaQuery("(max-width:600px)");
 
+  // ------- BLOQUEO DE CARGA DE DATOS ------- //
+  const [disableScoreInputs, setDisableScoreInputs] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timeUp, setTimeUp] = useState(false);
+  
 
   const handleAddHome = () => {
     let homeTeamScore = gamePredictions[0]?.prediction?.homeTeamScore;
@@ -66,7 +87,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
           (prediction) => prediction.gameId.tournaments == id
         );
 
-        setUserPredictios(filterPredictios);
+        setUserPredictions(filterPredictios);
       } catch (error) {
         console.error(error);
       }
@@ -87,6 +108,7 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
   );
 
   useEffect(() => {
+    setStatus(gamePredictions[0]?.status);
     if (gamePredictions[0] && gamePredictions) {
       handleScoreChange(
         gamePredictions[0]?.gameId?._id,
@@ -101,146 +123,152 @@ const PredictionCards = ({ game, handleScoreChange, user, id }) => {
     }
   }, [gamePredictions[0], homeScore, awayScore]);
 
-
-console.log()
-
-
   return (
-    <>
+    <Card
+      key={gamePredictions[0]?.gameId._id}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        my: 2,
+        borderRadius: "15px",
+        width: isMobile ? "100%" : "450px",
+        maxWidth: "100%",
+        backgroundColor: status !== "pending" ? "#e0e0e0" : "#f5f5f5",
+        boxShadow: status === "pending" ? "3px 3px 3px rgba(0,0,0,0.3)" : "",
+      }}
+    >
       <Box
-        key={game?._id}
-        sx={{ display: "flex", alignItems: "center", my: 2 }}
-        s
-        className={stylesCard.customCard}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "60px",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          color: "white",
+          backgroundColor: status === "pending" ? "#3777d1" : "#5b5b5b",
+        }}
       >
-        <div className={stylesCard.cardColumn}>
-          {game?.result[0] ? (
-            <Box
-              sx={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography
-                sx={{ textAlign: "center", justifyContent: "center" }}
-              >
-                Result:
-              </Typography>
-              <Box>
-                {game?.result[0]?.homeTeamScore} -{" "}
-                {game?.result[0]?.awayTeamScore}
-              </Box>
-            </Box>
-          ) : (
-            ""
-          )}
-          <div className={stylesCard.cardColumn}>
-            <div className={stylesCard.teamLogoWrapper}>
-              <img
-                src={
-                  game?.teams[0]?.logo_url
-                    ? game?.teams[0]?.logo_url
-                    : game?.teams[0][0]?.logo_url
-                }
-                alt={
-                  game?.teams[0]?.name
-                    ? game?.teams[0]?.name
-                    : game?.teams[0][0]?.name
-                }
-                className={stylesCard.teamLogo}
-              />
-            </div>
-          </div>
-          <div className={stylesCard.titleWrapper}>
-            {game?.teams[0]?.shortName
-              ? game?.teams[0]?.shortName
-              : game?.teams[0][0]?.shortName}
-          </div>
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="increment" onClick={handleAddHome}>
-              <Add />
-            </IconButton>
-          ) : (
-            ""
-          )}
-          <InputBase
-            inputProps={{
-              "aria-label": "score",
-              min: "0",
-              type: "number",
-              style: { appearance: "none" },
-            }}
-            className={styles.input}
-            value={homeScore}
-            onChange={(e) => setHomeScore(e.target.value)}
-          />
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="decrement" onClick={handleRemoveHome}>
-              <Remove />
-            </IconButton>
-          ) : (
-            ""
-          )}
-        </div>
-        <span> Vs </span>
-        <div className={stylesCard.cardColumn}>
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="increment" onClick={handleAddAway}>
-              <Add />
-            </IconButton>
-          ) : (
-            ""
-          )}
-          <InputBase
-            inputProps={{
-              "aria-label": "score",
-              min: "0",
-              type: "number",
-              style: { appearance: "none" },
-            }}
-            className={styles.input}
-            value={awayScore}
-            onChange={(e) => setAwayScore(e.target.value)}
-            sx={{
-              mx: 3,
-              textAlign: "center",
-              width: "10%",
-              height: "1.5%",
-            }}
-          />
-          {gamePredictions[0]?.status != "close" ? (
-            <IconButton aria-label="decrement" onClick={handleRemoveAway}>
-              <Remove />
-            </IconButton>
-          ) : (
-            ""
-          )}
-          <div className={stylesCard.titleWrapper}>
-            {game?.teams[1]?.shortName
-              ? game?.teams[1]?.shortName
-              : game?.teams[1][0]?.shortName}
-          </div>
-          <div className={stylesCard.cardColumn}>
-            <div className={stylesCard.teamLogoWrapper}>
-              <img
-                src={
-                  game?.teams[1]?.logo_url
-                    ? game?.teams[1]?.logo_url
-                    : game?.teams[1][0]?.logo_url
-                }
-                alt={
-                  game?.teams[1]?.name
-                    ? game?.teams[1]?.name
-                    : game?.teams[1][0]?.name
-                }
-                className={stylesCard.teamLogo}
-              />
-            </div>
-          </div>
-        </div>
+        <Typography sx={{ marginRight: "10px" }}>
+          {currentDate[order]}
+        </Typography>
+        <CustomCountdown
+          dates={dates}
+          order={order}
+          setTimeUp={setTimeUp}
+          setTimeRemaining={setTimeRemaining}
+          setDisableScoreInputs={setDisableScoreInputs}
+        />
       </Box>
-    </>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 2,
+          width: "100%",
+        }}
+      >
+        <Box
+          sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
+        >
+          <Box className={styles.teamLogoWrapper}>
+            <img
+              src={gamePredictions[0]?.prediction.homeTeam.logo_url}
+              alt={gamePredictions[0]?.prediction.homeTeam.name}
+              className={styles.teamLogo}
+            />
+          </Box>
+          <Box sx={{ marginRight: "10px", textAlign: "center" }}>
+            {gamePredictions[0]?.prediction.homeTeam.shortName}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              marginRight: "15px",
+            }}
+          >
+            <IconButton
+              aria-label="increment"
+              onClick={handleAddHome}
+              disabled={disableScoreInputs}
+            >
+              <Add disabled={disableScoreInputs} />
+            </IconButton>
+            <InputBase
+              inputProps={{
+                "aria-label": "score",
+                min: "0",
+                style: { appearance: "none", textAlign: "center" },
+              }}
+              className={styles.input}
+              value={homeScore}
+              onChange={(e) => setHomeScore(e.target.value)}
+              disabled={disableScoreInputs}
+            />
+            <IconButton
+              aria-label="decrement"
+              onClick={handleRemoveHome}
+              disabled={disableScoreInputs}
+            >
+              <Remove disabled={disableScoreInputs} />
+            </IconButton>
+          </Box>
+        </Box>
+        <Typography sx={{ textAlign: "center" }}> Vs. </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+            marginLeft: "15px",
+          }}
+        >
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <IconButton
+              aria-label="increment"
+              onClick={handleAddAway}
+              disabled={disableScoreInputs}
+            >
+              <Add disabled={disableScoreInputs} />
+            </IconButton>
+            <InputBase
+              inputProps={{
+                "aria-label": "score",
+                min: "0",
+                style: { appearance: "none", textAlign: "center" },
+                readOnly: true,
+              }}
+              className={styles.input}
+              value={awayScore}
+              onChange={(e) => setAwayScore(e.target.value)}
+              disabled={disableScoreInputs}
+            />
+            <IconButton
+              aria-label="decrement"
+              onClick={handleRemoveAway}
+              disabled={disableScoreInputs}
+            >
+              <Remove disabled={disableScoreInputs} />
+            </IconButton>
+          </Box>
+          <Box sx={{ marginLeft: "10px" }}>
+            {gamePredictions[0]?.prediction.awayTeam.shortName}
+          </Box>
+          <Box className={styles.teamLogoWrapper}>
+            <img
+              src={gamePredictions[0]?.prediction.awayTeam.logo_url}
+              alt={gamePredictions[0]?.prediction.awayTeam.name}
+              className={styles.teamLogo}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Card>
   );
 };
 

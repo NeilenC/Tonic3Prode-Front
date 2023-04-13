@@ -10,7 +10,6 @@ import {
 } from "@mui/icons-material";
 import Teams from "./Teams";
 import Results from "./ResultsBis";
-import Results2 from "./Results";
 import Ranking from "./Ranking";
 import Users from "./Users";
 import Prizes from "./Prizes";
@@ -25,7 +24,6 @@ const id = () => {
 
   const components = {
     results: <Results />,
-    results2: <Results2 />,
     ranking: <Ranking />,
     teams: <Teams />,
     users: <Users />,
@@ -44,7 +42,6 @@ const id = () => {
 
   const buttons = [
     { text: "Results", component: "results" },
-    { text: "Results2", component: "results2" },
     { text: "Ranking", component: "ranking" },
     { text: "Teams", component: "teams" },
     { text: "Users", component: "users" },

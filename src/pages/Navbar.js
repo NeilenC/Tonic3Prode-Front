@@ -95,18 +95,11 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                {/* <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center"
-      }}>
-
+                {/* <Typography variant="subtitle1">
+                  <div> {username} &nbsp;&nbsp;&nbsp; </div>
+                </Typography> */}
                 <Avatar alt="User avatar" />
-                <Typography variant="subtitle1">
-                   {username}
-                </Typography>
-                </div> */}
-                 <Avatar alt="User avatar" />
+
               </IconButton>
             )}
 
@@ -132,10 +125,12 @@ const Navbar = () => {
                     router.push("/user/profilePage");
                   }}
                 >
+
                  {intl.formatMessage({ id: "profile" })}
                 </MenuItem>
               )}
               
+
               {user && (
                 <MenuItem
                   onClick={() => {
