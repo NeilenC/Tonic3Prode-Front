@@ -3,13 +3,13 @@ import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
 import SetIdiomas from "@/commons/SetIdiomas";
 import ReactInputMask from "react-input-mask";
 import { useSelector } from "react-redux";
-
-
-
+import { useIntl, FormattedMessage } from "react-intl";
+import { validateInput } from "../../../utils/functions";
+import Link from "next/link";
 
 const Profile = () => {
-
   const userInfo = useSelector((state) => state.userInfo);
+  const intl = useIntl();
 
   const [checked, setChecked] = useState(true);
   const [cellphone, setCellphone] = useState("");
@@ -29,10 +29,8 @@ const Profile = () => {
     }
   }, [userInfo]);
 
-  console.log("USERNAME", username)
-
   const handleSave = async () => {
-    if (userInfo) {
+    if (userInfo && validateInput(address) != false) {
       try {
         const response = await fetch(
           `http://localhost:3001/api/users/update/${uid}`,
@@ -50,19 +48,21 @@ const Profile = () => {
         );
         const data = await response.json();
         if (response.status === 200) {
-          alert("Los cambios se han realizado con exito")
+          alert("The changes have been made successfully");
         }
         return data;
-      } catch (error) {
-        return error;
+      } catch {
+        alert("There was an error while updating the user information");
+        throw new Error("Invalid input");
       }
+    } else {
+      alert("Please check that there are no special characters");
+      throw new Error("Invalid input");
     }
   };
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-
 
   return (
     <Box>
@@ -87,12 +87,12 @@ const Profile = () => {
         autoComplete="on"
       >
         <Typography component="h1" variant="h5" color="#454546" marginTop="3%">
-          Modificar datos:
+          <div> {intl.formatMessage({ id: "data" })}</div>
         </Typography>
 
         <TextField
           mt="5%"
-          label="User name"
+          label={intl.formatMessage({ id: "username" ,defaultMessage: "Username" })}
           variant="outlined"
           margin="normal"
           InputLabelProps={{
@@ -101,12 +101,10 @@ const Profile = () => {
           onChange={(e) => setUserName(e.target.value)}
         />
 
-        <div
-         sx={{p:"30%"}}
-        >
+        <div sx={{ p: "30%" }}>
           <TextField
             mt="5%"
-            label="Dirección"
+            label={intl.formatMessage({ id: "address",defaultMessage: "Address" })}
             variant="outlined"
             margin="normal"
             InputLabelProps={{
@@ -126,13 +124,11 @@ const Profile = () => {
                 mt="5%"
                 id="Cellphone"
                 type="text"
-                label="Numero celular"
+                label={intl.formatMessage({ id: "cell" })}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                placeholder="+54-911-12345678"
                 required={true}
-
               />
             )}
           </ReactInputMask>
@@ -144,7 +140,7 @@ const Profile = () => {
             color="#454546"
             marginTop="3%"
           >
-            Deseo recibir notificaciones
+            <FormattedMessage id="notifications" />
           </Typography>
           <Checkbox
             checked={checked}
@@ -160,7 +156,7 @@ const Profile = () => {
             marginTop="3%"
             marginLeft="1.5%"
           >
-            Cambiar idioma:
+            {intl.formatMessage({ id: "language" })}
           </Typography>
           <SetIdiomas />
         </div>
@@ -170,9 +166,20 @@ const Profile = () => {
           sx={{ mt: 3, mb: 2 }}
           onClick={handleSave}
         >
-          Guardar cambios
+          <FormattedMessage id="save" />
         </Button>
-       
+        <Link href="/home">
+          <Button
+            sx={{
+              mt: 3,
+              alignSelf: "flex-end",
+              color: "inherit",
+              justifyContent: "center",
+            }}
+          >
+            {intl.formatMessage({ id: "back" })}
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

@@ -11,6 +11,7 @@ import {
   ConstructionOutlined,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { useIntl } from "react-intl";
 
 const Home = ({}) => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const Home = ({}) => {
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
+  const intl = useIntl();
 
   useEffect(() => {
     if (router.query.id) {
@@ -97,7 +99,8 @@ const Home = ({}) => {
           router.push(`Predictions/${id}`);
         }}
       >
-        Predictions
+        {/* Predictions */}
+        {intl.formatMessage({ id: "predictions" })}
       </Button>
       <Button
         size="xl"
@@ -108,7 +111,7 @@ const Home = ({}) => {
           router.push(`/ranking/${id}`);
         }}
       >
-        Ranking
+        {intl.formatMessage({ id: "ranking" })}
       </Button>
 
       <Button
@@ -125,7 +128,8 @@ const Home = ({}) => {
           router.push(`/tournament/${id}/prizes`);
         }}
       >
-        Prizes
+        {intl.formatMessage({ id: "prizes" })}
+        {/* Prizes */}
       </Button>
 
       <Button

@@ -19,7 +19,6 @@ const UserProvider = ({children}) => {
         );
   
         const data = await response.json();
-        console.log("DATA USER", data);
         dispatch(
           setUserInfo({
             uid: data.uid,

@@ -2,12 +2,14 @@
     "welcome": "Welcome",
     "matches": "Future matches",
     
-    
-    "predictions": "My predictions",
-    "ranking" : "Ranking",
+    "ranking": "ranking",
+    "predictions": "predictions",
+    "prizes" : "Prizes",
     "fixture" : "Fixtures",
     "torneo": "Tournaments",
     "panel": "Admin panel",
+    "register": "Sign Up Tournament",
+
     
     "profile": "Profile",
     "config": "Configuration",
@@ -25,9 +27,17 @@
     "members": "Members",
     "teams": "Teams",
     "countries": "Country",
-    
+
+    "data":"Modify user data",
     "notifications" :"I want to receive notifications",
     "save":"Save changes",
-    "cell": "Numero telefónico"
+    "cell": "Username",
+    "address": "Address",
+    "username": "Username",
+    "language": "Change language",
+    "modify": "Change user data",
+    "back": "Back"
+
+
 
     }

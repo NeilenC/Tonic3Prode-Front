@@ -7,6 +7,7 @@ import { Identity } from "@mui/base";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
 const StyledCard = styled(Card)({
   display: "flex",
@@ -32,6 +33,7 @@ const StyledCardContent = styled(CardContent)({
 const TournamentCard = ({ tournament, user }) => {
   const [inscript, setInscript] = useState(false);
   const router = useRouter();
+  const intl = useIntl();
 
   useEffect(() => {
      console.log("CHEQUEO", tournament.users.includes(user._id));
@@ -101,7 +103,8 @@ const TournamentCard = ({ tournament, user }) => {
         <Divider sx={{ my: 2 }} />
         {inscript === false ? (
           <Button onClick={()=>handleAddusertoTournament()}>
-            Sign Up Tournament
+            {intl.formatMessage({ id: "register" })} 
+            {/* Sign up tournament */}
           </Button>
         ) : (
           <Button

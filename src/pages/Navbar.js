@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
-//import { FormattedMessage } from "react-intl";
+import { useIntl } from "react-intl";
 import { auth } from "../../utils/firebaseConfig";
 import { logOut } from "../../utils/functions";
 import { useRouter } from "next/router";
@@ -24,6 +24,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const Navbar = () => {
   const router = useRouter();
+  const intl = useIntl()
+
   const [user, setUser] = useState("");
   const [uid, setUid] = useState("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -123,19 +125,12 @@ const Navbar = () => {
                     router.push("/user/profilePage");
                   }}
                 >
-                  Perfil
+
+                 {intl.formatMessage({ id: "profile" })}
                 </MenuItem>
               )}
-              {/* {user && (
-                <MenuItem
-                  onClick={() => {
-                    handleClose;
-                    router.push("/user/editProfile");
-                  }}
-                >
-                  Configuración
-                </MenuItem>
-              )} */}
+              
+
               {user && (
                 <MenuItem
                   onClick={() => {
@@ -144,7 +139,7 @@ const Navbar = () => {
                     router.push("/");
                   }}
                 >
-                  Logout
+                   {intl.formatMessage({ id: "logout" })}
                 </MenuItem>
               )}
             </Menu>
@@ -163,7 +158,7 @@ const Navbar = () => {
               router.push(`/home`);
             }}
           >
-            Tournaments
+            {intl.formatMessage({ id: "torneo" })}
           </MenuItem>
 
           {user.rol === "admin" && (
@@ -173,7 +168,7 @@ const Navbar = () => {
                 router.push(`/admin`);
               }}
             >
-              Admin Panel
+              {intl.formatMessage({ id: "panel" })}
             </MenuItem>
           )}
         </div>

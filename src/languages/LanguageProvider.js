@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import Spanish from "./es.json";
 import English from "./en.json";
 import Portugues from "./pt.json";
-import { injectIntl, IntlProvider, IntlShape,  ReactIntlErrorCode } from "react-intl";
+import { IntlProvider } from "react-intl";
 export const LanguageContext = createContext();
 
 const LanguageProvider = ({ children }) => {
@@ -19,21 +19,31 @@ const LanguageProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    let selectedLanguage = locale;
+    const localStorageLang = localStorage.getItem("locale", locale);
+    if (localStorageLang) {
+      selectedLanguage = localStorageLang; 
+    }
 
-    if (locale.includes("en")) {
+    if (selectedLanguage.includes("en")) {
       setLanguage(English);
-    } else if (locale.includes("pt")) {
+    } else if (selectedLanguage.includes("pt")) {
       setLanguage(Portugues);
-    } else if (locale.includes("es")){
+    } else if (selectedLanguage.includes("es")){
       setLanguage(Spanish);
     }
   }, [locale]);
 
-// console.log("LANGUAGE", language)
 
+
+  function ErrorFunction(error, message) {
+    console.warn(`Error al obtener el mensaje ${message}: ${error.message}`);
+    return message;
+  }
+  
   return (
-    <LanguageContext.Provider value={{locale, setLocale}}>
-      <IntlProvider locale={locale} messages={language}>
+    <LanguageContext.Provider value={{ locale, setLocale }}>
+      <IntlProvider onError={ErrorFunction} locale={locale} messages={language}>
         {children}
       </IntlProvider>
     </LanguageContext.Provider>

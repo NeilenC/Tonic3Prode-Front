@@ -7,3 +7,5 @@ package-lock.json
 npm-debug.log*
 
 .next
+
+fakeData
