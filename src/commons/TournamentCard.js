@@ -36,7 +36,6 @@ const TournamentCard = ({ tournament, user }) => {
   const intl = useIntl();
 
   useEffect(() => {
-     console.log("CHEQUEO", tournament.users.includes(user._id));
     if (tournament.users.includes(user._id)) {
       setInscript(true);
     } else {
