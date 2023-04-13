@@ -73,14 +73,13 @@ const Profile = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          border: "1px solid grey",
-          padding: "10%",
+          pl:"2%",
           borderRadius: "5px ",
           maxWidth: "95%",
           margin: " 5% auto",
           backgroundColor: "#F7F7F7",
-          padding: "2rem",
-          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+          padding: "1rem",
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
           overflow: "hidden",
         }}
         noValidate
@@ -92,7 +91,7 @@ const Profile = () => {
 
         <TextField
           mt="5%"
-          label={intl.formatMessage({ id: "username" ,defaultMessage: "Username" })}
+          label={intl.formatMessage({ id: "username" })}
           variant="outlined"
           margin="normal"
           InputLabelProps={{
@@ -104,7 +103,7 @@ const Profile = () => {
         <div sx={{ p: "30%" }}>
           <TextField
             mt="5%"
-            label={intl.formatMessage({ id: "address",defaultMessage: "Address" })}
+            label={intl.formatMessage({ id: "address" })}
             variant="outlined"
             margin="normal"
             InputLabelProps={{

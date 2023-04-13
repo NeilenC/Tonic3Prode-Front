@@ -30,14 +30,13 @@ const profilePage = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        border: "1px solid grey",
         padding: "10%",
         borderRadius: "5px ",
-        maxWidth: "95%",
+        maxWidth: "80%",
         margin: " 5% auto",
         backgroundColor: "#F7F7F7",
         padding: "2rem",
-        boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+        boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
         overflow: "hidden",
       }}
     >
