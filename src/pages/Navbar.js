@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 
 import Link from "next/link";
 
-
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
 }));
@@ -40,7 +39,6 @@ const Navbar = () => {
   useEffect(() => {
     if (userInfo) {
       setUserName(userInfo.username);
-
     }
   }, [userInfo]);
 
@@ -72,6 +70,7 @@ const Navbar = () => {
   const handleLogOut = async () => {
     localStorage.removeItem("uid");
     localStorage.removeItem("isLogged");
+    setIsLogged(false);
     setUser("");
     logOut(auth);
   };
@@ -99,8 +98,7 @@ const Navbar = () => {
               aria-label="menu"
               sx={{ mr: 2 }}
               onClick={() => setDrawerOpen(false)}
-            >
-            </IconButton>
+            ></IconButton>
           )}
           <Button sx={{ color: "inherit", justifyContent: "center" }}>
             GAMBET
