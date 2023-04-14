@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Navbar from '@/pages/Navbar'
+import Footer from './Footer'
 
 const LayOut = ({children}) => {
   return (
@@ -11,6 +12,7 @@ const LayOut = ({children}) => {
       </Head>
       <Navbar />
       {children}
+      <Footer/>
     </>
   )
 }
