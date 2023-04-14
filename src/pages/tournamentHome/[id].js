@@ -36,7 +36,6 @@ const Home = ({}) => {
       axios
         .get(`http://localhost:3001/api/games/search/${id}/${user}`)
         .then((allgames) => {
-          console.log("JUEGOS QUE LLEGAN DEL USER", allgames.data);
           return allgames;
         })
         .then((allgames) => {
@@ -103,19 +102,6 @@ const Home = ({}) => {
         {/* Predictions */}
         {intl.formatMessage({ id: "predictions" })}
       </Button>
-
-      <Button
-        size="xl"
-        variant="outlined"
-        startIcon={<FixtureIcon />}
-        sx={{ width: "250px", marginBottom: "15px", fontSize: "20px" }}
-        onClick={() => {
-          router.push(`/fixture`);
-        }}
-      >
-        Fixture
-      </Button>
-
       <Button
         size="xl"
         variant="outlined"

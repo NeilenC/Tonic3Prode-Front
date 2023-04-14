@@ -123,10 +123,12 @@ const Navbar = () => {
                     router.push("/user/profilePage");
                   }}
                 >
+
                  {intl.formatMessage({ id: "profile" })}
                 </MenuItem>
               )}
               
+
               {user && (
                 <MenuItem
                   onClick={() => {
