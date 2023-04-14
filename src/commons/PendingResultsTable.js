@@ -17,6 +17,9 @@ import {
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import axios from "axios";
+import {
+  Save
+} from "@mui/icons-material";
 
 const PendingResultsTable = ({ data }) => {
   const [editedData, setEditedData] = useState({});
@@ -173,8 +176,8 @@ const PendingResultsTable = ({ data }) => {
   };
 
   return (
-    <Box>
-      <Button onClick={handleSaveAllDates}>Save results</Button>
+    <Box sx={{mb:"30px"}}>
+      <Button variant="outlined" endIcon={<Save />} onClick={handleSaveAllDates}>Save results</Button>
       <TableContainer>
         <Table>
           <TableHead>
