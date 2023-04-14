@@ -50,6 +50,7 @@ export const LoginForm = () => {
             email: "",
             fullName: "",
             country: "",
+            
           })
         );
         dispatch(setFirstLogin(false));
