@@ -16,7 +16,6 @@ import { logOut } from "../../utils/functions";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Typography } from "@mui/material";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -33,15 +32,18 @@ const Navbar = () => {
   const open = Boolean(anchorEl);
   const userInfo = useSelector((state) => state.userInfo);
   const [username, setUserName] = useState("");
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
     if (userInfo) {
       setUserName(userInfo.username);
+
     }
   }, [userInfo]);
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
+    setIsLogged(localStorage.getItem("isLogged"));
   }, []);
 
   useEffect(() => {
@@ -50,14 +52,13 @@ const Navbar = () => {
           .get(`http://localhost:3001/api/users/search/${uid}`)
           .then((res) => {
             setUser(res.data);
-            console.log("user nuevo", user);
           })
           .catch((err) => {
             console.log(err);
           })
       : null;
   }, [uid]);
-  console.log("user nuevo fuera", user);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -66,10 +67,9 @@ const Navbar = () => {
   };
 
   const handleLogOut = async () => {
-    const uid = localStorage.getItem("uid");
     localStorage.removeItem("uid");
+    localStorage.removeItem("isLogged");
     setUser("");
-    await axios.post(`http://localhost:3001/api/users/twofactor/erase/${uid}`);
     logOut(auth);
   };
 
@@ -77,21 +77,33 @@ const Navbar = () => {
     <>
       <AppBar position="static">
         <StyledToolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={() => setDrawerOpen(true)}
-          >
-            {user.twoFactorSecret && <MenuIcon />}
-          </IconButton>
+          {isLogged ? (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setDrawerOpen(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setDrawerOpen(false)}
+            >
+            </IconButton>
+          )}
           <Button sx={{ color: "inherit", justifyContent: "center" }}>
             GAMBET
           </Button>
           <div>
-            {user.twoFactorSecret && (
+            {isLogged && (
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -122,28 +134,23 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              {user.twoFactorSecret && (
-                <MenuItem
-                  onClick={() => {
-                    handleClose;
-                    router.push("/user/profilePage");
-                  }}
-                >
-                  {intl.formatMessage({ id: "profile" })}
-                </MenuItem>
-              )}
-
-              {user.twoFactorSecret && (
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    handleLogOut();
-                    router.push("/");
-                  }}
-                >
-                  {intl.formatMessage({ id: "logout" })}
-                </MenuItem>
-              )}
+              <MenuItem
+                onClick={() => {
+                  handleClose;
+                  router.push("/user/profilePage");
+                }}
+              >
+                {intl.formatMessage({ id: "profile" })}
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleLogOut();
+                  router.push("/");
+                }}
+              >
+                {intl.formatMessage({ id: "logout" })}
+              </MenuItem>
             </Menu>
           </div>
         </StyledToolbar>

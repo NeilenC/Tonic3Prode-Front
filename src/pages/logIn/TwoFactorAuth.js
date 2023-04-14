@@ -5,12 +5,25 @@ import notp from "notp";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import qrcode from "qrcode";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const TwoFactorAuth = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [secret, setSecret] = useState("");
   const [QRCodeImage, setQRCodeImage] = useState("");
   const [firstQR, setFirstQR] = useState(true);
+
+  useEffect(() => {
+    const uid = localStorage.getItem("uid");
+    axios
+      .get(`http://localhost:3001/api/users/search/${uid}`)
+      .then((res) => {
+        res.data.twoFactorSecret ? setFirstQR(false) : setFirstQR(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const generateQRCode = async (secret) => {
     console.log(secret, "secret");
@@ -37,6 +50,7 @@ const TwoFactorAuth = () => {
       );
       toast.success(response.data.message);
       window.location.href = "http://localhost:3000/home";
+      localStorage.setItem("isLogged", true);
     } catch (error) {
       console.error(error);
       toast.error(error.response.data.message);
@@ -51,10 +65,14 @@ const TwoFactorAuth = () => {
         const res = await axios.post(
           `http://localhost:3001/api/users/twofactor/${uid}`
         );
-        setSecret(res.data.secret); // Guardamos el nuevo secreto generado en el backend
-        toast.success("Verification code generated successfully!");
-        generateQRCode(res.data.secret);
-        setFirstQR(false);
+        setSecret(res.data.secret);
+        if (res.data.secret) {
+          toast.success("Verification code generated successfully!");
+          generateQRCode(res.data.secret);
+          setFirstQR(false);
+        } else {
+          toast.error("Verification code already generated");
+        }
       } else {
         toast.error("Verification code already generated");
       }
@@ -84,6 +102,7 @@ const TwoFactorAuth = () => {
             2FA VERIFICATION
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
+            {firstQR && (
             <Button
               fullWidth
               variant="contained"
@@ -97,6 +116,7 @@ const TwoFactorAuth = () => {
             >
               GENERATE CODE
             </Button>
+            )}
             <Box
               sx={{
                 width: "100%",
