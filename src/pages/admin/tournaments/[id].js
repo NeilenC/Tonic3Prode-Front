@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import {
   SportsSoccer as TournamentIcon,
   SportsHandball as PlayersIcon,
@@ -14,9 +15,24 @@ import Ranking from "./Ranking";
 import Users from "./Users";
 import Prizes from "./Prizes";
 import Metrics from "./Metrics";
+import axios from "axios";
+
 
 const id = () => {
   const [actualComponent, setActualComponent] = useState("results");
+  const [tournament, setTournament] = useState({})
+  const router = useRouter();
+  const tournamentId = router.query.id;
+  
+  useEffect(() => {
+    async function getTournament() {
+      if (tournamentId) {
+        const response = await axios.get(`http://localhost:3001/api/tournaments/${tournamentId}`);
+        setTournament(response.data);
+      }
+    }
+    getTournament();
+  }, [tournamentId]);
 
   const changeActualComponent = (component) => {
     setActualComponent(component);
@@ -25,36 +41,25 @@ const id = () => {
   const components = {
     results: <Results />,
     ranking: <Ranking />,
-    teams: <Teams />,
-    users: <Users />,
-    prizes: <Prizes />,
-    metrics: <Metrics />,
   };
 
   const icons = {
     results: <TournamentIcon />,
     ranking: <TeamsIcon />,
-    teams: <PlayersIcon />,
-    users: <PrizesIcon />,
-    prizes: <UsersIcon />,
-    metrics: <MetricsIcon />,
   };
 
   const buttons = [
     { text: "Results", component: "results" },
     { text: "Ranking", component: "ranking" },
-    { text: "Teams", component: "teams" },
-    { text: "Users", component: "users" },
-    { text: "Prizes", component: "prizes" },
-    { text: "Metrics", component: "metrics" },
   ];
 
   return (
     <Box>
-      <Box  sx={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "10px", marginTop: "20px"}}>
-        <Button onClick={()=>{window.location.href = "http://localhost:3000/admin"}} variant="contained">
+      <Box  sx={{ display: "flex", flexDirection:"column",justifyContent: "center", alignItems: "center", margin: "10px", marginTop: "20px"}}>
+        <Button onClick={()=>{window.location.href = "http://localhost:3000/admin"}} variant="outlined">
         Go back to Admin
         </Button>
+        <h2>{(tournament.title)?`${tournament.title?.toUpperCase()}`:null}</h2>
       </Box>
       <Box sx={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center", margin: "10px", marginTop: "20px", flexDirection: { xs: "column", md: "row" } }}>
         {buttons.map((button) => (
