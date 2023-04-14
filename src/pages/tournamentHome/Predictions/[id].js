@@ -12,13 +12,17 @@ import {
 } from "@mui/material";
 
 import Button from "@mui/material/Button";
-import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
 import { useIntl } from "react-intl";
 import Countdown from "./Countdown";
 import UserResultCard from "@/commons/UserResultCard";
+import {
+  SportsSoccer,
+  Money,
+  Save
+} from "@mui/icons-material";
 
 // COMPONENTE
 const Predictions = () => {
@@ -94,8 +98,6 @@ const Predictions = () => {
         });
     }
   }, [id]);
-
- 
 
   // SE AGREGA EL SCORE EN EL LS
   useEffect(() => {
@@ -195,6 +197,7 @@ const Predictions = () => {
           display: "flex",
           justifyContent: "center",
           margin: "auto",
+          mt: "10px",
           flexDirection: "column",
           alignItems: "center",
         }}
@@ -204,21 +207,25 @@ const Predictions = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            margin: "10px",
+            mt: "10px",
             alignItems: "center",
             marginTop: "20px",
             flexDirection: { xs: "column", md: "row" },
           }}
         >
           <Button
-            sx={{ marginRight: "10px" }}
+            sx={{ mr: "10px", mb:"10px"}}
             onClick={() => changeActualComponent("predictions")}
+            endIcon={<SportsSoccer />}
+            variant="outlined"
           >
             Predictions
           </Button>
           <Button
-            sx={{ marginRight: "10px" }}
+            sx={{ mr: "10px", mb:"10px", width:"150px" }}
             onClick={() => changeActualComponent("results")}
+            endIcon={<Money />}
+            variant="outlined"
           >
             Results
           </Button>
@@ -235,7 +242,7 @@ const Predictions = () => {
         </Box>
       </Box>
       {actualComponent === "predictions" ? (
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems:"center" }}>
           <Box
             sx={{
               display: "flex",
@@ -245,7 +252,7 @@ const Predictions = () => {
               justifyContent: "center",
             }}
           >
-            <Typography sx={{ textAlign: "center" }}>Sin Predicción</Typography>
+            <Typography sx={{ textAlign: "center" }}>load your prediction</Typography>
             <Paper
               sx={{
                 backgroundColor: "#1976d3",
@@ -254,7 +261,7 @@ const Predictions = () => {
                 borderRadius: "5px",
               }}
             ></Paper>
-            <Typography sx={{ textAlign: "center" }}>Con Predicción</Typography>
+            <Typography sx={{ textAlign: "center" }}> prediction loaded</Typography>
             <Paper
               sx={{
                 backgroundColor: "#e0e0e0",
@@ -267,7 +274,7 @@ const Predictions = () => {
           <Button
             onClick={() => updatePredictions()}
             variant="contained"
-            endIcon={<SportsSoccerIcon />}
+            endIcon={<Save />}
             sx={{
               textAlign: "center",
               width: "auto",
@@ -275,7 +282,9 @@ const Predictions = () => {
               margin: "20px 0 20px 0",
             }}
           >
+
                {intl.formatMessage({ id: "savepred" })}
+
           </Button>
           <Box onSubmit={updatePredictions}>
             {games?.map((game, i) => {
@@ -303,7 +312,7 @@ const Predictions = () => {
             alignItems: "center",
           }}
         >
-          <FormControl fullWidth>
+          <FormControl sx={{width:"250px", mb:"25px"}}>
             <InputLabel id="select-option-label">Stage</InputLabel>
             <Select
               labelId="select-option-label"
@@ -320,20 +329,24 @@ const Predictions = () => {
             </Select>
           </FormControl>
           <Box onSubmit={updatePredictions}>
-            {closedGames?.map((game, i) => {
-              return (
-                <div key={game.id}>
-                  <UserResultCard
-                    game={game}
-                    handleScoreChange={handleScoreChange}
-                    user={user}
-                    id={id}
-                    currentDate={formatedDate}
-                    order={i}
-                  />
-                </div>
-              );
-            })}
+            {closedGames
+              .filter(
+                (game) => selectedOption == 0 || game.stage == selectedOption
+              )
+              .map((game, i) => {
+                return (
+                  <div key={game.id}>
+                    <UserResultCard
+                      game={game}
+                      handleScoreChange={handleScoreChange}
+                      user={user}
+                      id={id}
+                      currentDate={formatedDate}
+                      order={i}
+                    />
+                  </div>
+                );
+              })}
           </Box>
         </Box>
       )}

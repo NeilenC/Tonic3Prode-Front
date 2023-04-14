@@ -30,10 +30,10 @@ if (id) {
 
 console.log("PENDING GAMES",pendingGames)
   return (
-    <Box>
-      <h1> Resultados pendientes</h1>
+    <Box sx={{display: "flex", flexDirection:"column", alignItems:"center", textAlign:"center"}}>
+      <h2> PENDING RESULTS</h2>
       {pendingGames.length > 0 && <PendingResultsTable data={pendingGames}/>}
-      <h1> Resultados previos</h1>
+      <h2> PREVIEWS RESULTS</h2>
       {completedGames.length > 0 && <PendingResultsTable data={completedGames}/>}
     </Box>
   )

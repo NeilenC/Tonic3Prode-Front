@@ -12,7 +12,6 @@ import styles from "../styles/commons/predictionCards.module.css";
 import ImageFilter from "react-image-filter/lib/ImageFilter";
 
 const UserResultCard = ({ game, user, id, currentDate, order }) => {
-
   const [userPredictions, setUserPredictios] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -39,24 +38,8 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
-  
 
-  ////// Sirve para cambiar el color de la imagen segun si es ganador o perdedor ////
-  // const filterStyles = {
-  //   filter:
-  //     game?.result?.winningTeam !== game?.teams[0].name
-  //       ? "grayscale opacity(0.4)"
-  //       : "none",
-  // };
-
-  // const filterStyles2 = {
-  //   filter:
-  //     game?.result?.winningTeam !== game?.teams[1].name
-  //       ? "grayscale opacity(0.4)"
-  //       : "none",
-  // };
-
-  /////////////////////////COMPONENTE/////////////////////////////////
+  console.log(game);
 
   return (
     <Card
@@ -89,6 +72,14 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
           {currentDate[order]}
         </Typography>
       </Box>
+      <Typography
+        sx={{
+          color: "black",
+          mt: "10px",
+        }}
+      >
+        Your prediction:
+      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -103,15 +94,21 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
           sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
         >
           <Box className={styles.teamLogoWrapper}>
-            {/* //AGREGAR CONDICIONALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL DE PERDEDOR A LOS LOGOS*/}
-
-            <ImageFilter
-              image={game?.teams[0]?.logo_url}
-              alt={game?.teams[0]?.name}
-              className={styles.teamLogo}
-              filter={"grayscale"}
-              style={{ opacity: 0.4 }}
-            />
+            {game?.result?.winningTeam === game?.teams[0].name ? (
+              <ImageFilter
+                image={game?.teams[0]?.logo_url}
+                alt={game?.teams[0]?.name}
+                className={styles.teamLogo}
+              />
+            ) : (
+              <ImageFilter
+                image={game?.teams[0]?.logo_url}
+                alt={game?.teams[0]?.name}
+                className={styles.teamLogo}
+                filter={"grayscale"}
+                style={{ opacity: 0.4 }}
+              />
+            )}
           </Box>
           <Box sx={{ marginRight: "10px", textAlign: "center" }}>
             {game?.teams[0]?.shortName}
@@ -157,11 +154,21 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
           </Box>
           <Box sx={{ marginLeft: "10px" }}>{game?.teams[1]?.shortName}</Box>
           <Box className={styles.teamLogoWrapper}>
-            <ImageFilter
-              image={game?.teams[1]?.logo_url}
-              alt={game?.teams[1]?.name}
-              className={styles.teamLogo}
-            />
+            {game?.result?.winningTeam === game?.teams[1].name ? (
+              <ImageFilter
+                image={game?.teams[1]?.logo_url}
+                alt={game?.teams[1]?.name}
+                className={styles.teamLogo}
+              />
+            ) : (
+              <ImageFilter
+                image={game?.teams[1]?.logo_url}
+                alt={game?.teams[1]?.name}
+                className={styles.teamLogo}
+                filter={"grayscale"}
+                style={{ opacity: 0.4 }}
+              />
+            )}
           </Box>
         </Box>
       </Box>
@@ -195,7 +202,9 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
             margin: "10px",
           }}
         >
-          Points: 3
+          {game?.result?.winningType !== ""
+            ? `${gamePredictions[0]?.points} Puntos`
+            : "Penalties"}
         </Typography>
       </Box>
     </Card>

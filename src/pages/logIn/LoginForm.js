@@ -15,6 +15,8 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../../../redux/reducers/userInfo";
 import { validateInput } from "../../../utils/functions";
+import { setFirstLogin } from "../../../redux/reducers/firstLogin";
+
 
 export const LoginForm = () => {
   const userInfo = useSelector((state) => state.userInfo);
@@ -50,8 +52,9 @@ export const LoginForm = () => {
             country: "",
           })
         );
-        toast.success("Successfully Logged In !");
-        router.push("http://localhost:3000/home");
+        dispatch(setFirstLogin(false));
+        toast.success("You have created an account, Please login to continue!");
+        router.push("http://localhost:3000");
       } catch (error) {
         console.log(error);
         toast.error("Error, please try again !");

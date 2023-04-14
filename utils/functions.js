@@ -44,8 +44,8 @@ export const signUpGoogle = async (auth, dispatch) => {
       console.log("USERM", userMongoDB);
       if (userMongoDB.length > 0) {
         dispatch(setFirstLogin(false));
-        toast.success("Successfully Logged In !");
-        window.location.href = "http://localhost:3000/home";
+        toast.success("Please verify your phone number!");
+        window.location.href = "http://localhost:3000/logIn/TwoFactorAuth";
       } else {
         dispatch(setFirstLogin(true));
         dispatch(

@@ -16,7 +16,9 @@ import { logOut } from "../../utils/functions";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useSelector } from "react-redux";
+
 import Link from "next/link";
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: "space-between",
@@ -24,7 +26,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const Navbar = () => {
   const router = useRouter();
-  const intl = useIntl()
+  const intl = useIntl();
 
   const [user, setUser] = useState("");
   const [uid, setUid] = useState("");
@@ -33,15 +35,18 @@ const Navbar = () => {
   const open = Boolean(anchorEl);
   const userInfo = useSelector((state) => state.userInfo);
   const [username, setUserName] = useState("");
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
     if (userInfo) {
       setUserName(userInfo.username);
+
     }
   }, [userInfo]);
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
+    setIsLogged(localStorage.getItem("isLogged"));
   }, []);
 
   useEffect(() => {
@@ -64,8 +69,9 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     localStorage.removeItem("uid");
+    localStorage.removeItem("isLogged");
     setUser("");
     logOut(auth);
   };
@@ -74,21 +80,33 @@ const Navbar = () => {
     <>
       <AppBar position="static">
         <StyledToolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={() => setDrawerOpen(true)}
-          >
-            {user && <MenuIcon />}
-          </IconButton>
-          <Link href="/home">
-          <Button  sx={{ color:"inherit", justifyContent:"center"}}>GAMBET</Button>
-          </Link>
+          {isLogged ? (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setDrawerOpen(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setDrawerOpen(false)}
+            >
+            </IconButton>
+          )}
+          <Button sx={{ color: "inherit", justifyContent: "center" }}>
+            GAMBET
+          </Button>
           <div>
-            {user && (
+            {isLogged && (
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -97,7 +115,10 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                 <Avatar alt="User avatar" />
+                {/* <Typography variant="subtitle1">
+                  <div> {username} &nbsp;&nbsp;&nbsp; </div>
+                </Typography> */}
+                <Avatar alt="User avatar" />
               </IconButton>
             )}
 
@@ -116,30 +137,23 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              {user && (
-                <MenuItem
-                  onClick={() => {
-                    handleClose;
-                    router.push("/user/profilePage");
-                  }}
-                >
-
-                 {intl.formatMessage({ id: "profile" })}
-                </MenuItem>
-              )}
-              
-
-              {user && (
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    handleLogOut();
-                    router.push("/");
-                  }}
-                >
-                   {intl.formatMessage({ id: "logout" })}
-                </MenuItem>
-              )}
+              <MenuItem
+                onClick={() => {
+                  handleClose;
+                  router.push("/user/profilePage");
+                }}
+              >
+                {intl.formatMessage({ id: "profile" })}
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleLogOut();
+                  router.push("/");
+                }}
+              >
+                {intl.formatMessage({ id: "logout" })}
+              </MenuItem>
             </Menu>
           </div>
         </StyledToolbar>
