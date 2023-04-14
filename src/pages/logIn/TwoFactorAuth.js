@@ -10,48 +10,54 @@ const TwoFactorAuth = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [secret, setSecret] = useState("");
   const [QRCodeImage, setQRCodeImage] = useState("");
+  const [firstQR, setFirstQR] = useState(true);
 
-const generateQRCode = async (secret) => {
-  console.log(secret, "secret")
-  const otpauthUrl = `otpauth://totp/Gambet?secret=${secret}`;
-  console.log(otpauthUrl, "otpauthUrl")
-  try {
-    const imageUrl = await qrcode.toDataURL(otpauthUrl)
-    setQRCodeImage(imageUrl);
-  } catch (err) {
-    console.error(err);
-  }
-};
+  const generateQRCode = async (secret) => {
+    console.log(secret, "secret");
+    const otpauthUrl = `otpauth://totp/Gambet?secret=${secret}`;
+    console.log(otpauthUrl, "otpauthUrl");
+    try {
+      const imageUrl = await qrcode.toDataURL(otpauthUrl);
+      setQRCodeImage(imageUrl);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const uid = localStorage.getItem("uid");
-  try {
-    const response = await axios.post(
-      "http://localhost:3001/api/users/2FA/verify",
-      {
-        uid: uid,
-        token: verificationCode,
-      }
-    );
-    toast.success(response.data.message);
-    window.location.href = "http://localhost:3000/home";
-  } catch (error) {
-    console.error(error);
-    toast.error(error.response.data.message);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const uid = localStorage.getItem("uid");
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/users/2FA/verify",
+        {
+          uid: uid,
+          token: verificationCode,
+        }
+      );
+      toast.success(response.data.message);
+      window.location.href = "http://localhost:3000/home";
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response.data.message);
+    }
+  };
 
   const handleGenerateVerificationCode = async (e) => {
     e.preventDefault();
     try {
-      const uid = localStorage.getItem("uid");
-      const res = await axios.post(
-        `http://localhost:3001/api/users/twofactor/${uid}`
-      );
-      setSecret(res.data.secret); // Guardamos el nuevo secreto generado en el backend
-      toast.success("Verification code generated successfully!");
-      generateQRCode(res.data.secret);
+      if (firstQR) {
+        const uid = localStorage.getItem("uid");
+        const res = await axios.post(
+          `http://localhost:3001/api/users/twofactor/${uid}`
+        );
+        setSecret(res.data.secret); // Guardamos el nuevo secreto generado en el backend
+        toast.success("Verification code generated successfully!");
+        generateQRCode(res.data.secret);
+        setFirstQR(false);
+      } else {
+        toast.error("Verification code already generated");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to generate verification code. Please try again.");

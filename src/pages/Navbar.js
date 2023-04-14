@@ -24,7 +24,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const Navbar = () => {
   const router = useRouter();
-  const intl = useIntl()
+  const intl = useIntl();
 
   const [user, setUser] = useState("");
   const [uid, setUid] = useState("");
@@ -50,13 +50,14 @@ const Navbar = () => {
           .get(`http://localhost:3001/api/users/search/${uid}`)
           .then((res) => {
             setUser(res.data);
+            console.log("user nuevo", user);
           })
           .catch((err) => {
             console.log(err);
           })
       : null;
   }, [uid]);
-
+  console.log("user nuevo fuera", user);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -64,9 +65,11 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
+    const uid = localStorage.getItem("uid");
     localStorage.removeItem("uid");
     setUser("");
+    await axios.post(`http://localhost:3001/api/users/twofactor/erase/${uid}`);
     logOut(auth);
   };
 
@@ -82,11 +85,13 @@ const Navbar = () => {
             sx={{ mr: 2 }}
             onClick={() => setDrawerOpen(true)}
           >
-            {user && <MenuIcon />}
+            {user.twoFactorSecret && <MenuIcon />}
           </IconButton>
-          <Button  sx={{ color:"inherit", justifyContent:"center"}}>GAMBET</Button>
+          <Button sx={{ color: "inherit", justifyContent: "center" }}>
+            GAMBET
+          </Button>
           <div>
-            {user && (
+            {user.twoFactorSecret && (
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -99,7 +104,6 @@ const Navbar = () => {
                   <div> {username} &nbsp;&nbsp;&nbsp; </div>
                 </Typography> */}
                 <Avatar alt="User avatar" />
-
               </IconButton>
             )}
 
@@ -118,20 +122,18 @@ const Navbar = () => {
               open={open}
               onClose={handleClose}
             >
-              {user && (
+              {user.twoFactorSecret && (
                 <MenuItem
                   onClick={() => {
                     handleClose;
                     router.push("/user/profilePage");
                   }}
                 >
-
-                 {intl.formatMessage({ id: "profile" })}
+                  {intl.formatMessage({ id: "profile" })}
                 </MenuItem>
               )}
-              
 
-              {user && (
+              {user.twoFactorSecret && (
                 <MenuItem
                   onClick={() => {
                     handleClose();
@@ -139,7 +141,7 @@ const Navbar = () => {
                     router.push("/");
                   }}
                 >
-                   {intl.formatMessage({ id: "logout" })}
+                  {intl.formatMessage({ id: "logout" })}
                 </MenuItem>
               )}
             </Menu>
