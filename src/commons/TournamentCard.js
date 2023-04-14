@@ -36,6 +36,8 @@ const TournamentCard = ({ tournament, user }) => {
   const intl = useIntl();
 
   useEffect(() => {
+   console.log("CHEQUEO", tournament.users.includes(user._id));
+
     if (tournament.users.includes(user._id)) {
       setInscript(true);
     } else {
@@ -44,24 +46,26 @@ const TournamentCard = ({ tournament, user }) => {
   }, []);
 
   const handleAddusertoTournament = async () => {
-    try{
+    try {
       const response = await axios.put(
-        `http://localhost:3001/api/tournaments/${tournament._id}/addme`, {userId: user._id, userUid: user.uid});
-    console.log(response.data);
-    toast.success("You have been registered in the tournament!");
-    router.push(`/tournamentHome/${tournament._id}`);
-  } catch(error) {
-    console.log(error)
-  }
+        `http://localhost:3001/api/tournaments/${tournament._id}/addme`,
+        { userId: user._id, userUid: user.uid }
+      );
+      console.log(response.data);
+      toast.success("You have been registered in the tournament!");
+      router.push(`/tournamentHome/${tournament._id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-    useEffect(() => {
-      if (tournament.users.includes(user._id)) {
-        setInscript(true);
-      } else {
-        setInscript(false);
-      }
-    }, [handleAddusertoTournament]);
+  useEffect(() => {
+    if (tournament.users.includes(user._id)) {
+      setInscript(true);
+    } else {
+      setInscript(false);
+    }
+  }, [handleAddusertoTournament]);
 
   return (
     <StyledCard
@@ -97,12 +101,13 @@ const TournamentCard = ({ tournament, user }) => {
           gutterBottom
           sx={{ fontWeight: "bold" }}
         >
-          Stage: {tournament.stage}
+          {intl.formatMessage({ id: "stage" })}
+          {tournament.stage}
         </Typography>
         <Divider sx={{ my: 2 }} />
         {inscript === false ? (
-          <Button onClick={()=>handleAddusertoTournament()}>
-            {intl.formatMessage({ id: "register" })} 
+          <Button onClick={() => handleAddusertoTournament()}>
+            {intl.formatMessage({ id: "register" })}
             {/* Sign up tournament */}
           </Button>
         ) : (
@@ -110,7 +115,7 @@ const TournamentCard = ({ tournament, user }) => {
             style={{ textDecoration: "none" }}
             onClick={() => router.push(`/tournamentHome/${tournament._id}`)}
           >
-            View Tournament
+            {intl.formatMessage({ id: "tournament" })}
           </Button>
         )}
       </StyledCardContent>

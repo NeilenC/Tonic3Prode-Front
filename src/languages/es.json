@@ -1,9 +1,17 @@
 {
-    "welcome": "Bienvenidos",
-    "matches": "Futuros partidos",
+    "welcome": "Bienvenidos a Gambet",
+    "signup": "Registrarse con Google",
+    "tournament": "Ver Torneo",
+    "stage": "Etapa:",
+    "savepred":"Guardar Predicciones",
+
     "predictions": "predicciones",
     "prizes" : "premios",
     "ranking": "ranking",
+    "puesto": "Position",
+    "points": "Points", 
+    "search":"Buscar usuario",
+
 
     "fixture" : "Fixtures",
     "torneo": "Torneos",

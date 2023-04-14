@@ -1,8 +1,14 @@
 {
-    "welcome": "Welcome",
-    "matches": "Future matches",
-    
+    "welcome": "Welcome to Gambet",
+    "signup": "SignUp with Google",
+    "tournament": "View Tournament",
+    "stage": "Stage:",
     "ranking": "ranking",
+    "savepred":"Save Predictions",
+    "puesto": "Puesto",
+    "points": "Puntos",
+"search":"Search User",
+
     "predictions": "predictions",
     "prizes" : "Prizes",
     "fixture" : "Fixtures",

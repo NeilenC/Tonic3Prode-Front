@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
+import { useIntl } from "react-intl";
 import Countdown from "./Countdown";
 import UserResultCard from "@/commons/UserResultCard";
 import {
@@ -31,6 +32,7 @@ const Predictions = () => {
   const [scores, setScores] = useState({});
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
+  const intl = useIntl();
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [dates, setDate] = useState([]);
   const [formatedDate, setFormatedDate] = useState([]);
@@ -280,7 +282,9 @@ const Predictions = () => {
               margin: "20px 0 20px 0",
             }}
           >
-            Save Predictions
+
+               {intl.formatMessage({ id: "savepred" })}
+
           </Button>
           <Box onSubmit={updatePredictions}>
             {games?.map((game, i) => {

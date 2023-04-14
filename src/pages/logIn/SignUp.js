@@ -1,3 +1,4 @@
+
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { signUpGoogle } from "../../../utils/functions";
@@ -5,13 +6,21 @@ import { auth } from "../../../utils/firebaseConfig";
 import GoogleIcon from "@mui/icons-material/Google";
 import { LoginForm } from "./LoginForm";
 import { useSelector, useDispatch } from "react-redux";
+
+import { useIntl } from "react-intl";
+
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 
 export const SignUp = () => {
   const userInfo = useSelector((state) => state.userInfo);
   const firstLogin = useSelector((state) => state.firstLogin);
   const dispatch = useDispatch();
+
+  const intl = useIntl();
+
 
   const handleSignUpGoogle = () => {
     signUpGoogle(auth, dispatch);
@@ -37,7 +46,7 @@ export const SignUp = () => {
               }}
             >
               <Typography component="h1" variant="h5" sx={{ mt: 5 }}>
-                Welcome to gambet
+              {intl.formatMessage({ id: "welcome" })}
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
                 <Button
@@ -46,7 +55,8 @@ export const SignUp = () => {
                   onClick={handleSignUpGoogle}
                   variant="outlined"
                 >
-                  <GoogleIcon /> SignUp with Google
+                  <GoogleIcon />
+                  {intl.formatMessage({ id: "signup" })}
                 </Button>
               </Box>
             </Box>

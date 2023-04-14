@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "./Navbar";
 import { onPageLoad } from "../../utils/verificationIP";
 import UserProvider from "../../redux/UserProvider"; // Setea en Redux los datos del usuario
+import LayOut from "@/commons/LayOut";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -16,8 +17,9 @@ export default function App({ Component, pageProps }) {
       <LanguageProvider>
         <Provider store={store}>
           <UserProvider> 
-            <Navbar />
+            <LayOut>
             <Component {...pageProps} />
+            </LayOut>
           </UserProvider>
         </Provider>
       </LanguageProvider>

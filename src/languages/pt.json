@@ -1,7 +1,11 @@
 {
-    "welcome": "Bem-vindo",
-    "matches": "Partidas futuras",
-    
+    "welcome": "Bem vindo ao Gambet",
+    "signup":"Inscreva-se com o Google",
+    "tournament": "Ver Torneio",
+    "stage": "Estágio:",
+    "savepred":"Salvar previsões",
+    "puesto": "Posição",
+    "points": "Pontos",
     "ranking": "classificação",
     "predictions": "previsõess",
     "prizes" : "prêmios",
@@ -9,6 +13,7 @@
     "torneo": "Torneio",
     "panel": "Painel de administração",
     "register": "Inscreva-se no torneio",
+    "search":"Pesquisar usuário",
 
     
     "profile": "Perfil",
@@ -32,7 +37,7 @@
     "info": "Informações gerais",
     "notifications" :"Quero receber notificações",
     "save":"Guardar mudanças",
-    "cell": "Número de celular",
+    "cell": "Número de telefone",
     "address": "Endereço",
     "username": "Nome de usuário",
     "language": "Mudar idioma",
