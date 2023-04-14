@@ -24,13 +24,13 @@ const tutorialAdminEspañol = () => {
            borderRadius: 4,
            boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.2)",
            p: 2,
-           mb:4
+           
          }}
        >
          <Typography variant="h6" align="flex-start">
          Tutorial administrador
          </Typography> <br />
-         1ª Crear torneos:<br />
+         1º Crear torneos:<br />
 El administrador tiene a disposición la sección de creación de torneos, en la que seleccionará la fecha en la que inicia y culmina el mismo<br />
 Seleccionará los equipos que participarán en el torneo <br />
 Creará los partidos entre equipos<br />
@@ -38,19 +38,19 @@ Creará los partidos entre equipos<br />
 
 
 
-2ª Resultados:<br />
+2º Resultados:<br />
 Teniendo acceso a los resultados del torneo, cargará los mismos en el panel de RESULTS<br />
 Se tendrán en cuenta las etapas en las que se encuentra el torneo <br />
 <br />
 
 
-3ª Premios:<br />
-Tendrá la posibilidad de cargar los premios correspondientes a los futuros ganadores del 1ª, 2ª y 3ª puesto<br />
+3º Premios:<br />
+Tendrá la posibilidad de cargar los premios correspondientes a los futuros ganadores del 1º, 2º y 3º puesto<br />
 Tendrá la responsabilidad de contactarse con los ganadores de los debidos premios al momento siguiente de obtener los resultados una vez culminado dicho torneo <br />
 <br />
 
 
-4ª Edición:<br />
+4º Edición:<br />
 Puede promoverlos edición de usuarios a administrador<br />
 Puede Eliminar usuarios existentes<br />
 Puede editar equipos<br />
