@@ -54,7 +54,7 @@ export const LoginForm = () => {
         );
         dispatch(setFirstLogin(false));
         toast.success("You have created an account, Please login to continue!");
-        router.push("http://localhost:3000");
+        router.push("http://localhost:3000/logIn/TwoFactorAuth");
       } catch (error) {
         console.log(error);
         toast.error("Error, please try again !");
