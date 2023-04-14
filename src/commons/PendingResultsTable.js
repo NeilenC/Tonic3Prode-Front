@@ -134,6 +134,7 @@ const PendingResultsTable = ({ data }) => {
       .then((response) => {
         localStorage.removeItem("myTableData");
         setNewData({});
+        window.location.href = `http://localhost:3000/admin/tournaments/${id}`
       })
       .catch((error) => {
         console.log(error);

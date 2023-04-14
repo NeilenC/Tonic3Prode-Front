@@ -93,8 +93,6 @@ const Predictions = () => {
     }
   }, [id]);
 
- 
-
   // SE AGREGA EL SCORE EN EL LS
   useEffect(() => {
     localStorage.setItem("scores", JSON.stringify(scores));
@@ -301,7 +299,7 @@ const Predictions = () => {
             alignItems: "center",
           }}
         >
-          <FormControl fullWidth>
+          <FormControl sx={{width:"250px", mb:"25px"}}>
             <InputLabel id="select-option-label">Stage</InputLabel>
             <Select
               labelId="select-option-label"
@@ -318,20 +316,24 @@ const Predictions = () => {
             </Select>
           </FormControl>
           <Box onSubmit={updatePredictions}>
-            {closedGames?.map((game, i) => {
-              return (
-                <div key={game.id}>
-                  <UserResultCard
-                    game={game}
-                    handleScoreChange={handleScoreChange}
-                    user={user}
-                    id={id}
-                    currentDate={formatedDate}
-                    order={i}
-                  />
-                </div>
-              );
-            })}
+            {closedGames
+              .filter(
+                (game) => selectedOption == 0 || game.stage == selectedOption
+              )
+              .map((game, i) => {
+                return (
+                  <div key={game.id}>
+                    <UserResultCard
+                      game={game}
+                      handleScoreChange={handleScoreChange}
+                      user={user}
+                      id={id}
+                      currentDate={formatedDate}
+                      order={i}
+                    />
+                  </div>
+                );
+              })}
           </Box>
         </Box>
       )}

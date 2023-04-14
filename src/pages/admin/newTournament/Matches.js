@@ -174,10 +174,10 @@ const Matches = () => {
                   {match.time}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
-                  {isMobile ? match.homeTeam.shortName : match.homeTeam.name}
+                  {isMobile ? match?.homeTeam?.shortName : match?.homeTeam?.name}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
-                  {isMobile ? match.awayTeam.shortName : match.awayTeam.name}
+                  {isMobile ? match?.awayTeam?.shortName : match?.awayTeam?.name}
                 </TableCell>
                 <TableCell
                   sx={{
