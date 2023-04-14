@@ -119,8 +119,6 @@ const Users = () => {
                 <TableCell>Country</TableCell>
                 <TableCell>Cellphone</TableCell>
                 <TableCell>Torneos</TableCell>
-                <TableCell>Id</TableCell>
-                <TableCell>UID</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -143,8 +141,6 @@ const Users = () => {
                   <TableCell>{userData.country}</TableCell>
                   <TableCell>{userData.cellphone}</TableCell>
                   <TableCell>{userData.tournaments}</TableCell>
-                  <TableCell>{userData._id}</TableCell>
-                  <TableCell>{userData.uid}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

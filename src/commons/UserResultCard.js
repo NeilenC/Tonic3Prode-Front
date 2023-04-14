@@ -12,7 +12,6 @@ import styles from "../styles/commons/predictionCards.module.css";
 import ImageFilter from "react-image-filter/lib/ImageFilter";
 
 const UserResultCard = ({ game, user, id, currentDate, order }) => {
-
   const [userPredictions, setUserPredictios] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -39,8 +38,8 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
   const gamePredictions = userPredictions?.filter(
     (prediction) => prediction.gameId._id === game._id
   );
-  
-console.log(game)
+
+  console.log(game);
 
   return (
     <Card
@@ -73,6 +72,14 @@ console.log(game)
           {currentDate[order]}
         </Typography>
       </Box>
+      <Typography
+        sx={{
+          color: "black",
+          mt: "10px",
+        }}
+      >
+        Your prediction:
+      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -87,17 +94,21 @@ console.log(game)
           sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
         >
           <Box className={styles.teamLogoWrapper}>
-            { game?.result?.winningTeam === game?.teams[0].name ? <ImageFilter
-              image={game?.teams[0]?.logo_url}
-              alt={game?.teams[0]?.name}
-              className={styles.teamLogo}
-            /> : <ImageFilter
-            image={game?.teams[0]?.logo_url}
-            alt={game?.teams[0]?.name}
-            className={styles.teamLogo}
-            filter={"grayscale"}
-            style={{ opacity: 0.4 }}
-          />}
+            {game?.result?.winningTeam === game?.teams[0].name ? (
+              <ImageFilter
+                image={game?.teams[0]?.logo_url}
+                alt={game?.teams[0]?.name}
+                className={styles.teamLogo}
+              />
+            ) : (
+              <ImageFilter
+                image={game?.teams[0]?.logo_url}
+                alt={game?.teams[0]?.name}
+                className={styles.teamLogo}
+                filter={"grayscale"}
+                style={{ opacity: 0.4 }}
+              />
+            )}
           </Box>
           <Box sx={{ marginRight: "10px", textAlign: "center" }}>
             {game?.teams[0]?.shortName}
@@ -143,17 +154,21 @@ console.log(game)
           </Box>
           <Box sx={{ marginLeft: "10px" }}>{game?.teams[1]?.shortName}</Box>
           <Box className={styles.teamLogoWrapper}>
-            { game?.result?.winningTeam === game?.teams[1].name ? <ImageFilter
-              image={game?.teams[1]?.logo_url}
-              alt={game?.teams[1]?.name}
-              className={styles.teamLogo}
-            /> : <ImageFilter
-            image={game?.teams[1]?.logo_url}
-            alt={game?.teams[1]?.name}
-            className={styles.teamLogo}
-            filter={"grayscale"}
-            style={{ opacity: 0.4 }}
-          />}
+            {game?.result?.winningTeam === game?.teams[1].name ? (
+              <ImageFilter
+                image={game?.teams[1]?.logo_url}
+                alt={game?.teams[1]?.name}
+                className={styles.teamLogo}
+              />
+            ) : (
+              <ImageFilter
+                image={game?.teams[1]?.logo_url}
+                alt={game?.teams[1]?.name}
+                className={styles.teamLogo}
+                filter={"grayscale"}
+                style={{ opacity: 0.4 }}
+              />
+            )}
           </Box>
         </Box>
       </Box>
@@ -187,7 +202,9 @@ console.log(game)
             margin: "10px",
           }}
         >
-          {game?.result?.winningType !== "" ? `${gamePredictions[0]?.points} Puntos` : "Penalties"}
+          {game?.result?.winningType !== ""
+            ? `${gamePredictions[0]?.points} Puntos`
+            : "Penalties"}
         </Typography>
       </Box>
     </Card>
