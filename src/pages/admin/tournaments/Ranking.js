@@ -3,16 +3,6 @@ import { useRouter } from "next/router";
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableRow, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-
-/* {
-  "country": "Argentina",
-  "userId": {
-      "username": "Rosicontasti",
-      "country": "Argentina",
-  },
-  "predictions": [],
-} */
-
 const Ranking = () => {
   const [rankings, setRankings] = useState([]);
   const [filter, setFilter] = useState('');
@@ -26,7 +16,14 @@ const Ranking = () => {
     console.log("uid", uid)
     async function getTournamentRankings() {
       const response = await axios.get(`http://localhost:3001/api/rankings/search/${tournamentId}/${uid}`);
-      setRankings(response.data);
+      const updatedRankings = response.data.map(ranking => {
+        const score = ranking.predictions.reduce((acc, prediction) => acc + prediction.points, 0);
+        return {
+          ...ranking,
+          score,
+        };
+      });
+      setRankings(updatedRankings);
     }
     getTournamentRankings();
   }, []);
