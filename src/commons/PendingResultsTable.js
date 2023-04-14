@@ -134,6 +134,17 @@ const PendingResultsTable = ({ data }) => {
         myData: myData,
         uid: uid,
       })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    //update de rankings
+    // update de resultados  
+    await axios
+      .put(`http://localhost:3001/api/games/admin/ranking/${id}`, {
+        myData: myData,
+        uid: uid,
+      })
       .then((response) => {
         localStorage.removeItem("myTableData");
         setNewData({});
