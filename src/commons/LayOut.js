@@ -12,7 +12,7 @@ const LayOut = ({children}) => {
       </Head>
       <Navbar />
       {children}
-      <Footer/>
+      {/* <Footer/> */}
     </>
   )
 }

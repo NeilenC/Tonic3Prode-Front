@@ -1,52 +1,38 @@
 {
-    "welcome": "Bienvenidos a Gambet",
-    "signup": "Registrarse con Google",
-    "tournament": "Ver Torneo",
-    "stage": "Etapa:",
-    "savepred":"Guardar Predicciones",
-
-    "predictions": "predicciones",
-    "prizes" : "premios",
-    "ranking": "ranking",
-    "puesto": "Position",
-    "points": "Points", 
-    "search":"Buscar usuario",
-
-
-    "fixture" : "Fixtures",
-    "torneo": "Torneos",
-    "panel": "Panel Administrador",
-    "register": "Inscríbete en el torneo",
-    
-    "profile": "Perfil",
-    "logout": "Cerrar sesión",
-    
-    "state": "Estado",
-    "finish": "Finalizado",
-    "inactive": "Inactivo",
-    "active": "Activo",
-    
-    "type": "Tipo",
-    "winner": "Ganador",
-    "points": "Puntos",
-    "points2": "Puntos en la fase de grupos",
-    "members": "Miembros",
-    "teams": "Equipos",
-    "countries": "País",
-    
-    "data":"Modificar datos",
-    "notifications" :"Deseo recibir notificaciones",
-    "save":"Guardar cambios",
-    "cell": "Telefono celular",
-    "address": "Dirección",
-    "username": "Nombre usuario",
-    "language": "Cambiar idioma",
-    "modify": "Cambiar datos de usuario",
-    "back": "Volver"
-
-
-
-
-
-    
-    }
+  "welcome": "Bienvenidos a Gambet",
+  "signup": "Registrarse con Google",
+  "tournament": "Ver Torneo",
+  "stage": "Etapa:",
+  "savepred": "Guardar Predicciones",
+  "predictions": "predicciones",
+  "prizes": "premios",
+  "ranking": "ranking",
+  "puesto": "Posición",
+  "search": "Buscar usuario",
+  "fixture": "Fixtures",
+  "torneo": "Torneos",
+  "panel": "Panel Administrador",
+  "register": "Inscríbete en el torneo",
+  "profile": "Perfil",
+  "logout": "Cerrar sesión",
+  "state": "Estado",
+  "finish": "Finalizado",
+  "inactive": "Inactivo",
+  "active": "Activo",
+  "type": "Tipo",
+  "winner": "Ganador",
+  "points": "Puntos",
+  "points2": "Puntos en la fase de grupos",
+  "members": "Miembros",
+  "teams": "Equipos",
+  "countries": "País",
+  "data": "Modificar datos de usuario",
+  "notifications": "Deseo recibir notificaciones",
+  "save": "Guardar cambios",
+  "cell": "Número de celular",
+  "address": "Dirección",
+  "username": "Nombre de usuario",
+  "language": "Cambiar idioma",
+  "modify": "Cambiar datos de usuario",
+  "back": "Volver"
+}

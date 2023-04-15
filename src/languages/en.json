@@ -6,26 +6,20 @@
     "ranking": "ranking",
     "savepred":"Save Predictions",
     "puesto": "Puesto",
-    "points": "Puntos",
-"search":"Search User",
-
+    "search":"Search User",
     "predictions": "predictions",
     "prizes" : "Prizes",
     "fixture" : "Fixtures",
     "torneo": "Tournaments",
     "panel": "Admin panel",
     "register": "Sign Up Tournament",
-
-    
     "profile": "Profile",
     "config": "Configuration",
     "logout": "Logout",
-    
     "state": "Status",
     "finish": "Finished",
     "inactive": "Inactive",
     "active": "Active",
-    
     "type": "Type",
     "winner": "Winner",
     "points": "Points",
@@ -33,17 +27,13 @@
     "members": "Members",
     "teams": "Teams",
     "countries": "Country",
-
     "data":"Modify user data",
     "notifications" :"I want to receive notifications",
     "save":"Save changes",
-    "cell": "Username",
+    "cell": "Cellphone",
     "address": "Address",
     "username": "Username",
     "language": "Change language",
     "modify": "Change user data",
     "back": "Back"
-
-
-
-    }
+}
