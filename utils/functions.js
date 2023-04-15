@@ -15,6 +15,7 @@ export const signUpGoogle = async (auth, dispatch) => {
     });
 
     console.log("USERF", userFirebase);
+
     const users = await axios.get("http://localhost:3001/api/users");
     localStorage.setItem("uid", userFirebase.uid);
 
@@ -24,11 +25,17 @@ export const signUpGoogle = async (auth, dispatch) => {
     // Obtener el país del usuario a partir de su IP
     const country = await getGeolocationByIp(ip);
 
-       console.log("COUNTRY", country);
+    console.log("COUNTRY", country);
 
     // Validar que el usuario esté en un país permitido
-    if (country === "Argentina" || country === "Brazil" || country === "United States") {
-      toast.success(`Congratulations, since your are from ${country}, you can log into our app!`);
+    if (
+      country === "Argentina" ||
+      country === "Brazil" ||
+      country === "United States"
+    ) {
+      toast.success(
+        `Congratulations, since your are from ${country}, you can log into our app!`
+      );
       const users = await axios.get("http://localhost:3001/api/users");
       localStorage.setItem("uid", userFirebase.uid);
       dispatch(
@@ -42,6 +49,7 @@ export const signUpGoogle = async (auth, dispatch) => {
         (user) => user.uid === userFirebase.uid
       );
       console.log("USERM", userMongoDB);
+
       if (userMongoDB.length > 0) {
         dispatch(setFirstLogin(false));
         toast.success("Please continue with the 2FA!");
@@ -61,13 +69,14 @@ export const signUpGoogle = async (auth, dispatch) => {
       }
     } else {
       // Si el usuario no está en un país permitido, mostrar un mensaje de error
-      toast.error("Sorry, this service is only available in Argentina, Brazil or United States");
+      toast.error(
+        "Sorry, this service is only available in Argentina, Brazil or United States"
+      );
     }
   } catch (error) {
     console.log(error);
   }
-}
-
+};
 
 export const logOut = (auth) => {
   signOut(auth);
@@ -80,7 +89,7 @@ export const changeHour = (hour) => {
 };
 
 export const validateInput = (input) => {
-  const regex = /^[a-zA-Z0-9\s]+$/
+  const regex = /^[a-zA-Z0-9\s]+$/;
   const specialChars = /[!@#$%^&()_+\-=[]{};':"\|,.<>\/?]/;
-  return regex.test(input) && !specialChars.test(input)
+  return regex.test(input) && !specialChars.test(input);
 };
