@@ -5,6 +5,10 @@ import {
   CssBaseline,
   TextField,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import InputMask from "react-input-mask";
 import { useRouter } from "next/router";
@@ -27,6 +31,7 @@ export const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
   const [cellphone, setCellphone] = useState("");
+  const [gender, setGender] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -44,13 +49,13 @@ export const LoginForm = () => {
           address: address,
           cellphone: cellphone,
           country: countryIP,
+          gender: gender
         });
         dispatch(
           setUserInfo({
             email: "",
             fullName: "",
-            country: "",
-            
+            country: "",        
           })
         );
         dispatch(setFirstLogin(false));
@@ -133,6 +138,20 @@ export const LoginForm = () => {
               defaultValue={lastNameGoogle}
               disabled={true}
             />
+            <FormControl margin="normal" required={true} fullWidth>
+              <InputLabel id="gender-label">Gender</InputLabel>
+              <Select
+                labelId="gender-label"
+                id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                autoComplete="gender"
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               margin="normal"
               required={true}
