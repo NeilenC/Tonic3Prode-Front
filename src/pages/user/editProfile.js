@@ -16,6 +16,7 @@ const Profile = () => {
   const [address, setAddress] = useState("");
   const [username, setUserName] = useState("");
   const [uid, setUid] = useState("");
+  const [photoURL, setPhoto] = useState("");
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
@@ -26,8 +27,12 @@ const Profile = () => {
       setCellphone(userInfo.cellphone);
       setAddress(userInfo.address);
       setUserName(userInfo.username);
+      setPhoto(userInfo.photoURL);
     }
   }, [userInfo]);
+
+console.log("FOtOURL", userInfo)
+
 
   const handleSave = async () => {
     if (userInfo && validateInput(address) != false) {
@@ -60,6 +65,7 @@ const Profile = () => {
       throw new Error("Invalid input");
     }
   };
+
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -85,10 +91,14 @@ const Profile = () => {
         noValidate
         autoComplete="on"
       >
+
+        FOTO: 
+        <img src={photoURL}/>
+
         <Typography component="h1" variant="h5" color="#454546" marginTop="3%">
           <div> {intl.formatMessage({ id: "data" })}</div>
         </Typography>
-
+         
         <TextField
           mt="5%"
           label={intl.formatMessage({ id: "username" })}

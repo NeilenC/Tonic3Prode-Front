@@ -4,7 +4,7 @@ import { setUserInfo } from './reducers/userInfo';
 
 const UserProvider = ({children}) => {
     const [uid, setUid] = useState("");
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
   
   
     useEffect(() => {
@@ -27,9 +27,11 @@ const UserProvider = ({children}) => {
             address: data.address,
             fullName: `${data.name} ${data.lastName}`,
             email: data.email,
+            photoURL: data.photoURL
           })
-        );
-  
+          );
+          
+          console.log("DATAA=====>", data)
         return data;
       } catch (err) {
        console.log(err);
