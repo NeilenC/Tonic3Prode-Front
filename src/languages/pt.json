@@ -13,26 +13,20 @@
     "torneo": "Torneio",
     "panel": "Painel de administração",
     "register": "Inscreva-se no torneio",
-    "search":"Pesquisar usuário",
-
-    
+    "search":"Pesquisar usuário", 
     "profile": "Perfil",
     "config": "Contexto",
-    "logout": "Sair",
-    
+    "logout": "Sair", 
     "state": "Estado",
     "finish": "Finalizado",
     "inactive": "Parado",
     "active": "Ativo",
-    
     "type": "Tipo",
     "winner": "Ganhador",
-    "points": "Pontos",
     "points2": "Pontos na fase de grupos",
     "members": "Membros",
     "teams": "Equipes",
     "countries": "País",
-    
     "data": "Modificar dados do usuário",
     "info": "Informações gerais",
     "notifications" :"Quero receber notificações",
@@ -43,8 +37,4 @@
     "language": "Mudar idioma",
     "modify": "Alterar dados do usuário",
     "back": "Retornar"
-
-
-
-
     }
