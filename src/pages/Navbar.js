@@ -171,7 +171,7 @@ const Navbar = () => {
             {intl.formatMessage({ id: "torneo" })}
           </MenuItem>
 
-          {user.rol === "admin" && (
+          {user.rol === "admin" || user.rol === "superAdmin" ? (
             <MenuItem
               onClick={() => {
                 setDrawerOpen(false);
@@ -180,7 +180,7 @@ const Navbar = () => {
             >
               {intl.formatMessage({ id: "panel" })}
             </MenuItem>
-          )}
+          ) : null}
         </div>
       </Drawer>
     </>
