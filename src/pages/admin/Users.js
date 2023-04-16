@@ -146,7 +146,6 @@ const Users = () => {
     );
 
     //si es super Admin puede borrar a todos
-    console.log("loggedddd", userLogged.data);
     if (userLogged.data.rol === "superAdmin") {
       try {
         const response = await axios.delete(
@@ -199,8 +198,11 @@ const Users = () => {
     setUsers(updatedUsers);
     setFilteredUsers(updatedUsers);
     setOpenEditModal(false);
-
     const uid = localStorage.getItem("uid");
+    const userLogged = await axios.get(
+      `http://localhost:3001/api/users/search/${uid}`
+    );
+
     if (editedUser.rol === "admin") {
       try {
         const response = await axios.put(
@@ -210,14 +212,16 @@ const Users = () => {
             newAdminUid: editedUser.uid,
           }
         );
-        console.log("subido a admin");
         alert("updated to admin succesfully");
         // toast.success(response.data.message);
       } catch (error) {
         // toast.error(error.response.data.message);
         console.log("error al subir a admin");
       }
-    } else {
+    } else if (
+      editedUser.rol === "user" &&
+      userLogged.data.rol === "superAdmin"
+    ) {
       try {
         const response = await axios.put(
           "http://localhost:3001/api/users/admin/removeFromAdmins",
@@ -226,13 +230,16 @@ const Users = () => {
             newAdminUid: editedUser.uid,
           }
         );
-        console.log("bajado a user");
         alert("removed from admins succesfully");
         // toast.success(response.data.message);
       } catch (error) {
         // toast.error(error.response.data.message);
         console.log("error al bajar a user");
       }
+    } else {
+      alert("you are not allowed to remove a user from admins");
+      setUsers(users);
+      setFilteredUsers(users);
     }
   };
 
