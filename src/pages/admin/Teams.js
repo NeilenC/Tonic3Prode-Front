@@ -48,6 +48,15 @@ const Teams = () => {
     editedTeam.foundation
   );
 
+  const [newTeam, setNewTeam] = useState({});
+  const [selectedNewName, setSelectedNewName] = useState("");
+  const [selectedNewShortName, setSelectedNewShortName] = useState("");
+  const [selectedNewLogoUrl, setSelectedNewLogoUrl] = useState("");
+  const [selectedNewOrigin, setSelectedNewOrigin] = useState("");
+  const [selectedNewDivision, setSelectedNewDivision] = useState("");
+  const [selectedNewFoundation, setSelectedNewFoundation] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
   useEffect(() => {
     localStorage.setItem("teams", JSON.stringify(selected));
   }, [selected]);
@@ -123,9 +132,6 @@ const Teams = () => {
 
   //función para abrir el modal de add team
   const handleAddTeam = () => {
-    // setSelectedRole(user.rol);
-    // setEditingUser(user);
-    // setEditedUser(user);
     setOpenAddModal(true);
   };
 
@@ -200,6 +206,64 @@ const Teams = () => {
       alert("error al eliminar equipos");
     }
   };
+  //funcion para confirmar agregado de nuevo equipo
+  const handleNewTeamSaveChanges = async () => {
+    setFormSubmitted(true);
+
+    const uid = localStorage.getItem("uid");
+    const userLogged = await axios.get(
+      `http://localhost:3001/api/users/search/${uid}`
+    );
+
+    if (
+      selectedNewName &&
+      selectedNewShortName &&
+      selectedNewOrigin &&
+      selectedNewFoundation &&
+      selectedNewLogoUrl &&
+      selectedNewDivision
+    ) {
+      try {
+        const response = await axios.post(
+          `http://localhost:3001/api/teams/admin`,
+          {
+            uid: uid,
+            team: {
+              name: selectedNewName,
+              logo_url: selectedNewLogoUrl,
+              division: selectedNewDivision,
+              foundation: selectedNewFoundation,
+              origin: selectedNewOrigin,
+              shortName: selectedNewShortName,
+            },
+          }
+        );
+        alert("Team succesfully created");
+
+        const updatedTeams = rows.push(response);
+        setRows(updatedTeams);
+        setRowsWithSelection(updatedTeams);
+      } catch (error) {
+        alert("Error while creating the team");
+      }
+
+      setOpenAddModal(false);
+      setFormSubmitted(false);
+      setSelectedNewName("");
+      setSelectedNewShortName("");
+      setSelectedNewOrigin("");
+      setSelectedNewFoundation("");
+      setSelectedNewLogoUrl("");
+      setSelectedNewDivision("");
+    }
+  };
+  console.log("newTeam", newTeam);
+  console.log("selected new name", selectedNewName);
+  console.log("selected new Short name", selectedNewShortName);
+  console.log("selected new origin", selectedNewOrigin);
+  console.log("selected new foundation", selectedNewFoundation);
+  console.log("selected new logo url", selectedNewLogoUrl);
+  console.log("selected new division", selectedNewDivision);
 
   //funcion para guardar cambios de edición
   const handleSaveChanges = async () => {
@@ -251,6 +315,13 @@ const Teams = () => {
   };
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
+    setFormSubmitted(false);
+    setSelectedNewName("");
+    setSelectedNewShortName("");
+    setSelectedNewOrigin("");
+    setSelectedNewFoundation("");
+    setSelectedNewLogoUrl("");
+    setSelectedNewDivision("");
   };
   const handleCloseDeleteAllModal = () => {
     setOpenDeleteAllModal(false);
@@ -305,7 +376,7 @@ const Teams = () => {
             onClick={handleAddTeam}
             sx={{ height: "100%" }}
           >
-            Add new teams
+            Add new team
           </Button>
           <Button
             variant="contained"
@@ -555,13 +626,126 @@ const Teams = () => {
             <Typography variant="h6" sx={{ mb: 2 }}>
               Add new team
             </Typography>
-            <TextField label="Name" fullWidth sx={{ mb: 2 }} />
-            <TextField label="Logo" fullWidth sx={{ mb: 2 }} />
-            <TextField label="Division" fullWidth sx={{ mb: 2 }} />
-            <TextField label="Foundation" fullWidth sx={{ mb: 2 }} />
-            <TextField label="Origin" fullWidth sx={{ mb: 2 }} />
-            <TextField label="Short name" fullWidth sx={{ mb: 2 }} />
-            <Button sx={{ mr: 2 }}>Save Changes</Button>
+            <TextField
+              label="Name"
+              fullWidth
+              sx={{ mb: 2 }}
+              value={selectedNewName}
+              onChange={(e) => {
+                setSelectedNewName(e.target.value);
+                setNewTeam((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }));
+              }}
+              required
+              error={formSubmitted && !selectedNewName}
+              helperText={
+                formSubmitted && !selectedNewName ? "Name is required" : ""
+              }
+            />
+
+            <TextField
+              label="Logo"
+              fullWidth
+              sx={{ mb: 2 }}
+              value={selectedNewLogoUrl}
+              onChange={(e) => {
+                setSelectedNewLogoUrl(e.target.value);
+                setNewTeam((prev) => ({
+                  ...prev,
+                  logo_url: e.target.value,
+                }));
+              }}
+              required
+              error={formSubmitted && !selectedNewLogoUrl}
+              helperText={
+                formSubmitted && !selectedNewLogoUrl
+                  ? "Logo Url is required"
+                  : ""
+              }
+            />
+            <TextField
+              label="Division"
+              fullWidth
+              sx={{ mb: 2 }}
+              value={selectedNewDivision}
+              onChange={(e) => {
+                setSelectedNewDivision(e.target.value);
+                setNewTeam((prev) => ({
+                  ...prev,
+                  division: e.target.value,
+                }));
+              }}
+              required
+              error={formSubmitted && !selectedNewDivision}
+              helperText={
+                formSubmitted && !selectedNewDivision
+                  ? "Division is required"
+                  : ""
+              }
+            />
+            <TextField
+              label="Foundation"
+              fullWidth
+              sx={{ mb: 2 }}
+              value={selectedNewFoundation}
+              onChange={(e) => {
+                setSelectedNewFoundation(e.target.value);
+                setNewTeam((prev) => ({
+                  ...prev,
+                  foundation: e.target.value,
+                }));
+              }}
+              required
+              error={formSubmitted && !selectedNewFoundation}
+              helperText={
+                formSubmitted && !selectedNewFoundation
+                  ? "Division is required"
+                  : ""
+              }
+            />
+            <TextField
+              label="Origin"
+              fullWidth
+              sx={{ mb: 2 }}
+              value={selectedNewOrigin}
+              onChange={(e) => {
+                setSelectedNewOrigin(e.target.value);
+                setNewTeam((prev) => ({
+                  ...prev,
+                  origin: e.target.value,
+                }));
+              }}
+              required
+              error={formSubmitted && !selectedNewOrigin}
+              helperText={
+                formSubmitted && !selectedNewOrigin ? "Origin is required" : ""
+              }
+            />
+            <TextField
+              label="Short name"
+              fullWidth
+              sx={{ mb: 2 }}
+              value={selectedNewShortName}
+              onChange={(e) => {
+                setSelectedNewShortName(e.target.value);
+                setNewTeam((prev) => ({
+                  ...prev,
+                  shortName: e.target.value,
+                }));
+              }}
+              required
+              error={formSubmitted && !selectedNewShortName}
+              helperText={
+                formSubmitted && !selectedNewShortName
+                  ? "Short Name is required"
+                  : ""
+              }
+            />
+            <Button onClick={handleNewTeamSaveChanges} sx={{ mr: 2 }}>
+              Save Changes
+            </Button>
             <Button onClick={handleCloseAddModal}>Back</Button>
           </Box>
         </Modal>
