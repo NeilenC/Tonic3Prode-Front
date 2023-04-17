@@ -40,20 +40,20 @@ const Users = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
+    const uid = localStorage.getItem("uid");
     async function searchUsers() {
-      const uid = localStorage.getItem("uid");
       const response = await axios.get(
         `http://localhost:3001/api/users/${uid}`
       );
       const otherUsers = response.data.filter(
         (eachUser) => eachUser.rol !== "superAdmin" && eachUser.uid !== uid
       );
-      console.log("other", otherUsers);
       setUsers(otherUsers);
-
       setFilteredUsers(otherUsers);
     }
-    searchUsers();
+    if (uid) {
+      searchUsers();
+    }
   }, []);
 
   const handleSearch = (event) => {
