@@ -21,7 +21,6 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -112,23 +111,18 @@ const Users = () => {
             uid: uid,
           }
         );
-        // toast.success(response.data.message);
         const updatedUsers = users.filter(
           (user) => user.uid !== editedUser.uid
         );
         setUsers(updatedUsers);
         setFilteredUsers(updatedUsers);
         setOpenDeleteModal(false);
-        console.log("eliminado correctamente");
-        alert("user successfully eliminated");
+        toast.success("user successfully eliminated");
       } catch (error) {
         console.log("error al eliminar");
-
-        // toast.error(error.response.data.message);
       }
     } else {
-      alert("you are not allowed to eliminate another admin");
-      // toast.error()
+      toast.error("you are not allowed to eliminate another admin");
       console.log("no se puede");
       setOpenDeleteModal(false);
     }
@@ -160,14 +154,13 @@ const Users = () => {
             uid: uid,
           }
         );
-        alert("users successfully eliminated");
+        toast.success("users successfully eliminated");
         console.log("usuarios eliminados");
         setOpenDeleteAllUsersModal(false);
         setUsers([]);
         setFilteredUsers([]);
-        // toast.success(response.data.message);
       } catch (error) {
-        // toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
         console.log("error al eliminar usuarios");
       }
     }
@@ -180,14 +173,13 @@ const Users = () => {
             uid: uid,
           }
         );
-        alert(response.data.message);
         const updatedUsers = users.filter((user) => user.rol !== "user");
         setOpenDeleteAllUsersModal(false);
         setUsers(updatedUsers);
         setFilteredUsers(updatedUsers);
-        // toast.success(response.data.message);
+        toast.success("users successfully eliminated.");
       } catch (error) {
-        // toast.error(error.response.data.message);
+        toast.error("error when trying to eliminate users.");
         console.log("error al eliminar usuarios");
       }
     }
@@ -218,11 +210,9 @@ const Users = () => {
             newAdminUid: editedUser.uid,
           }
         );
-        alert("updated to admin succesfully");
-        // toast.success(response.data.message);
+        toast.success("updated to admin succesfully");
       } catch (error) {
-        // toast.error(error.response.data.message);
-        console.log("error al subir a admin");
+        toast.error("error al subir a admin");
       }
     } else if (
       editedUser.rol === "user" &&
@@ -236,14 +226,12 @@ const Users = () => {
             newAdminUid: editedUser.uid,
           }
         );
-        alert("removed from admins succesfully");
-        // toast.success(response.data.message);
+        toast.success("removed from admins succesfully");
       } catch (error) {
-        // toast.error(error.response.data.message);
-        console.log("error al bajar a user");
+        toast.error("error al bajar a user");
       }
     } else {
-      alert("you are not allowed to remove a user from admins");
+      toast.error("you are not allowed to remove a user from admins");
       setUsers(users);
       setFilteredUsers(users);
     }
@@ -260,7 +248,7 @@ const Users = () => {
   };
   return (
     <>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <Box
         sx={{
           display: "flex",
@@ -298,7 +286,7 @@ const Users = () => {
 
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
-              variant="outlined"
+              variant="contained"
               color="error"
               startIcon={<DeleteIcon />}
               onClick={handleDeleteAllUsers}
@@ -329,7 +317,7 @@ const Users = () => {
               </TableHead>
               <TableBody>
                 {filteredUsers.map((userData) => (
-                  <TableRow key={userData._id} hover>
+                  <TableRow key={userData._id}>
                     <TableCell>
                       <Button
                         variant="contained"
@@ -342,7 +330,7 @@ const Users = () => {
                       </Button>
 
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         color="error"
                         startIcon={<DeleteIcon />}
                         // sx={{ margin: "20px" }}
@@ -403,10 +391,8 @@ const Users = () => {
                 <MenuItem value={"admin"}>Admin</MenuItem>
                 <MenuItem value={"user"}>User</MenuItem>
               </Select>
+              <Button onClick={handleSaveChanges}>Save Changes</Button>
               <Button onClick={handleCloseEditModal}>Back</Button>
-              <Button onClick={handleSaveChanges} variant="contained">
-                Save Changes
-              </Button>
             </Box>
           </Modal>
           <Modal open={openDeleteModal} onClose={handleCloseDeleteModal}>
@@ -425,10 +411,8 @@ const Users = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Are you sure you want to delete this user?
               </Typography>
+              <Button onClick={handleDelete}>Eliminate</Button>
               <Button onClick={handleCloseDeleteModal}>Back</Button>
-              <Button onClick={handleDelete} variant="contained" color="error">
-                Eliminate
-              </Button>
             </Box>
           </Modal>
           <Modal
@@ -450,14 +434,8 @@ const Users = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Are you sure you want to delete all users?
               </Typography>
+              <Button onClick={handleConfirmDeleteAllUsers}>Eliminate</Button>
               <Button onClick={handleCloseDeleteAllUsersModal}>Back</Button>
-              <Button
-                onClick={handleConfirmDeleteAllUsers}
-                variant="contained"
-                color="error"
-              >
-                Eliminate
-              </Button>
             </Box>
           </Modal>
         </div>

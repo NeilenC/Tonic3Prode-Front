@@ -8,6 +8,8 @@ import { useMediaQuery } from "@mui/material";
 //import { FormattedMessage } from "react-intl";
 import axios from "axios";
 import { createDateStrForInputFromSections } from "@mui/x-date-pickers/internals";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
@@ -116,115 +118,121 @@ function LinearStepper() {
     localStorage.removeItem("generalInfo");
     localStorage.removeItem("teams");
     localStorage.removeItem("matches");
+
+    toast.success("Tournament created successfully")
     window.location.href = "http://localhost:3000/admin";
   };
 
   return (
-    <Box
-      suppressHydrationWarning={true}
-      style={{
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        marginTop: "20px",
-      }}
-    >
-      <Box sx={{ margin: isMobile ? "15px 0px 30px 0px" : "30px 70px" }}>
-        <Stepper
-          activeStep={activeStep}
-          orientation={isMobile ? "horizontal" : "vertical"}
-          sx={{ width: isMobile ? "100%" : "300px" }}
-        >
-          <Step>
-            <StepLabel>Information</StepLabel>
-            {!isMobile ? (
-              <StepContent>
-                In this step you must enter the relevant data of the tournament
-              </StepContent>
-            ) : (
-              ""
-            )}
-          </Step>
-          <Step>
-            <StepLabel>Teams Entry</StepLabel>
-            {!isMobile ? (
-              <StepContent>
-                In this step you have to select the teams that will participate
-                in the tournament
-              </StepContent>
-            ) : (
-              ""
-            )}
-          </Step>
-          <Step>
-            <StepLabel>Matches entry</StepLabel>
-            {!isMobile ? (
-              <StepContent>
-                You have to enter the details of the matches of the first stage
-                of the tournament
-              </StepContent>
-            ) : (
-              ""
-            )}
-          </Step>
-        </Stepper>
-        <Box
-          sx={{
-            textAlign: "center",
-            margin: !isMobile ? "40px 10px 10px 0px" : "25px 0px",
-          }}
-        >
-          <Button
-            onClick={handleBack}
+    <>
+      <ToastContainer />
+      <Box
+        suppressHydrationWarning={true}
+        style={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
+      >
+        <Box sx={{ margin: isMobile ? "15px 0px 30px 0px" : "30px 70px" }}>
+          <Stepper
+            activeStep={activeStep}
+            orientation={isMobile ? "horizontal" : "vertical"}
+            sx={{ width: isMobile ? "100%" : "300px" }}
+          >
+            <Step>
+              <StepLabel>Information</StepLabel>
+              {!isMobile ? (
+                <StepContent>
+                  In this step you must enter the relevant data of the
+                  tournament
+                </StepContent>
+              ) : (
+                ""
+              )}
+            </Step>
+            <Step>
+              <StepLabel>Teams Entry</StepLabel>
+              {!isMobile ? (
+                <StepContent>
+                  In this step you have to select the teams that will
+                  participate in the tournament
+                </StepContent>
+              ) : (
+                ""
+              )}
+            </Step>
+            <Step>
+              <StepLabel>Matches entry</StepLabel>
+              {!isMobile ? (
+                <StepContent>
+                  You have to enter the details of the matches of the first
+                  stage of the tournament
+                </StepContent>
+              ) : (
+                ""
+              )}
+            </Step>
+          </Stepper>
+          <Box
             sx={{
-              marginRight: "20px",
-              display: activeStep == 0 ? "none" : "inline-block",
+              textAlign: "center",
+              margin: !isMobile ? "40px 10px 10px 0px" : "25px 0px",
             }}
           >
-            Back
-          </Button>
-          {activeStep !== 2 ? (
-            <Button variant="contained" color="primary" onClick={handleNext}>
-              Continue
-            </Button>
-          ) : (
             <Button
-              variant="contained"
-              color="primary"
-              onClick={handleFinish}
-              disabled={isFinishDisabled}
+              onClick={handleBack}
+              sx={{
+                marginRight: "20px",
+                display: activeStep == 0 ? "none" : "inline-block",
+              }}
             >
-              Finish
+              Back
             </Button>
+            {activeStep !== 2 ? (
+              <Button variant="contained" color="primary" onClick={handleNext}>
+                Continue
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleFinish}
+                disabled={isFinishDisabled}
+              >
+                Finish
+              </Button>
+            )}
+          </Box>
+        </Box>
+        <Box>
+          {activeStep === 0 && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <GeneralInfo />
+            </div>
+          )}
+          {activeStep === 1 && (
+            <div style={{ textAlign: "center" }}>
+              <Teams />
+            </div>
+          )}
+          {activeStep === 2 && (
+            <div>
+              <Matches />
+            </div>
           )}
         </Box>
       </Box>
-      <Box>
-        {activeStep === 0 && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <GeneralInfo />
-          </div>
-        )}
-        {activeStep === 1 && (
-          <div style={{ textAlign: "center" }}>
-            <Teams />
-          </div>
-        )}
-        {activeStep === 2 && (
-          <div>
-            <Matches />
-          </div>
-        )}
-      </Box>
-    </Box>
+    </>
   );
 }
 

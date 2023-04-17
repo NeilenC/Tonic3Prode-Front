@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import customAxios from "../../../../utils/customAxios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PrizeInfo = () => {
   // States
@@ -221,10 +223,17 @@ const PrizeInfo = () => {
       .post(`http://localhost:3001/api/prizes/admin/${uid}/addprize`, prizeInfo)
       .then((res) => {
         console.log(res.data);
-      });
+        toast.success("Prize created successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error creating prize");
+      });     
   };
 
   return (
+     <>
+    <ToastContainer />
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
@@ -419,6 +428,7 @@ const PrizeInfo = () => {
         </form>
       </Box>
     </Container>
+  </>
   );
 };
 

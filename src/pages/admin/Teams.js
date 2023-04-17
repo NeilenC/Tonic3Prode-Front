@@ -21,6 +21,8 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Teams = () => {
   const [rows, setRows] = useState([]);
@@ -179,9 +181,9 @@ const Teams = () => {
       setRows(updatedTeams);
       setRowsWithSelection(updatedTeams);
       setOpenDeleteModal(false);
-      alert("team successfully eliminated");
+      toast.success("team successfully eliminated");
     } catch (error) {
-      alert("error al eliminar");
+      toast.error("error al eliminar");
     }
   };
 
@@ -198,12 +200,12 @@ const Teams = () => {
           uid: uid,
         }
       );
-      alert("All teams successfully eliminated");
+      toast.success("All teams successfully eliminated");
       setOpenDeleteAllModal(false);
       setRows([]);
       setRowsWithSelection([]);
     } catch (error) {
-      alert("error al eliminar equipos");
+      toast.error("error al eliminar equipos");
     }
   };
   //funcion para confirmar agregado de nuevo equipo
@@ -238,13 +240,12 @@ const Teams = () => {
             },
           }
         );
-        alert("Team succesfully created");
-
+        toast.success("Team succesfully created");
         const updatedTeams = rows.push(response);
         setRows(updatedTeams);
         setRowsWithSelection(updatedTeams);
       } catch (error) {
-        alert("Error while creating the team");
+        toast.error("Error while creating the team");
       }
 
       setOpenAddModal(false);
@@ -295,9 +296,9 @@ const Teams = () => {
           },
         }
       );
-      alert("team succesfully edited");
+      toast.success("team succesfully edited");
     } catch (error) {
-      alert("error");
+      toast.error("error while editing the team");
     }
     // localStorage.removeItem("storagedTeam");
     setOpenEditModal(false);
@@ -326,9 +327,12 @@ const Teams = () => {
   const handleCloseDeleteAllModal = () => {
     setOpenDeleteAllModal(false);
   };
-  console.log("editing team", editingTeam);
-  console.log("editedTeam", editedTeam);
+
+  
+
   return (
+    <>
+    <ToastContainer />
     <Box
       sx={{
         display: "flex",
@@ -790,6 +794,7 @@ const Teams = () => {
         </Modal>
       </div>
     </Box>
+  </>
   );
 };
 export default Teams;
