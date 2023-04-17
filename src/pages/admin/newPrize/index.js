@@ -224,6 +224,7 @@ const PrizeInfo = () => {
       .then((res) => {
         console.log(res.data);
         toast.success("Prize created successfully");
+        window.location.href = "http://localhost:3000/admin";
       })
       .catch((error) => {
         console.log(error);

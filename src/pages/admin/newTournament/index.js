@@ -8,8 +8,8 @@ import { useMediaQuery } from "@mui/material";
 //import { FormattedMessage } from "react-intl";
 import axios from "axios";
 import { createDateStrForInputFromSections } from "@mui/x-date-pickers/internals";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
 
 function LinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
@@ -125,7 +125,6 @@ function LinearStepper() {
 
   return (
     <>
-      <ToastContainer />
       <Box
         suppressHydrationWarning={true}
         style={{

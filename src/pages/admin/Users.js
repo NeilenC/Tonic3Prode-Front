@@ -21,8 +21,8 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
 
 const Users = () => {
   const [users, setUsers] = React.useState([]);
@@ -248,7 +248,6 @@ const Users = () => {
   };
   return (
     <>
-      <ToastContainer />
       <Box
         sx={{
           display: "flex",
@@ -286,7 +285,7 @@ const Users = () => {
 
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
-              variant="contained"
+              variant="outlined"
               color="error"
               startIcon={<DeleteIcon />}
               onClick={handleDeleteAllUsers}
@@ -307,12 +306,7 @@ const Users = () => {
                   <TableCell style={{ fontWeight: "bold" }}>Email</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Address</TableCell>
                   <TableCell style={{ fontWeight: "bold" }}>Country</TableCell>
-                  <TableCell style={{ fontWeight: "bold" }}>
-                    Cellphone
-                  </TableCell>
-                  <TableCell style={{ fontWeight: "bold" }}>
-                    Tournaments
-                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Cellphone</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -330,7 +324,7 @@ const Users = () => {
                       </Button>
 
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         color="error"
                         startIcon={<DeleteIcon />}
                         // sx={{ margin: "20px" }}
@@ -348,7 +342,6 @@ const Users = () => {
                     <TableCell>{userData.address}</TableCell>
                     <TableCell>{userData.country}</TableCell>
                     <TableCell>{userData.cellphone}</TableCell>
-                    <TableCell>{userData.tournaments}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -391,8 +384,10 @@ const Users = () => {
                 <MenuItem value={"admin"}>Admin</MenuItem>
                 <MenuItem value={"user"}>User</MenuItem>
               </Select>
-              <Button onClick={handleSaveChanges}>Save Changes</Button>
               <Button onClick={handleCloseEditModal}>Back</Button>
+              <Button variant="contained" onClick={handleSaveChanges}>
+                Save Changes
+              </Button>
             </Box>
           </Modal>
           <Modal open={openDeleteModal} onClose={handleCloseDeleteModal}>
@@ -411,8 +406,8 @@ const Users = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Are you sure you want to delete this user?
               </Typography>
-              <Button onClick={handleDelete}>Eliminate</Button>
               <Button onClick={handleCloseDeleteModal}>Back</Button>
+              <Button variant="contained" color="error" onClick={handleDelete}>Eliminate</Button>
             </Box>
           </Modal>
           <Modal
@@ -434,8 +429,10 @@ const Users = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Are you sure you want to delete all users?
               </Typography>
-              <Button onClick={handleConfirmDeleteAllUsers}>Eliminate</Button>
               <Button onClick={handleCloseDeleteAllUsersModal}>Back</Button>
+              <Button variant="contained" color="error" onClick={handleConfirmDeleteAllUsers}>
+                Eliminate
+              </Button>
             </Box>
           </Modal>
         </div>
