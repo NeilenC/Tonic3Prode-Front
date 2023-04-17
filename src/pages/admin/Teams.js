@@ -379,7 +379,7 @@ const Teams = () => {
             Add new team
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             color="error"
             startIcon={<DeleteIcon />}
             sx={{ margin: "20px" }}
@@ -454,7 +454,7 @@ const Teams = () => {
                       </Button>
 
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         color="error"
                         startIcon={<DeleteIcon />}
                         // sx={{ margin: "20px" }}
@@ -583,10 +583,16 @@ const Teams = () => {
                 }));
               }}
             />
-            <Button sx={{ mr: 2 }} onClick={handleSaveChanges}>
-              Save Changes
-            </Button>
-            <Button onClick={handleCloseEditModal}>Back</Button>
+            <Box sx={{ display: "flex", alignItems: "right" }}>
+              <Button onClick={handleCloseEditModal}>Back</Button>
+              <Button
+                sx={{ mr: 2 }}
+                onClick={handleSaveChanges}
+                variant="contained"
+              >
+                Save Changes
+              </Button>
+            </Box>
           </Box>
         </Modal>
         <Modal open={openDeleteModal} onClose={handleCloseDeleteModal}>
@@ -606,8 +612,10 @@ const Teams = () => {
             <Typography variant="h6" sx={{ mb: 2 }}>
               Are you sure you want to delete this team?
             </Typography>
-            <Button onClick={handleDelete}>Eliminate</Button>
             <Button onClick={handleCloseDeleteModal}>Back</Button>
+            <Button onClick={handleDelete} variant="contained" color="error">
+              Eliminate
+            </Button>
           </Box>
         </Modal>
         <Modal open={openAddModal} onClose={handleCloseAddModal}>
@@ -743,10 +751,14 @@ const Teams = () => {
                   : ""
               }
             />
-            <Button onClick={handleNewTeamSaveChanges} sx={{ mr: 2 }}>
+            <Button onClick={handleCloseAddModal}>Back</Button>
+            <Button
+              onClick={handleNewTeamSaveChanges}
+              sx={{ mr: 2 }}
+              variant="contained"
+            >
               Save Changes
             </Button>
-            <Button onClick={handleCloseAddModal}>Back</Button>
           </Box>
         </Modal>
         <Modal open={openDeleteAllModal} onClose={handleCloseDeleteAllModal}>
@@ -766,8 +778,14 @@ const Teams = () => {
             <Typography variant="h6" sx={{ mb: 2 }}>
               Are you sure you want to delete all the teams?
             </Typography>
-            <Button onClick={handleConfirmDeleteAllTeams}>Eliminate</Button>
             <Button onClick={handleCloseDeleteAllModal}>Back</Button>
+            <Button
+              onClick={handleConfirmDeleteAllTeams}
+              color="error"
+              variant="contained"
+            >
+              Eliminate
+            </Button>
           </Box>
         </Modal>
       </div>

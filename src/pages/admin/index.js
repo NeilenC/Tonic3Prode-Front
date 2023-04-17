@@ -6,7 +6,7 @@ import {
   Group as TeamsIcon,
   EmojiEvents as PrizesIcon,
   BarChart as MetricsIcon,
-  SwitchAccount as UsersIcon
+  SwitchAccount as UsersIcon,
 } from "@mui/icons-material";
 import Tournaments from "./tournaments/index";
 import Teams from "./Teams";
@@ -32,27 +32,70 @@ const index = () => {
   };
 
   return (
-    <Box
-    >
-      <Box  sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "10px",
-        alignItems: "center",
-        marginTop: "20px",
-        flexDirection: { xs: "column", md: "row" },
-      }}>
-        <Button sx={{marginRight:"10px" }} startIcon={<TournamentIcon />} onClick={() => changeActualComponent("tournaments")}>Tournaments</Button>
-        <Button sx={{marginRight:"10px" }} startIcon={<TeamsIcon />} onClick={() => changeActualComponent("teams")} >Teams</Button>
-        <Button sx={{marginRight:"10px" }} startIcon={<PlayersIcon />} onClick={() => changeActualComponent("players")}>Team players</Button>
-        <Button sx={{marginRight:"10px" }} startIcon={<PrizesIcon />}onClick={() => changeActualComponent("prizes")}>Prizes</Button>
-        <Button sx={{marginRight:"10px" }} startIcon={<UsersIcon />}onClick={() => changeActualComponent("users")}>Users</Button>
-        <Button startIcon={<MetricsIcon />} onClick={() => changeActualComponent("metrics")}>Metrics</Button>
-       
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "10px",
+          alignItems: "center",
+          marginTop: "20px",
+          flexDirection: { xs: "column", md: "row" },
+        }}
+      >
+        <Button
+          sx={{ marginRight: "10px" }}
+          startIcon={<TournamentIcon />}
+          onClick={() => changeActualComponent("tournaments")}
+        >
+          Tournaments
+        </Button>
+        <Button
+          sx={{ marginRight: "10px" }}
+          startIcon={<TeamsIcon />}
+          onClick={() => changeActualComponent("teams")}
+        >
+          Teams
+        </Button>
+        <Button
+          sx={{ marginRight: "10px" }}
+          startIcon={<PlayersIcon />}
+          onClick={() => changeActualComponent("players")}
+        >
+          Team players
+        </Button>
+
+        <Button
+          sx={{ marginRight: "10px" }}
+          startIcon={<UsersIcon />}
+          onClick={() => changeActualComponent("users")}
+        >
+          Users
+        </Button>
+        <Button
+          sx={{ marginRight: "10px" }}
+          startIcon={<PrizesIcon />}
+          onClick={() => changeActualComponent("prizes")}
+        >
+          Prizes
+        </Button>
+        <Button
+          startIcon={<MetricsIcon />}
+          onClick={() => changeActualComponent("metrics")}
+        >
+          Metrics
+        </Button>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-      {actualComponent && components[actualComponent]}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "20px",
+        }}
+      >
+        {actualComponent && components[actualComponent]}
       </Box>
     </Box>
   );

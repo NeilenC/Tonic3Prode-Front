@@ -117,7 +117,7 @@ function LinearStepper() {
     localStorage.removeItem("teams");
     localStorage.removeItem("matches");
     window.location.href = "http://localhost:3000/admin";
-};
+  };
 
   return (
     <Box
@@ -137,7 +137,7 @@ function LinearStepper() {
           sx={{ width: isMobile ? "100%" : "300px" }}
         >
           <Step>
-            <StepLabel>Informacion</StepLabel>
+            <StepLabel>Information</StepLabel>
             {!isMobile ? (
               <StepContent>
                 In this step you must enter the relevant data of the tournament

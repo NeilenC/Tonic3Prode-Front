@@ -68,10 +68,14 @@ const GeneralInfo = () => {
 
   const handleStageChange = (event) => {
     setStage(event.target.value);
-    setNumMatches(event.target.value)
+    setNumMatches(event.target.value);
     localStorage.setItem(
       "generalInfo",
-      JSON.stringify({ ...getGeneralInfo(), stage: event.target.value, numMatches: event.target.value })
+      JSON.stringify({
+        ...getGeneralInfo(),
+        stage: event.target.value,
+        numMatches: event.target.value,
+      })
     );
   };
 
@@ -136,6 +140,7 @@ const GeneralInfo = () => {
         fullWidth
         className={styles.input}
         required
+        sx={{ mb: "20px" }}
       />
       <FormControl fullWidth>
         <InputLabel id="status-select-label">Status</InputLabel>
@@ -146,9 +151,10 @@ const GeneralInfo = () => {
           label="Status"
           onChange={handleStatusChange}
           className={styles.input}
+          sx={{ mb: "20px" }}
         >
           <MenuItem value="active">Active</MenuItem>
-          <MenuItem value="finish">Finish</MenuItem>
+          <MenuItem value="inactive">Inactive</MenuItem>
         </Select>
       </FormControl>
       <FormControl fullWidth>
@@ -160,6 +166,7 @@ const GeneralInfo = () => {
           label="Type"
           onChange={handleTypeChange}
           className={styles.input}
+          sx={{ mb: "20px" }}
         >
           <MenuItem value="winner remains on court">
             Winner remains on court
@@ -171,23 +178,24 @@ const GeneralInfo = () => {
         </Select>
       </FormControl>
       <FormControl fullWidth>
-          <InputLabel id="Stage-select-label">Stage</InputLabel>
-          <Select
-            labelId="Stage-select-label"
-            id="Stage-select"
-            value={stage}
-            label="Stage"
-            onChange={handleStageChange}
-            className={styles.input}
-          >
-            <MenuItem value="32">32</MenuItem>
-            <MenuItem value="16">16</MenuItem>
-            <MenuItem value="8">8</MenuItem>
-            <MenuItem value="4">4</MenuItem>
-            <MenuItem value="2">2</MenuItem>
-            <MenuItem value="1">1</MenuItem>
-          </Select>
-        </FormControl>
+        <InputLabel id="Stage-select-label">Stage</InputLabel>
+        <Select
+          labelId="Stage-select-label"
+          id="Stage-select"
+          value={stage}
+          label="Stage"
+          onChange={handleStageChange}
+          className={styles.input}
+          sx={{ mb: "20px" }}
+        >
+          <MenuItem value="32">32</MenuItem>
+          <MenuItem value="16">16</MenuItem>
+          <MenuItem value="8">8</MenuItem>
+          <MenuItem value="4">4</MenuItem>
+          <MenuItem value="2">2</MenuItem>
+          <MenuItem value="1">1</MenuItem>
+        </Select>
+      </FormControl>
       <FormControl fullWidth>
         <InputLabel id="members-select-label">Members</InputLabel>
         <Select
@@ -197,6 +205,7 @@ const GeneralInfo = () => {
           label="Members"
           onChange={handleMembersChange}
           className={styles.input}
+          sx={{ mb: "20px" }}
         >
           <MenuItem value="teams">Teams</MenuItem>
           <MenuItem value="countries">Countries</MenuItem>
@@ -212,6 +221,7 @@ const GeneralInfo = () => {
         value={beginning}
         onChange={handleBeginningChange}
         className={styles.input}
+        sx={{ mb: "20px" }}
       />
       <TextField
         label="Finishing"
@@ -224,6 +234,7 @@ const GeneralInfo = () => {
         onChange={handleFinishingChange}
         className={styles.input}
         disabled={beginning === "" ? "true" : ""}
+        sx={{ mb: "20px" }}
       />
       <TextField
         label="Image URL"
