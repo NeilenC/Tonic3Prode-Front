@@ -16,7 +16,11 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  useMediaQuery,
 } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,6 +37,8 @@ const Users = () => {
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
   const [openDeleteAllUsersModal, setOpenDeleteAllUsersModal] =
     React.useState(false);
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     async function searchUsers() {
@@ -255,37 +261,70 @@ const Users = () => {
   return (
     <>
       {/* <ToastContainer /> */}
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} md={8}>
-          <TextField
-            label="Search"
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            minWidth: isMobile ? "auto" : "auto",
+            margin: "0 auto",
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search User"
             value={searchTerm}
             onChange={handleSearch}
-            fullWidth
-            margin="normal"
-            variant="outlined"
+            style={{
+              border: "1px solid #ccc",
+              padding: "8px",
+              borderRadius: "20px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "94%",
+              fontSize: "0.9rem",
+              height: "25px",
+              margin: "20px auto",
+              textAlign: "center",
+              alignItems: "center",
+              alignContent: "center",
+            }}
           />
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={handleDeleteAllUsers}
-          >
-            Delete all users
-          </Button>
+
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={handleDeleteAllUsers}
+            >
+              Delete all users
+            </Button>
+          </Box>
+
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Actions</TableCell>
-                  <TableCell>UserName</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>LastName</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>address</TableCell>
-                  <TableCell>Country</TableCell>
-                  <TableCell>Cellphone</TableCell>
-                  <TableCell>Torneos</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Actions</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>UserName</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Role</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Name</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>LastName</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Email</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Address</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>Country</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    Cellphone
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    Tournaments
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -293,16 +332,22 @@ const Users = () => {
                   <TableRow key={userData._id}>
                     <TableCell>
                       <Button
-                        variant="outlined"
+                        variant="contained"
+                        color="inherit"
+                        startIcon={<EditIcon />}
                         onClick={() => handleEditUser(userData)}
+                        sx={{ mr: 1, width: "90px" }}
                       >
-                        Edit role
+                        Edit
                       </Button>
 
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         color="error"
+                        startIcon={<DeleteIcon />}
+                        // sx={{ margin: "20px" }}
                         onClick={() => handleDeleteUser(userData)}
+                        sx={{ width: "90px" }}
                       >
                         Delete
                       </Button>
@@ -332,11 +377,10 @@ const Users = () => {
                 boxShadow: 24,
                 p: 4,
                 minWidth: 400,
-                height: 200,
               }}
             >
               <Typography variant="h6" sx={{ mb: 2 }}>
-                Editar usuario
+                Edit user
               </Typography>
 
               <InputLabel id="demo-simple-select-label">Role</InputLabel>
@@ -354,12 +398,13 @@ const Users = () => {
                 fullWidth
                 margin="normal"
                 variant="outlined"
+                sx={{ mb: 2 }}
               >
                 <MenuItem value={"admin"}>Admin</MenuItem>
                 <MenuItem value={"user"}>User</MenuItem>
               </Select>
               <Button onClick={handleSaveChanges}>Save Changes</Button>
-              <Button onClick={handleCloseEditModal}>Volver</Button>
+              <Button onClick={handleCloseEditModal}>Back</Button>
             </Box>
           </Modal>
           <Modal open={openDeleteModal} onClose={handleCloseDeleteModal}>
@@ -373,14 +418,13 @@ const Users = () => {
                 boxShadow: 24,
                 p: 4,
                 minWidth: 400,
-                height: 200,
               }}
             >
               <Typography variant="h6" sx={{ mb: 2 }}>
-                Está seguro de que desea eliminar este usuario?
+                Are you sure you want to delete this user?
               </Typography>
-              <Button onClick={handleDelete}>Eliminar</Button>
-              <Button onClick={handleCloseDeleteModal}>Volver</Button>
+              <Button onClick={handleDelete}>Eliminate</Button>
+              <Button onClick={handleCloseDeleteModal}>Back</Button>
             </Box>
           </Modal>
           <Modal
@@ -397,18 +441,17 @@ const Users = () => {
                 boxShadow: 24,
                 p: 4,
                 minWidth: 400,
-                height: 200,
               }}
             >
               <Typography variant="h6" sx={{ mb: 2 }}>
-                Está seguro de que desea eliminar todos los usuarios?
+                Are you sure you want to delete all users?
               </Typography>
-              <Button onClick={handleConfirmDeleteAllUsers}>Eliminar</Button>
-              <Button onClick={handleCloseDeleteAllUsersModal}>Volver</Button>
+              <Button onClick={handleConfirmDeleteAllUsers}>Eliminate</Button>
+              <Button onClick={handleCloseDeleteAllUsersModal}>Back</Button>
             </Box>
           </Modal>
-        </Grid>
-      </Grid>
+        </div>
+      </Box>
     </>
   );
 };
