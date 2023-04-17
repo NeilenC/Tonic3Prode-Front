@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 
 import Button from "@mui/material/Button";
-import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import PredictionCards from "@/commons/PredictionCards";
 import { useIntl } from "react-intl";
@@ -23,6 +22,8 @@ import {
   Money,
   Save
 } from "@mui/icons-material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // COMPONENTE
 const Predictions = () => {
@@ -170,12 +171,14 @@ const Predictions = () => {
         `http://localhost:3001/api/predictions/${user}`,
         newPredictions
       );
+       window.location.href = `http://localhost:3000/tournamentHome/Predictions/${id}`;
       toast.success("You Successfully updated your predictions !");
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong, please try again later");
     }
-    window.location.href = `http://localhost:3000/tournamentHome/Predictions/${id}`;
-  };
+   
+
+  } 
 
   const [actualComponent, setActualComponent] = useState("predictions");
 
@@ -192,6 +195,7 @@ const Predictions = () => {
 
   return (
     <>
+      <ToastContainer />
       <Box
         sx={{
           display: "flex",
