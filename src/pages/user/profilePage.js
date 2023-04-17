@@ -2,8 +2,9 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import SportsRoundedIcon from "@mui/icons-material/SportsRounded";
 import { useIntl } from "react-intl";
+import userPhoto from "../../../public/user.jpeg";
+
 
 const profilePage = () => {
   const userInfo = useSelector((state) => state.userInfo);
@@ -13,6 +14,8 @@ const profilePage = () => {
   const [address, setAddress] = useState("");
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [photoURL, setPhoto] = useState("");
+
 
   useEffect(() => {
     if (userInfo) {
@@ -20,6 +23,7 @@ const profilePage = () => {
       setAddress(userInfo.address);
       setUserName(userInfo.username);
       setEmail(userInfo.email);
+      setPhoto(userInfo.photoURL);
     }
   }, [userInfo]);
 
@@ -40,6 +44,14 @@ const profilePage = () => {
         overflow: "hidden",
       }}
     >
+      <img
+        src={
+          photoURL
+            ? photoURL
+            : "https://img2.freepng.es/20180426/bfe/kisspng-computer-icons-user-profile-5ae25c1f867d48.1548444315247841595509.jpg"
+        }
+        style={{ height: 100, width: 100 }}
+      />
       <Grid
         item
         xs={12}
@@ -61,7 +73,7 @@ const profilePage = () => {
           }}
         >
           <p style={{ color: "#1976d2" }}>
-            <SportsRoundedIcon /> {intl.formatMessage({ id: "username" })}
+            {intl.formatMessage({ id: "username" })}
           </p>{" "}
           {username}
         </Typography>
@@ -74,12 +86,7 @@ const profilePage = () => {
             color: "#555555",
           }}
         >
-          <p style={{ color: "#1976d2" }}>
-            {" "}
-            <SportsRoundedIcon />
-            E-mail:
-          </p>{" "}
-          {email}
+          <p style={{ color: "#1976d2" }}> E-mail</p> {email}
         </Typography>
 
         <Typography
@@ -92,7 +99,7 @@ const profilePage = () => {
           }}
         >
           <p style={{ color: "#1976d2" }}>
-            <SportsRoundedIcon /> {intl.formatMessage({ id: "address" })}
+            {intl.formatMessage({ id: "address" })}
           </p>{" "}
           {address}
         </Typography>
@@ -106,14 +113,16 @@ const profilePage = () => {
           }}
         >
           <p style={{ color: "#1976d2" }}>
-            <SportsRoundedIcon /> {intl.formatMessage({ id: "cell" })}
+            {intl.formatMessage({ id: "cell" })}
           </p>{" "}
           {cellphone}
         </Typography>
       </Grid>
 
       <Link href="/user/editProfile">
-        <Button sx={{ mt: 3, alignSelf: "flex-end" }}>
+        <Button 
+        variant="outlined" 
+        sx={{ mt: 3, alignSelf: "flex-center" }}>
           <Typography
             variant="body1"
             sx={{ textDecoration: "none", color: "inherit" }}
@@ -124,9 +133,10 @@ const profilePage = () => {
       </Link>
       <Link href="/home">
         <Button
+          variant="contained"
           sx={{
             mt: 3,
-            alignSelf: "flex-end",
+            alignSelf: "flex-center",
             color: "inherit",
             justifyContent: "center",
           }}

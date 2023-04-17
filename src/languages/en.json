@@ -27,7 +27,7 @@
     "members": "Members",
     "teams": "Teams",
     "countries": "Country",
-    "data":"Modify user data",
+    "data":"User data:  ",
     "notifications" :"I want to receive notifications",
     "save":"Save changes",
     "cell": "Cellphone",
@@ -35,5 +35,7 @@
     "username": "Username",
     "language": "Change language",
     "modify": "Change user data",
-    "back": "Back"
+    "back": "Back",
+    "tutorialUser": "How to play?",
+    "tutorialAdmin": " Admin tutorial"
 }

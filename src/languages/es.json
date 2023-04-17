@@ -34,5 +34,8 @@
   "username": "Nombre de usuario",
   "language": "Cambiar idioma",
   "modify": "Cambiar datos de usuario",
-  "back": "Volver"
+  "back": "Volver",
+  "tutorialUser": "Como jugar?",
+  "tutorialAdmin": " Tutorial administrador",
+  "tutorial": ""
 }

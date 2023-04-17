@@ -113,9 +113,6 @@ const Navbar = () => {
                 onClick={handleClick}
                 color="inherit"
               >
-                {/* <Typography variant="subtitle1">
-                  <div> {username} &nbsp;&nbsp;&nbsp; </div>
-                </Typography> */}
                 <Avatar alt="User avatar" />
               </IconButton>
             )}
@@ -170,16 +167,34 @@ const Navbar = () => {
           >
             {intl.formatMessage({ id: "torneo" })}
           </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setDrawerOpen(false);
+              router.push(`/user/tutorial`);
+            }}
+          >
+            {intl.formatMessage({ id: "tutorialUser" })}
+          </MenuItem>
 
           {user.rol === "admin" || user.rol === "superAdmin" ? (
+            <>
             <MenuItem
               onClick={() => {
                 setDrawerOpen(false);
                 router.push(`/admin`);
               }}
-            >
+              >
               {intl.formatMessage({ id: "panel" })}
             </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setDrawerOpen(false);
+                router.push(`/admin/tutorial`);
+              }}
+              >
+              {intl.formatMessage({ id: "tutorialAdmin" })}
+            </MenuItem>
+              </>
           ) : null}
         </div>
       </Drawer>
