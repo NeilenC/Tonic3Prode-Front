@@ -19,6 +19,7 @@ const Profile = () => {
   const [address, setAddress] = useState("");
   const [username, setUserName] = useState("");
   const [uid, setUid] = useState("");
+  const [photoURL, setPhoto] = useState("");
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
@@ -29,8 +30,12 @@ const Profile = () => {
       setCellphone(userInfo.cellphone);
       setAddress(userInfo.address);
       setUserName(userInfo.username);
+      setPhoto(userInfo.photoURL);
     }
   }, [userInfo]);
+
+console.log("FOtOURL", userInfo)
+
 
   const handleSave = async () => {
     if (userInfo && validateInput(address) != false) {
@@ -63,6 +68,49 @@ const Profile = () => {
       throw new Error("Invalid input");
     }
   };
+
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  return (
+    <Box>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          pl:"2%",
+          borderRadius: "5px ",
+          maxWidth: "95%",
+          margin: " 5% auto",
+          backgroundColor: "#F7F7F7",
+          padding: "1rem",
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        }}
+        noValidate
+        autoComplete="on"
+      >
+
+        FOTO: 
+        <img src={photoURL}/>
+
+        <Typography component="h1" variant="h5" color="#454546" marginTop="3%">
+          <div> {intl.formatMessage({ id: "data" })}</div>
+        </Typography>
+         
+        <TextField
+          mt="5%"
+          label={intl.formatMessage({ id: "username" })}
+          variant="outlined"
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+
   const handleChange = (e) => {
     setChecked(e.target.checked);
   };
@@ -118,6 +166,7 @@ const handlePushNotifications = async (e) => {
             padding: "1rem",
             boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
             overflow: "hidden",
+
           }}
           noValidate
           autoComplete="on"
