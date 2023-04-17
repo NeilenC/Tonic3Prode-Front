@@ -3,8 +3,9 @@ import SearchCamp  from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
 import UserCard from "@/commons/UserCard";
 import { useIntl } from "react-intl";
+import UserProvider from "../../../redux/UserProvider";
 
-const Search = () => {
+const Search = ({ranking}) => {
   const [searchResults, setSearchResults] = useState("");
 const intl = useIntl()
 
@@ -12,22 +13,6 @@ const intl = useIntl()
     setSearchResults(event.target.value);
   };
 
-  const users = [
-    { userName: "Jenny", rank: 4, status: "advance", points: 123},
-    { userName: "Pablo", rank: 5, status: "retrograde", points: 123 },
-    { userName: "Alice", rank: 6, status: "none", points: 123 },
-    { userName: "David", rank: 7, status: "advance", points: 123 },
-    { userName: "Oliver", rank: 8, status: "advance", points: 123 },
-    { userName: "Emma", rank: 9, status: "none", points: 123 },
-    { userName: "Sophia", rank: 10, status: "retrograde", points: 123 },
-    { userName: "Ava", rank: 11, status: "advance", points: 123 },
-    { userName: "Liam", rank: 12, status: "none", points: 123 },
-    { userName: "Noah", rank: 13, status: "retrograde", points: 123 },
-  ];
-
-  const filteredUsers = users.filter((user) =>
-    user.userName.toLowerCase().includes(searchResults.toLowerCase())
-  );
 
   return (
     <Box style={{ marginTop: "30px" }}>
@@ -54,7 +39,7 @@ const intl = useIntl()
         />
       </Box>
       <Box style={{marginTop : "35px"}}>
-      {filteredUsers.map((user, index) => (
+      {ranking.map((user, index) => (
         <UserCard user={user} key={index} />
       ))}
       </Box>
