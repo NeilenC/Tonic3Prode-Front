@@ -40,6 +40,7 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
   );
 
   console.log(game);
+  console.log("game predictionn", gamePredictions[0]);
 
   return (
     <Card
@@ -202,9 +203,9 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
             margin: "10px",
           }}
         >
-          {game?.result?.winningType !== ""
-            ? `${gamePredictions[0]?.points} Puntos`
-            : "Penalties"}
+          {gamePredictions[0]?.points
+            ? `${gamePredictions[0]?.points} Points`
+            : "0 Points"}
         </Typography>
       </Box>
     </Card>

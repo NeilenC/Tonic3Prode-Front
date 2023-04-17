@@ -56,13 +56,15 @@ const Matches = () => {
   };
 
   const handleCreateRandomMatches = () => {
-    const startDate =  JSON.parse(localStorage.getItem("generalInfo")).beginning// fecha de inicio
+    const startDate = JSON.parse(localStorage.getItem("generalInfo")).beginning; // fecha de inicio
     const endDate = JSON.parse(localStorage.getItem("generalInfo")).finishing; // fecha de cierre
-    const numMatches = JSON.parse(localStorage.getItem("generalInfo")).numMatches; // cantidad de partidos a crear
+    const numMatches = JSON.parse(
+      localStorage.getItem("generalInfo")
+    ).numMatches; // cantidad de partidos a crear
     const availableTeams = JSON.parse(localStorage.getItem("teams")); // equipos
     const randomMatches = [];
 
-    console.log(startDate,"fecha de inicio")
+    console.log(startDate, "fecha de inicio");
 
     for (let i = 0; i < numMatches; i++) {
       // Seleccionar dos equipos aleatorios
@@ -88,9 +90,9 @@ const Matches = () => {
         time: matchTime,
         homeTeam,
         awayTeam,
-        stage: JSON.parse(localStorage.getItem("generalInfo")).stage
+        stage: JSON.parse(localStorage.getItem("generalInfo")).stage,
       };
-      
+
       randomMatches.push(newMatch);
     }
 
@@ -120,18 +122,16 @@ const Matches = () => {
         <Button
           variant="contained"
           onClick={() => setOpen(true)}
-          sx={{ width: "145px", marginBottom: "10px" }}
+          sx={{ width: "150", marginBottom: "10px" }}
         >
           Create Match
         </Button>
         <Button
           variant="contained"
-          onClick={
-            handleCreateRandomMatches
-          }
-          sx={{ width: "200px", marginBottom: "10px", marginLeft: "10px" }}
+          onClick={handleCreateRandomMatches}
+          sx={{ width: "150", marginBottom: "10px", marginLeft: "10px" }}
         >
-          Create random matches
+          Create random
         </Button>
       </Box>
       <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
@@ -174,10 +174,14 @@ const Matches = () => {
                   {match.time}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
-                  {isMobile ? match?.homeTeam?.shortName : match?.homeTeam?.name}
+                  {isMobile
+                    ? match?.homeTeam?.shortName
+                    : match?.homeTeam?.name}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
-                  {isMobile ? match?.awayTeam?.shortName : match?.awayTeam?.name}
+                  {isMobile
+                    ? match?.awayTeam?.shortName
+                    : match?.awayTeam?.name}
                 </TableCell>
                 <TableCell
                   sx={{

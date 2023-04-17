@@ -298,7 +298,7 @@ const Users = () => {
 
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
-              variant="contained"
+              variant="outlined"
               color="error"
               startIcon={<DeleteIcon />}
               onClick={handleDeleteAllUsers}
@@ -329,7 +329,7 @@ const Users = () => {
               </TableHead>
               <TableBody>
                 {filteredUsers.map((userData) => (
-                  <TableRow key={userData._id}>
+                  <TableRow key={userData._id} hover>
                     <TableCell>
                       <Button
                         variant="contained"
@@ -342,7 +342,7 @@ const Users = () => {
                       </Button>
 
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         color="error"
                         startIcon={<DeleteIcon />}
                         // sx={{ margin: "20px" }}
@@ -403,8 +403,10 @@ const Users = () => {
                 <MenuItem value={"admin"}>Admin</MenuItem>
                 <MenuItem value={"user"}>User</MenuItem>
               </Select>
-              <Button onClick={handleSaveChanges}>Save Changes</Button>
               <Button onClick={handleCloseEditModal}>Back</Button>
+              <Button onClick={handleSaveChanges} variant="contained">
+                Save Changes
+              </Button>
             </Box>
           </Modal>
           <Modal open={openDeleteModal} onClose={handleCloseDeleteModal}>
@@ -423,8 +425,10 @@ const Users = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Are you sure you want to delete this user?
               </Typography>
-              <Button onClick={handleDelete}>Eliminate</Button>
               <Button onClick={handleCloseDeleteModal}>Back</Button>
+              <Button onClick={handleDelete} variant="contained" color="error">
+                Eliminate
+              </Button>
             </Box>
           </Modal>
           <Modal
@@ -446,8 +450,14 @@ const Users = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Are you sure you want to delete all users?
               </Typography>
-              <Button onClick={handleConfirmDeleteAllUsers}>Eliminate</Button>
               <Button onClick={handleCloseDeleteAllUsersModal}>Back</Button>
+              <Button
+                onClick={handleConfirmDeleteAllUsers}
+                variant="contained"
+                color="error"
+              >
+                Eliminate
+              </Button>
             </Box>
           </Modal>
         </div>
