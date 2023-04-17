@@ -61,6 +61,7 @@ export const signUpGoogle = async (auth, dispatch) => {
             email: userFirebase.email,
             username: userFirebase.displayName,
             country: country,
+            // photoURL: userFirebase.photoURL,
           })
         );
         toast.error(

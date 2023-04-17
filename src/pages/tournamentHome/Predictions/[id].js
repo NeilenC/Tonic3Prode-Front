@@ -22,8 +22,7 @@ import {
   Money,
   Save
 } from "@mui/icons-material";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 // COMPONENTE
 const Predictions = () => {
@@ -172,6 +171,7 @@ const Predictions = () => {
         newPredictions
       );
        window.location.href = `http://localhost:3000/tournamentHome/Predictions/${id}`;
+       
       toast.success("You Successfully updated your predictions !");
     } catch (error) {
       toast.error("Something went wrong, please try again later");
@@ -195,7 +195,6 @@ const Predictions = () => {
 
   return (
     <>
-      <ToastContainer />
       <Box
         sx={{
           display: "flex",
