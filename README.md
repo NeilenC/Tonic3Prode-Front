@@ -37,6 +37,9 @@ En Gambet podrás participar en diferentes torneos de fútbol, baloncesto, tenis
 
 [Documentación front-end](https://docs.google.com/document/d/1VyDVmTAo_BNUzHJVdwMN3cyrpyL2xVifQdAQ0xW84bk/edit "Documentación front-end")
 
+##### Schema Design
+
+[Link schema Design](https://drive.google.com/file/d/1JsMOzJhIeHblGupsrkAqEVfMs0j5GgE4/view?pli=1 "Link schema Design")
 
 ###  Srum master 
 German Rivarola 
