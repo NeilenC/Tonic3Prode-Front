@@ -31,3 +31,20 @@ En Gambet podrás participar en diferentes torneos de fútbol, baloncesto, tenis
 
 #####  Documentación:
 
+[Documentación back-end](https://docs.google.com/document/d/1Te8NMQOL4CBRzFNxGqUf6rmfGgq1-6RMboIku5EeGmI/edit# "Documentación back-end")
+
+
+
+[Documentación front-end](https://docs.google.com/document/d/1VyDVmTAo_BNUzHJVdwMN3cyrpyL2xVifQdAQ0xW84bk/edit "Documentación front-end")
+
+
+###  Srum master 
+German Rivarola 
+
+### Desarrolladores 
+* Javier Lema
+* Rossana Contasti
+* Matias Dominguez
+* Francisco García
+* Leandro Bertelli
+* Neilen Monlezun
