@@ -20,7 +20,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../../../redux/reducers/userInfo";
 import { validateInput } from "../../../utils/functions";
 import { setFirstLogin } from "../../../redux/reducers/firstLogin";
-
+// import emailjs from "emailjs-com";
+import { sendEmail } from "../../../utils/sendEmail";
 
 export const LoginForm = () => {
   const userInfo = useSelector((state) => state.userInfo);
@@ -49,17 +50,18 @@ export const LoginForm = () => {
           address: address,
           cellphone: cellphone,
           country: countryIP,
-          gender: gender
+          gender: gender,
         });
         dispatch(
           setUserInfo({
             email: "",
             fullName: "",
-            country: "",        
+            country: "",
           })
         );
         dispatch(setFirstLogin(false));
         toast.success("You have created an account, Please login to continue!");
+        sendEmail(username, email);
         router.push("http://localhost:3000/logIn/TwoFactorAuth");
       } catch (error) {
         console.log(error);
@@ -69,8 +71,6 @@ export const LoginForm = () => {
       toast.error("Please verified if there is not special caracters");
     }
   };
-
- 
 
   return (
     <>
