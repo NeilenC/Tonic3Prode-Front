@@ -52,7 +52,6 @@ const TwoFactorAuth = () => {
       window.location.href = "http://localhost:3000/home";
       localStorage.setItem("isLogged", true);
     } catch (error) {
-      console.error(error);
       toast.error(error.response.data.message);
     }
   };
@@ -103,19 +102,19 @@ const TwoFactorAuth = () => {
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
             {firstQR && (
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                padding: "10px 20px",
-                fontSize: "0.9rem",
-              }}
-              onClick={handleGenerateVerificationCode}
-            >
-              GENERATE CODE
-            </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  padding: "10px 20px",
+                  fontSize: "0.9rem",
+                }}
+                onClick={handleGenerateVerificationCode}
+              >
+                GENERATE CODE
+              </Button>
             )}
             <Box
               sx={{

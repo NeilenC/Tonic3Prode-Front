@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { Card, Grid, Paper, Typography } from "@mui/material";
 import {
   BarChart,
@@ -9,20 +10,69 @@ import {
   ResponsiveContainer,
   XAxis,
 } from "recharts";
+import axios from "axios";
 
 const Metrics = () => {
-  const usersCount = 13579; // Cantidad ficticia de usuarios
-  const tournamentsCount = 27; // Cantidad ficticia de torneos
-  const maleUsersCount = 7000; // Cantidad ficticia de usuarios masculinos
-  const femaleUsersCount = 6579; // Cantidad ficticia de usuarios femeninos
-  const basketballTournamentsCount = 10; // Cantidad ficticia de torneos de baloncesto
-  const soccerTournamentsCount = 8; // Cantidad ficticia de torneos de fútbol
-  const volleyballTournamentsCount = 5; // Cantidad ficticia de torneos de voleibol
-  const averageSessionTime = 25; // Tiempo promedio que los usuarios pasan en la plataforma por sesión
+  const [users, setUsers] = useState(0);
+  const [tournaments, setTournaments] = useState(0);
+  const [participation, setParticipation] = useState(0);
+  const [gender, setGender] = useState({ male: 0, female: 0, other: 0 });
+  const basketballTournamentsCount = 0; 
+  const soccerTournamentsCount = tournaments; // Cantidad ficticia de torneos de fútbol
+  const volleyballTournamentsCount = 0; 
+
+  useEffect(() => {
+    const uid = localStorage.getItem("uid");
+    axios
+      .get(`http://localhost:3001/api/users/${uid}`)
+      .then((res) => {
+        setUsers(res.data.length);
+        const users = res.data;
+        let maleCount = 0;
+        let femaleCount = 0;
+        let otherCount = 0;
+        
+        users.forEach((user) => {
+          if (user.gender === "male") {
+            maleCount++;
+          } else if (user.gender === "female") {
+            femaleCount++;
+          } else {
+            otherCount++;
+          }
+        });
+        setGender({ male: maleCount, female: femaleCount, other: otherCount });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get(`http://localhost:3001/api/tournaments/all/${uid}`)
+      .then((res) => {
+        const AmountOfTournements = res.data.length;
+        setTournaments(res.data.length);
+        const userCountPerTournament = [];
+        res.data.forEach((tournament) => {
+          const userCount = tournament.users.length;
+          userCountPerTournament.push(userCount);
+        });
+        const totalUsersPlaying = userCountPerTournament.reduce(
+          (a, b) => a + b,
+          0
+        );
+        const participation = (totalUsersPlaying / AmountOfTournements) * 100;
+        setParticipation(participation);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const genderData = [
-    { name: "Masculino", value: maleUsersCount },
-    { name: "Femenino", value: femaleUsersCount },
+    { name: "Masculino", value: gender.male },
+    { name: "Femenino", value: gender.female },
+    { name: "Other", value: gender.other },
   ];
 
   const sportData = [
@@ -34,25 +84,25 @@ const Metrics = () => {
   return (
     <Grid container spacing={2} justify="center">
       <Grid item xs={12} sm={6} md={4}>
-        <Card sx ={{p:2}}>
+        <Card sx={{ p: 2 }}>
           <Typography variant="h6">Usuarios</Typography>
-          <Typography variant="h3">{usersCount}</Typography>
+          <Typography variant="h3">{users}</Typography>
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={4}>
-        <Card sx ={{p:2}}>
+        <Card sx={{ p: 2 }}>
           <Typography variant="h6">Torneos</Typography>
-          <Typography variant="h3">{tournamentsCount}</Typography>
+          <Typography variant="h3">{tournaments}</Typography>
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={4}>
-        <Card sx ={{p:2}}>
+        <Card sx={{ p: 2 }}>
           <Typography variant="h6">Porcentaje de participantes</Typography>
-          <Typography variant="h3">75%</Typography>
+          <Typography variant="h3">{participation}</Typography>
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={6}>
-        <Card sx ={{p:2}}>
+        <Card sx={{ p: 2 }}>
           <Typography variant="h6">
             Distribución de usuarios por género
           </Typography>
@@ -75,7 +125,7 @@ const Metrics = () => {
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={6}>
-        <Card sx ={{p:2}}>
+        <Card sx={{ p: 2 }}>
           <Typography variant="h6">
             Distribución de torneos por deporte
           </Typography>
@@ -85,12 +135,6 @@ const Metrics = () => {
               <XAxis dataKey="name" />
             </BarChart>
           </ResponsiveContainer>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <Card sx ={{p:2}}>
-          <Typography variant="h6">Tiempo promedio por sesión</Typography>
-          <Typography variant="h3">{averageSessionTime} min</Typography>
         </Card>
       </Grid>
     </Grid>

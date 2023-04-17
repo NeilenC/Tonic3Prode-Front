@@ -125,7 +125,7 @@ const Home = ({}) => {
           textDecoration: "none",
         }}
         onClick={() => {
-          router.push(`/tournament/${id}/prizes`);
+          router.push(`/prizes/${id}`);
         }}
       >
         {intl.formatMessage({ id: "prizes" })}
