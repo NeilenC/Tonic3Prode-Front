@@ -8,11 +8,11 @@ import axios from "axios";
 
 const tutorial = () => {
   const [language, setLanguage] = React.useState("");
-  const images = [
-    { id: 1, src: puppie1, alt: "Image 1" },
-    { id: 2, src: puppie3, alt: "Image 2" },
-    { id: 3, src: puppie4, alt: "Image 3" },
-  ];
+  // const images = [
+  //   { id: 1, src: puppie1, alt: "Image 1" },
+  //   { id: 2, src: puppie3, alt: "Image 2" },
+  //   { id: 3, src: puppie4, alt: "Image 3" },
+  // ];
 
 useEffect(() => {
   console.log("useEffect")
@@ -38,9 +38,9 @@ useEffect(() => {
 
 return (
   <>
-    <div>
+    {/* <div>
       <TutorialCarousel images={images} />
-    </div>
+    </div> */}
     <Box
       sx={{
         backgroundColor: "grey.200",
