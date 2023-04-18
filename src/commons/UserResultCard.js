@@ -14,6 +14,22 @@ import ImageFilter from "react-image-filter/lib/ImageFilter";
 const UserResultCard = ({ game, user, id, currentDate, order }) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
+   const [formatedDate, setFormatedDate] = useState([]);
+   const [date, setDate] = useState([]);
+   const monthNames = [
+     "January",
+     "February",
+     "March",
+     "April",
+     "May",
+     "June",
+     "July",
+     "August",
+     "September",
+     "October",
+     "November",
+     "December",
+   ];
 
   useEffect(() => {
     const getUserPredictions = async () => {
@@ -40,6 +56,28 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
 
   console.log(game);
   console.log("game predictionn", gamePredictions[0]);
+
+  useEffect(() => {
+    const year = new Date().getFullYear();
+    const month = game.month - 1;
+    const day = game.dayOfTheMonth;
+    const hour = Math.floor(game.hour / 100);
+    const minute = game.hour % 100;
+    const date = new Date(year, month, day, hour, minute);
+
+    const amPm = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const formattedDate = `${
+      monthNames[month]
+    } ${day}, ${year} at ${formattedHour}:${minute
+      .toString()
+      .padStart(2, "0")} ${amPm}`;
+
+    setDate(date);
+    setFormatedDate(formattedDate);
+  }, [game]);
+
+  
 
   return (
     <Card
@@ -69,7 +107,7 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
         }}
       >
         <Typography sx={{ marginRight: "10px" }}>
-          {currentDate[order]}
+          {formatedDate}
         </Typography>
       </Box>
       <Typography
