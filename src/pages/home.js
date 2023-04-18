@@ -38,11 +38,9 @@ useEffect(() => {
 const handleSubmitRanking = async (tournamentId) => {
   try {  
     const uid = localStorage.getItem("uid");
-    console.log(tournamentId)
     const response = await axios.post(
       `http://localhost:3001/api/rankings/register/${tournamentId}/${uid}`
     );
-    console.log(response);
   } catch(err) {
     console.log(err);
   }

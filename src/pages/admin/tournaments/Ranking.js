@@ -78,7 +78,6 @@ const Ranking = () => {
             .filter((ranking) => !filter || ranking.country === filter)
             .sort((a, b) => b.score - a.score)
             .map((ranking, index) => {
-              console.log(ranking);
               return (
                 <TableRow key={ranking._id}>
                   <TableCell>{index + 1}</TableCell>

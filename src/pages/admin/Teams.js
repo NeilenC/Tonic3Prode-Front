@@ -258,13 +258,6 @@ const Teams = () => {
       setSelectedNewDivision("");
     }
   };
-  console.log("newTeam", newTeam);
-  console.log("selected new name", selectedNewName);
-  console.log("selected new Short name", selectedNewShortName);
-  console.log("selected new origin", selectedNewOrigin);
-  console.log("selected new foundation", selectedNewFoundation);
-  console.log("selected new logo url", selectedNewLogoUrl);
-  console.log("selected new division", selectedNewDivision);
 
   //funcion para guardar cambios de edición
   const handleSaveChanges = async () => {

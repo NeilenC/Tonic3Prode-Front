@@ -64,7 +64,6 @@ export const LoginForm = () => {
         sendEmail(username, email);
         router.push("http://localhost:3000/logIn/TwoFactorAuth");
       } catch (error) {
-        console.log(error);
         toast.error("Error, please try again !");
       }
     } else {

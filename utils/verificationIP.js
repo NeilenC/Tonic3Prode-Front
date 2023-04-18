@@ -3,7 +3,6 @@ export function getVisitorIP() {
   return fetch("https://api.ipify.org?format=json")
     .then((response) => response.json())
     .then((data) => {
-        console.log(data.ip)
         return data.ip;
     })
     .catch((error) => console.error(error));
@@ -15,7 +14,6 @@ export function getGeolocationByIp(ip) {
   return fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.country_name);
       return data.country_name;
     })
     .catch((error) => console.error(error));
@@ -32,7 +30,6 @@ export async function onPageLoad() {
     const country = await getGeolocationByIp(ip);
 
     // Mostrar el nombre del país en la consola
-    console.log(`El visitante está en ${country}`);
   } catch (error) {
     console.error(error);
   }

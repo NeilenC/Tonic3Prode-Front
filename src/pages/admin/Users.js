@@ -121,7 +121,6 @@ const Users = () => {
       }
     } else {
       toast.error("you are not allowed to eliminate another admin");
-      console.log("no se puede");
       setOpenDeleteModal(false);
     }
   };
@@ -153,13 +152,11 @@ const Users = () => {
           }
         );
         toast.success("users successfully eliminated");
-        console.log("usuarios eliminados");
         setOpenDeleteAllUsersModal(false);
         setUsers([]);
         setFilteredUsers([]);
       } catch (error) {
         toast.error(error.response.data.message);
-        console.log("error al eliminar usuarios");
       }
     }
     //si es admin, solo borra a los que no son admins
@@ -178,7 +175,6 @@ const Users = () => {
         toast.success("users successfully eliminated.");
       } catch (error) {
         toast.error("error when trying to eliminate users.");
-        console.log("error al eliminar usuarios");
       }
     }
   };
@@ -236,7 +232,6 @@ const Users = () => {
   };
 
   const handleInputChange = (event) => {
-    console.log("event", event);
 
     const { name, value } = event.target;
     setEditedUser((prev) => ({

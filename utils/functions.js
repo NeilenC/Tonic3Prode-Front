@@ -14,8 +14,6 @@ export const signUpGoogle = async (auth, dispatch) => {
       onAuthStateChanged(auth, (user) => resolve(user));
     });
 
-    console.log("USERF", userFirebase);
-
     const users = await axios.get("http://localhost:3001/api/users");
     localStorage.setItem("uid", userFirebase.uid);
 
@@ -24,8 +22,6 @@ export const signUpGoogle = async (auth, dispatch) => {
 
     // Obtener el país del usuario a partir de su IP
     const country = await getGeolocationByIp(ip);
-
-    console.log("COUNTRY", country);
 
     // Validar que el usuario esté en un país permitido
     if (
@@ -48,7 +44,6 @@ export const signUpGoogle = async (auth, dispatch) => {
       const userMongoDB = users.data.filter(
         (user) => user.uid === userFirebase.uid
       );
-      console.log("USERM", userMongoDB);
 
       if (userMongoDB.length > 0) {
         dispatch(setFirstLogin(false));

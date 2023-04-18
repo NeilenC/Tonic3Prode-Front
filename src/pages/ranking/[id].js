@@ -53,7 +53,6 @@ const id = () => {
   }, [id]);
 
   const sortedRankings = rankings.sort((a, b) => b.score - a.score);
-  console.log(sortedRankings);
 
   return (
     <div>

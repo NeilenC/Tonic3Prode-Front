@@ -82,7 +82,6 @@ function LinearStepper() {
           image_url: generalInfo.imageUrl,
         }
       );
-      console.log(response.data);
       return response.data;
     }
 
@@ -96,7 +95,6 @@ function LinearStepper() {
           teams: teams,
         }
       );
-      console.log(response.data);
       return response.data;
     }
 
@@ -110,7 +108,6 @@ function LinearStepper() {
           matches: matches,
         }
       );
-      console.log(response.data);
       return response.data;
     }
 

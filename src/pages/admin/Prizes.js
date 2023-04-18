@@ -62,22 +62,18 @@ const Prizes = () => {
     customAxios
       .get("http://localhost:3001/api/tournaments/all")
       .then((res) => {
-        console.log(res.data, "info tournaments");
         const tournaments = res.data.map((tournament) => tournament.title);
-        console.log(tournaments, "tournaments");
         setTournament(tournaments);
       });
   }, []);
 
   useEffect(() => {
-    console.log(tournamentID, "tournamentID");
     customAxios
       .get("http://localhost:3001/api/prizes")
       .then((res) => {
         const filteredPrizes = res.data.filter(
           (prize) => prize.tournament === tournamentID
         );
-        console.log(filteredPrizes, "filteredPrizes");
         setFilteredPrizes(filteredPrizes);
       })
       .catch((error) => {

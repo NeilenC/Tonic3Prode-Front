@@ -61,9 +61,7 @@ const PrizeInfo = () => {
     }
 
     customAxios.get("http://localhost:3001/api/tournaments/all").then((res) => {
-      console.log(res.data, "info tournaments");
       const tournaments = res.data.map((tournament) => tournament.title);
-      console.log(tournaments, "tournaments");
       setTournament(tournaments);
     });
   }, []);
@@ -222,12 +220,10 @@ const PrizeInfo = () => {
     axios
       .post(`http://localhost:3001/api/prizes/admin/${uid}/addprize`, prizeInfo)
       .then((res) => {
-        console.log(res.data);
         toast.success("Prize created successfully");
         window.location.href = "http://localhost:3000/admin";
       })
       .catch((error) => {
-        console.log(error);
         toast.error("Error creating prize");
       });     
   };

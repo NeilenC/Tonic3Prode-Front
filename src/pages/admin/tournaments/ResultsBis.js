@@ -27,8 +27,6 @@ if (id) {
     });
 }
 }, [id]);
-
-console.log("PENDING GAMES",pendingGames)
   return (
     <Box sx={{display: "flex", flexDirection:"column", alignItems:"center", textAlign:"center"}}>
       <h2> PENDING RESULTS</h2>

@@ -30,7 +30,6 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    console.log(userInfo, "userInfo")
     if (userInfo) {
       setCellphone(userInfo.cellphone);
       setAddress(userInfo.address);
@@ -72,7 +71,6 @@ const Profile = () => {
   };
 
   const handlePushNotifications = async (e) => {
-    console.log(e.target.checked)
     const uid = localStorage.getItem("uid");
       try {
         const response = await axios(

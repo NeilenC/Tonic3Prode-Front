@@ -54,9 +54,6 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
     (prediction) => prediction.gameId._id === game._id
   );
 
-  console.log(game);
-  console.log("game predictionn", gamePredictions[0]);
-
   useEffect(() => {
     const year = new Date().getFullYear();
     const month = game.month - 1;

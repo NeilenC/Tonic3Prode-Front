@@ -26,9 +26,7 @@ const TwoFactorAuth = () => {
   }, []);
 
   const generateQRCode = async (secret) => {
-    console.log(secret, "secret");
     const otpauthUrl = `otpauth://totp/Gambet?secret=${secret}`;
-    console.log(otpauthUrl, "otpauthUrl");
     try {
       const imageUrl = await qrcode.toDataURL(otpauthUrl);
       setQRCodeImage(imageUrl);
@@ -76,7 +74,6 @@ const TwoFactorAuth = () => {
         toast.error("Verification code already generated");
       }
     } catch (error) {
-      console.error(error);
       toast.error("Failed to generate verification code. Please try again.");
     }
   };

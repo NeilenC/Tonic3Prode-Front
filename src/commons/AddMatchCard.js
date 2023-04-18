@@ -111,10 +111,7 @@ const AddMatchCard = ({ onAddMatch, teams, editingMatch }) => {
     const finishingDate = new Date(
       JSON.parse(localStorage.getItem("generalInfo")).finishing
     );
-    console.log("finishingDate", finishingDate);
-    console.log("beginningDate", beginningDate);
     const inputDate = new Date(year, month - 1, day); // el mes arranca de 0
-    console.log("inputDate", inputDate);
 
     if (inputDate < beginningDate && year.length === 4) {
       alert(

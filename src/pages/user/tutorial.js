@@ -16,7 +16,6 @@ const tutorial = () => {
   // ];
 
   useEffect(() => {
-    console.log("useEffect");
     const fetchLanguage = async () => {
       try {
         const uid = localStorage.getItem("uid");

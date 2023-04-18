@@ -65,9 +65,6 @@ useEffect(() => {
 
         if (usersCount > 0) {
           const participation = (userCount / usersCount) * 100;
-          console.log(
-            `Participation for tournament ${tournament.name}: ${participation}%`
-          );
         }
 
         totalUsersPlaying += userCount;
@@ -75,10 +72,6 @@ useEffect(() => {
 
       const averageParticipation =
         (totalUsersPlaying / (amountOfTournaments * usersCount)) * 100;
-      console.log(
-        `Average participation across all tournaments: ${averageParticipation}%`
-      );
-      console.log(averageParticipation, "average");
       setParticipation(averageParticipation);
     } catch (error) {
       console.log(error);
