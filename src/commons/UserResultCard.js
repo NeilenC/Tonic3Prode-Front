@@ -137,12 +137,12 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 image={game?.teams[0]?.logo_url}
                 alt={game?.teams[0]?.name}
                 className={styles.teamLogo}
-                // style={{
-                //   width: "75px",
-                //   height: "75px",
-                //   objectFit: "contain",
-                //   marginBottom: "10px",
-                // }}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  objectFit: "contain",
+                  marginBottom: "10px",
+                }}
               />
             ) : (
               <ImageFilter
@@ -152,10 +152,10 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 filter={"grayscale"}
                 style={{
                   opacity: 0.4,
-                  // width: "75px",
-                  // height: "75px",
-                  // objectFit: "contain",
-                  // marginBottom: "10px",
+                  width: "60px",
+                  height: "60px",
+                  objectFit: "contain",
+                  marginBottom: "10px",
                 }}
               />
             )}
@@ -209,12 +209,12 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 image={game?.teams[1]?.logo_url}
                 alt={game?.teams[1]?.name}
                 className={styles.teamLogo}
-                // style={{
-                //   width: "75px",
-                //   height: "75px",
-                //   objectFit: "contain",
-                //   marginBottom: "10px",
-                // }}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  objectFit: "contain",
+                  marginBottom: "10px",
+                }}
               />
             ) : (
               <ImageFilter
@@ -224,10 +224,10 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 filter={"grayscale"}
                 style={{
                   opacity: 0.4,
-                  // width: "75px",
-                  // height: "75px",
-                  // objectFit: "contain",
-                  // marginBottom: "10px",
+                  width: "60px",
+                  height: "60px",
+                  objectFit: "contain",
+                  marginBottom: "10px",
                 }}
               />
             )}

@@ -143,7 +143,7 @@ const PredictionCards = ({
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          height: "60px",
+          height: "75px",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
@@ -151,7 +151,7 @@ const PredictionCards = ({
           backgroundColor: status === "pending" ? "#3777d1" : "#5b5b5b",
         }}
       >
-        <Typography sx={{ marginRight: "10px" }}>
+        <Typography sx={{ marginRight: "10px"}}>
           {currentDate[order]}
         </Typography>
         <CustomCountdown
@@ -168,7 +168,7 @@ const PredictionCards = ({
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          p: 2,
+          p: 0,
           width: "100%",
         }}
       >
@@ -181,8 +181,8 @@ const PredictionCards = ({
               src={gamePredictions[0]?.prediction.homeTeam.logo_url}
               alt={gamePredictions[0]?.prediction.homeTeam.name}
               style={{
-                width: "75px",
-                height: "75px",
+                width: "60px",
+                height: "60px",
                 objectFit: "contain",
                 marginBottom: "10px",
               }}
@@ -271,8 +271,8 @@ const PredictionCards = ({
               src={gamePredictions[0]?.prediction.awayTeam.logo_url}
               alt={gamePredictions[0]?.prediction.awayTeam.name}
               style={{
-                width: "75px",
-                height: "75px",
+                width: "60px",
+                height: "60px",
                 objectFit: "contain",
                 marginBottom: "10px",
               }}
