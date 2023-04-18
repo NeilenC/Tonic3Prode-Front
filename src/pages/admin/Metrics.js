@@ -17,9 +17,9 @@ const Metrics = () => {
   const [tournaments, setTournaments] = useState(0);
   const [participation, setParticipation] = useState(0);
   const [gender, setGender] = useState({ male: 0, female: 0, other: 0 });
-  const basketballTournamentsCount = 0; 
+  const basketballTournamentsCount = 0;
   const soccerTournamentsCount = tournaments; // Cantidad ficticia de torneos de fútbol
-  const volleyballTournamentsCount = 0; 
+  const volleyballTournamentsCount = 0;
 
   useEffect(() => {
     const uid = localStorage.getItem("uid");
@@ -31,7 +31,7 @@ const Metrics = () => {
         let maleCount = 0;
         let femaleCount = 0;
         let otherCount = 0;
-        
+
         users.forEach((user) => {
           if (user.gender === "male") {
             maleCount++;
@@ -50,19 +50,23 @@ const Metrics = () => {
     axios
       .get(`http://localhost:3001/api/tournaments/all/${uid}`)
       .then((res) => {
-        const AmountOfTournements = res.data.length;
-        setTournaments(res.data.length);
-        const userCountPerTournament = [];
+        const amountOfTournaments = res.data.length;
+        setTournaments(amountOfTournaments);
+        let totalUsersPlaying = 0;
         res.data.forEach((tournament) => {
           const userCount = tournament.users.length;
-          userCountPerTournament.push(userCount);
+          const participation = (userCount / 6) * 100; // replace 6 with the actual number of registered users
+          totalUsersPlaying += userCount;
+          console.log(
+            `Participation for tournament ${tournament.name}: ${participation}%`
+          );
         });
-        const totalUsersPlaying = userCountPerTournament.reduce(
-          (a, b) => a + b,
-          0
+        const averageParticipation =
+          (totalUsersPlaying / (amountOfTournaments * 6)) * 100; // replace 6 with the actual number of registered users
+        console.log(
+          `Average participation across all tournaments: ${averageParticipation}%`
         );
-        const participation = (totalUsersPlaying / AmountOfTournements) * 100;
-        setParticipation(participation);
+        setParticipation(averageParticipation);
       })
       .catch((error) => {
         console.log(error);
@@ -98,7 +102,7 @@ const Metrics = () => {
       <Grid item xs={12} sm={6} md={4}>
         <Card sx={{ p: 2 }}>
           <Typography variant="h6">Porcentaje de participantes</Typography>
-          <Typography variant="h3">{participation}</Typography>
+          <Typography variant="h3">{participation}%</Typography>
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={6}>
