@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Typography, Box, Card } from "@mui/material";
 import styles from "../../styles/ranking/podium.module.css";
-import rankingPodium from "@/fakeData/rankingPodium";
+import rankingPodium from "@/Data/rankingPodium";
 import userPhoto from "../../../public/user.jpeg";
 
 const Podium = ({ ranking }) => {

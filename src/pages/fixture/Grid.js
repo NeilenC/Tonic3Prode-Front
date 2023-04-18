@@ -2,8 +2,8 @@ import React from "react";
 import { Box } from "@mui/material";
 import MatchCard from "@/commons/MatchCard";
 import styles from "../../styles/matches/Grid.module.css";
-import matches from "../../fakeData/matches";
-import weekDays from "../../fakeData/weekDays";
+import matches from "../../Data/matches";
+import weekDays from "../../Data/weekDays";
 
 const Grid = () => {
   const matchesByDate = matches.reduce((accumulator, current) => {

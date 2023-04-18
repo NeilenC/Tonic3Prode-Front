@@ -4,8 +4,8 @@ import { Paper, Button } from "@mui/material";
 import { Box } from "@mui/material";
 import MatchCard from "@/commons/MatchCard";
 import styles from "../styles/matches/Grid.module.css";
-import { matches } from "../fakeData/matches";
-import weekDays from "../fakeData/weekDays";
+import { matches } from "../Data/matches";
+import weekDays from "../Data/weekDays";
 
 export default function Slider() {
   const carouselProps = {
