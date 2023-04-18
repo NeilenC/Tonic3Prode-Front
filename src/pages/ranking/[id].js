@@ -57,7 +57,15 @@ const id = () => {
 
   return (
     <div>
-      <RankingPodium ranking={sortedRankings} />
+      <RankingPodium
+        ranking={sortedRankings}
+        style={{
+          width: "100px",
+          height: "100px",
+          objectFit: "contain",
+          marginBottom: "10px",
+        }}
+      />
       <Box
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >

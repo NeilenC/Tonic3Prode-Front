@@ -60,6 +60,7 @@ const Predictions = () => {
 
   // SE OBTIENE EL SCORE DEL LS
   // SE TRAE EL UID DEL USER DESDE EL LS
+
   useEffect(() => {
     const storedScores = localStorage.getItem("scores");
     if (storedScores) {

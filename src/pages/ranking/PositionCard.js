@@ -3,9 +3,6 @@ import styles from "../../styles/ranking/positionCard.module.css";
 import { Card } from "@mui/material";
 import { useIntl } from "react-intl";
 
-const user = {name: "Natalia García", avatar: "https://img.freepik.com/foto-gratis/retrato-hermosa-modelo-rubia-sonriente-vestida-ropa-hipster-verano_158538-5482.jpg",
-position: 17, points: 185}
-
 const PositionCard = ({ avatar, position, points }) => {
   const intl = useIntl()
   

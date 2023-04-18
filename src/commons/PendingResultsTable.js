@@ -20,6 +20,7 @@ import axios from "axios";
 import {
   Save
 } from "@mui/icons-material";
+import { sendEmailMatches } from "../../utils/sendEmailMatches";
 
 const PendingResultsTable = ({ data }) => {
   const [editedData, setEditedData] = useState({});
@@ -30,8 +31,9 @@ const PendingResultsTable = ({ data }) => {
     localStorage.setItem("myTableData", JSON.stringify(newData));
     const savedData =
       JSON.parse(localStorage.getItem("myTableData")) || newData;
-    setNewData(savedData);
   }, []);
+
+
 
   const handleDayOfMonthEdit = (gameId, value) => {
     setEditedData((prevEdited) => ({
@@ -153,6 +155,24 @@ const PendingResultsTable = ({ data }) => {
       .catch((error) => {
         console.log(error);
       });
+      // envios de mails a usuarios inscriptos en notificaciones push
+      let userinfo = [];
+      await axios
+      .get(`http://localhost:3001/api/users/${uid}`)
+      .then((response) => {
+        const Users = response.data;
+        Users.map((user) => {
+          if (user.PushSubscription === true) {
+            userinfo.push({email: user.email, username: user.username});
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });              
+      userinfo.forEach((data) => {
+        sendEmailMatches(data.username, data.email);
+      });
   };
 
   const getWinningTeam = (game) => {
@@ -182,7 +202,6 @@ const PendingResultsTable = ({ data }) => {
         result = "awayTeam";
       }
     }
-    console.log(result, "result"); 
     return result;
   };
 

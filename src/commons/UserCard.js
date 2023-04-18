@@ -4,11 +4,13 @@ import { ArrowUpward, ArrowDownward, Remove } from "@mui/icons-material";
 import Avatar from "@mui/material/Avatar";
 import styles from "@/styles/commons/userCard.module.css";
 
-const UserCard = ({ user }) => {
-  
+const UserCard = ({ user, index }) => {
   return (
     <Card className={styles.card}>
       <CardContent className={styles.content}>
+        <div className={styles.cardColumn}>
+          <p>{index+1}</p>
+        </div>
         <div className={styles.cardColumn}>
           <p>{user.rank}</p>
         </div>
@@ -23,7 +25,7 @@ const UserCard = ({ user }) => {
           <p>{user.userId.username}</p>
         </div>
         <div className={styles.cardColumn}>
-          <p>Score: {user.score}</p>
+          <p>{user.score}</p>
         </div>
       </CardContent>
     </Card>

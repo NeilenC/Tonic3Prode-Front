@@ -15,7 +15,6 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
   const [userPredictions, setUserPredictios] = useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  //// TRAE LAS PREDICCIONES DE UN USUARIO Y SE FILTRA POR EL TORNEO ACTUAL ///
   useEffect(() => {
     const getUserPredictions = async () => {
       try {
@@ -100,6 +99,12 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 image={game?.teams[0]?.logo_url}
                 alt={game?.teams[0]?.name}
                 className={styles.teamLogo}
+                // style={{
+                //   width: "75px",
+                //   height: "75px",
+                //   objectFit: "contain",
+                //   marginBottom: "10px",
+                // }}
               />
             ) : (
               <ImageFilter
@@ -107,7 +112,13 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 alt={game?.teams[0]?.name}
                 className={styles.teamLogo}
                 filter={"grayscale"}
-                style={{ opacity: 0.4 }}
+                style={{
+                  opacity: 0.4,
+                  // width: "75px",
+                  // height: "75px",
+                  // objectFit: "contain",
+                  // marginBottom: "10px",
+                }}
               />
             )}
           </Box>
@@ -160,6 +171,12 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 image={game?.teams[1]?.logo_url}
                 alt={game?.teams[1]?.name}
                 className={styles.teamLogo}
+                // style={{
+                //   width: "75px",
+                //   height: "75px",
+                //   objectFit: "contain",
+                //   marginBottom: "10px",
+                // }}
               />
             ) : (
               <ImageFilter
@@ -167,7 +184,13 @@ const UserResultCard = ({ game, user, id, currentDate, order }) => {
                 alt={game?.teams[1]?.name}
                 className={styles.teamLogo}
                 filter={"grayscale"}
-                style={{ opacity: 0.4 }}
+                style={{
+                  opacity: 0.4,
+                  // width: "75px",
+                  // height: "75px",
+                  // objectFit: "contain",
+                  // marginBottom: "10px",
+                }}
               />
             )}
           </Box>

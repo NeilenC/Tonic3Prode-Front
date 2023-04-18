@@ -177,9 +177,15 @@ const PredictionCards = ({
         >
           <Box className={styles.teamLogoWrapper}>
             <img
+              onLoad={() => console.log("Image loaded")}
               src={gamePredictions[0]?.prediction.homeTeam.logo_url}
               alt={gamePredictions[0]?.prediction.homeTeam.name}
-              className={styles.teamLogo}
+              style={{
+                width: "75px",
+                height: "75px",
+                objectFit: "contain",
+                marginBottom: "10px",
+              }}
             />
           </Box>
           <Box sx={{ marginRight: "10px", textAlign: "center" }}>
@@ -261,9 +267,15 @@ const PredictionCards = ({
           </Box>
           <Box className={styles.teamLogoWrapper}>
             <img
+              onLoad={() => console.log("Image loaded")}
               src={gamePredictions[0]?.prediction.awayTeam.logo_url}
               alt={gamePredictions[0]?.prediction.awayTeam.name}
-              className={styles.teamLogo}
+              style={{
+                width: "75px",
+                height: "75px",
+                objectFit: "contain",
+                marginBottom: "10px",
+              }}
             />
           </Box>
         </Box>

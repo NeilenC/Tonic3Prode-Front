@@ -55,14 +55,14 @@ const Metrics = () => {
         let totalUsersPlaying = 0;
         res.data.forEach((tournament) => {
           const userCount = tournament.users.length;
-          const participation = (userCount / 6) * 100; // replace 6 with the actual number of registered users
+          const participation = (userCount / users) * 100; // replace 6 with the actual number of registered users
           totalUsersPlaying += userCount;
           console.log(
             `Participation for tournament ${tournament.name}: ${participation}%`
           );
         });
         const averageParticipation =
-          (totalUsersPlaying / (amountOfTournaments * 6)) * 100; // replace 6 with the actual number of registered users
+         (totalUsersPlaying / (amountOfTournaments * users)) * 100; 
         console.log(
           `Average participation across all tournaments: ${averageParticipation}%`
         );

@@ -30,8 +30,6 @@ const UserProvider = ({children}) => {
             photoURL: data.photoURL
           })
           );
-          
-          console.log("DATAA=====>", data)
         return data;
       } catch (err) {
        console.log(err);

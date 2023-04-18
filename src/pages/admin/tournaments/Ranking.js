@@ -21,9 +21,6 @@ const Ranking = () => {
   const uid = localStorage.getItem("uid");
 
   useEffect(() => {
-    console.log("ESTOY PIDIENDO ESTA RUTA");
-    console.log("TournamentID", tournamentId);
-    console.log("uid", uid);
     async function getTournamentRankings() {
       const response = await axios.get(
         `http://localhost:3001/api/rankings/search/${tournamentId}/${uid}`
