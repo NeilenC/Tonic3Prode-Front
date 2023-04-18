@@ -21,57 +21,73 @@ const Metrics = () => {
   const soccerTournamentsCount = tournaments; // Cantidad ficticia de torneos de fútbol
   const volleyballTournamentsCount = 0;
 
-  useEffect(() => {
-    const uid = localStorage.getItem("uid");
-    axios
-      .get(`http://localhost:3001/api/users/${uid}`)
-      .then((res) => {
-        setUsers(res.data.length);
-        const users = res.data;
-        let maleCount = 0;
-        let femaleCount = 0;
-        let otherCount = 0;
+useEffect(() => {
+  const fetchMetrics = async () => {
+    try {
+      const uid = localStorage.getItem("uid");
 
-        users.forEach((user) => {
-          if (user.gender === "male") {
-            maleCount++;
-          } else if (user.gender === "female") {
-            femaleCount++;
-          } else {
-            otherCount++;
-          }
-        });
-        setGender({ male: maleCount, female: femaleCount, other: otherCount });
-      })
-      .catch((error) => {
-        console.log(error);
+      // Fetch users and set gender counts
+      const usersResponse = await axios.get(
+        `http://localhost:3001/api/users/${uid}`
+      );
+      const usersData = usersResponse.data;
+      const usersCount = usersData.length;
+      setUsers(usersCount);
+
+      let maleCount = 0;
+      let femaleCount = 0;
+      let otherCount = 0;
+
+      usersData.forEach((user) => {
+        if (user.gender === "male") {
+          maleCount++;
+        } else if (user.gender === "female") {
+          femaleCount++;
+        } else {
+          otherCount++;
+        }
       });
 
-    axios
-      .get(`http://localhost:3001/api/tournaments/all/${uid}`)
-      .then((res) => {
-        const amountOfTournaments = res.data.length;
-        setTournaments(amountOfTournaments);
-        let totalUsersPlaying = 0;
-        res.data.forEach((tournament) => {
-          const userCount = tournament.users.length;
-          const participation = (userCount / users) * 100; // replace 6 with the actual number of registered users
-          totalUsersPlaying += userCount;
+      setGender({ male: maleCount, female: femaleCount, other: otherCount });
+
+      // Fetch tournaments and calculate participation
+      const tournamentsResponse = await axios.get(
+        `http://localhost:3001/api/tournaments/all/${uid}`
+      );
+      const tournamentsData = tournamentsResponse.data;
+      const amountOfTournaments = tournamentsData.length;
+      setTournaments(amountOfTournaments);
+
+      let totalUsersPlaying = 0;
+
+      tournamentsData.forEach((tournament) => {
+        const userCount = tournament.users.length;
+
+        if (usersCount > 0) {
+          const participation = (userCount / usersCount) * 100;
           console.log(
             `Participation for tournament ${tournament.name}: ${participation}%`
           );
-        });
-        const averageParticipation =
-         (totalUsersPlaying / (amountOfTournaments * users)) * 100; 
-        console.log(
-          `Average participation across all tournaments: ${averageParticipation}%`
-        );
-        setParticipation(averageParticipation);
-      })
-      .catch((error) => {
-        console.log(error);
+        }
+
+        totalUsersPlaying += userCount;
       });
-  }, []);
+
+      const averageParticipation =
+        (totalUsersPlaying / (amountOfTournaments * usersCount)) * 100;
+      console.log(
+        `Average participation across all tournaments: ${averageParticipation}%`
+      );
+      console.log(averageParticipation, "average");
+      setParticipation(averageParticipation);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  fetchMetrics();
+}, []);
+
 
   const genderData = [
     { name: "Masculino", value: gender.male },
