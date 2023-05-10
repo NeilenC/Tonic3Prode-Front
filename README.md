@@ -6,6 +6,8 @@ En Gambet podrás participar en diferentes torneos de fútbol, baloncesto, tenis
 
 ¡Pero eso no es todo! En Gambet también podrás crear tus propios torneos personalizados y retar a tus amigos a participar. Podrás elegir los equipos, el formato y las reglas de tu torneo, y hacer que la competencia sea aún más emocionante.
 
+Gambet utiliza Geolocalización por IP, por lo cual el ingreso será restringido a usuarios que no se encuentren en EE.UU, Argentina o Brasil, así mismo también se podrá cambiar el lenguaje cuando el usuario lo desee.
+
 
 
 ######   1. Principales tecnologías implementadas: 
